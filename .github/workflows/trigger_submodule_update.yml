@@ -16,4 +16,4 @@ jobs:
           token: ${{ secrets.TOKEN }}
           repository: is-tech-y24-1/Do-Svyazi
           event-type: update-submodule
-          client-payload: '{"submodule_name" : "Do-Svyazi.User"}'
+          client-payload: '{"submodule_name" : "Do-Svyazi.Music"}'
