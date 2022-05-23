@@ -7,6 +7,12 @@ namespace DS.Domain;
  */
 public class SongGenre
 {
+#pragma warning disable CS8618
+    protected SongGenre()
+#pragma warning restore CS8618
+    {
+    }
+    
     public SongGenre(string genreName)
     {
         if (string.IsNullOrEmpty(genreName))
