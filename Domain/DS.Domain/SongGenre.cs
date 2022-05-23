@@ -2,9 +2,6 @@
 
 namespace DS.Domain;
 
-/**
- * Describes song genre in Entity Framework.
- */
 public class SongGenre
 {
 #pragma warning disable CS8618
