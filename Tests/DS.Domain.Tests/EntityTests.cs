@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace DS.Tests;
 
-public class Tests
+public class EntityTests
 {
     [SetUp]
     public void Setup()
