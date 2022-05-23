@@ -15,7 +15,7 @@ public class SongGenre
     
     public SongGenre(string genreName)
     {
-        if (string.IsNullOrEmpty(genreName))
+        if (string.IsNullOrWhiteSpace(genreName))
             throw new DoSvyaziMusicException("Music genre name can't be empty.");
         
         GenreName = genreName;

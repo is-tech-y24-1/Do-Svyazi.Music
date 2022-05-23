@@ -25,7 +25,8 @@ public class EntityTests
     {
         Assert.Catch<Exception>(() =>
         {
-            var songGenre = new SongGenre("");
+            var songGenre1 = new SongGenre("");
+            var songGenre2 = new SongGenre(" ");
         });
     }
 }
