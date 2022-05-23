@@ -2,9 +2,9 @@ using System;
 using DS.Domain;
 using NUnit.Framework;
 
-namespace DS.Tests;
+namespace DS.Tests.EntitiesTests;
 
-public class EntityTests
+public class SongGenreTests
 {
     [SetUp]
     public void Setup()
