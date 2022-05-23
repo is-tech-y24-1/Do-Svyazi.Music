@@ -16,6 +16,6 @@ public class EntityNotFoundException : DoSvyaziMusicException
     {
     }
 
-    public static EntityNotFoundException Throw(Type type) => 
+    public static EntityNotFoundException Create(Type type) => 
         new EntityNotFoundException($"[{type}] Entity was not found.");
 }
