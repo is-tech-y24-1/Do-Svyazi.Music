@@ -21,7 +21,6 @@ public class SongGenreTests
         });
     }
 
-    [Test]
     [TestCase("")]
     [TestCase(" ")]
     public void CreateSongGenreEntityWithInvalidName_ThrowException(string invalidName)
