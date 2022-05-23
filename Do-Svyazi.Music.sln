@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7E3629C5-0170-4B00-A1C2-E50A606C9227}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Tests", "Tests\DS.Tests\DS.Tests.csproj", "{1D769FBA-1BAB-4342-9A6E-8B0F5C03E5BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Domain.Tests", "Tests\DS.Domain.Tests\DS.Domain.Tests.csproj", "{1D769FBA-1BAB-4342-9A6E-8B0F5C03E5BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{1873322F-0EE2-4AFF-B81A-658357D960EC}"
 EndProject
