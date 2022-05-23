@@ -22,6 +22,6 @@ public class SongGenre
         Id = Guid.NewGuid();
     }
     
-    public Guid Id { get; }
+    public Guid Id { get; init; }
     public string GenreName { get; set; }
 }
