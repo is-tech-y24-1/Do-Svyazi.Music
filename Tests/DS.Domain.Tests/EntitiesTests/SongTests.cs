@@ -23,14 +23,14 @@ public class SongTests
     [Test]
     public void AddFeaturingUser_UserIsNotNull_Success()
     {
-        _song.AddFeaturing(_featuringUser);
+        _song.AddFeaturingUser(_featuringUser);
         Assert.Contains(_featuringUser, _song.Featuring.ToList());
     }
 
     [Test]
     public void DeleteFeaturingUser_UserIsFeaturing_UserDeleted()
     {
-        _song.AddFeaturing(_featuringUser);
+        _song.AddFeaturingUser(_featuringUser);
         _song.DeleteFeaturingUser(_featuringUser);
         
         Assert.False(_song.Featuring.Contains(_featuringUser));

@@ -8,7 +8,7 @@ public class Song
     private List<MusicUser> _featuring = new ();
     
     #pragma warning disable CS8618
-    public Song() { }
+    protected Song() { }
     #pragma warning restore CS8618
 
     public Song(string name, SongGenre genre, MusicUser author, string songContentUri)
@@ -35,7 +35,7 @@ public class Song
     public bool SharedForCommunity { get; set; }
     public string SongContentUri { get; private init; }
 
-    public void AddFeaturing(MusicUser featuringUser)
+    public void AddFeaturingUser(MusicUser featuringUser)
     {
         featuringUser.ThrowIfNull();
         _featuring.Add(featuringUser);
