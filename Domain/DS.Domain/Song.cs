@@ -1,21 +1,28 @@
-using System.Xml.Linq;
 using DS.Common.Exceptions;
-using DS.Domain;
 using DS.Common.Extensions;
+
 namespace DS.Domain;
 
 public class Song
 {
+    private List<MusicUser> _featuring = new ();
+    
     #pragma warning disable CS8618
     public Song() { }
     #pragma warning restore CS8618
 
     public Song(string name, SongGenre genre, MusicUser author, string songContentUri)
     {
-        Name = name;
-        Genre = genre;
-        Author = author;
-        SongContentUri = songContentUri;
+        Name = name.ThrowIfNull();
+        Genre = genre.ThrowIfNull();
+        Author = author.ThrowIfNull();
+        SongContentUri = songContentUri.ThrowIfNull();
+
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DoSvyaziMusicException("Name cannot be empty");
+        if (string.IsNullOrWhiteSpace(songContentUri))
+            throw new DoSvyaziMusicException("Content uri cannot be null");
+        
         Id = Guid.NewGuid();
     }
     
@@ -23,26 +30,25 @@ public class Song
     public string Name { get; set; }
     public SongGenre Genre { get; set; }
     public MusicUser Author { get; private init; }
-    public List<MusicUser>? Featuring { get; private set; }
+    public IReadOnlyCollection<MusicUser> Featuring => _featuring;
     public string? CoverUri { get; set; }
     public bool SharedForCommunity { get; set; }
     public string SongContentUri { get; private init; }
 
     public void AddFeaturing(MusicUser featuringUser)
     {
-        Featuring ??= new List<MusicUser>();
-        featuringUser.ThrowIfNullOrEmpty("User cannot be empty.");
-        
-        Featuring.Add(featuringUser);
+        featuringUser.ThrowIfNull();
+        _featuring.Add(featuringUser);
     }
 
     public void DeleteFeaturingUser(MusicUser featuringUser)
     {
-        Featuring.ThrowIfNullOrEmpty("There are no featuring users to delete");
+        _featuring.ThrowIfNull();
         
-        var userToDelete = Featuring?.Find(user => user.Id == featuringUser.Id);
-        userToDelete.ThrowIfNullOrEmpty("There is no such featuring user.");
+        var userToDelete = _featuring.Find(user => user.Id == featuringUser.Id);
+        if (userToDelete is null)
+            throw new DoSvyaziMusicException("There is no such user to delete");
 
-        Featuring?.Remove(userToDelete);
+        _featuring.Remove(userToDelete);
     }
 }

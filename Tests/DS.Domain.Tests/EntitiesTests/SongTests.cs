@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using DS.Common.Exceptions;
 using DS.Domain;
 using NUnit.Framework;
@@ -21,30 +23,23 @@ public class SongTests
     [Test]
     public void AddFeaturingUser_UserIsNotNull_Success()
     {
-        // when
         _song.AddFeaturing(_featuringUser);
-        
-        // then
-        Assert.Contains(_featuringUser, _song.Featuring);
+        Assert.Contains(_featuringUser, _song.Featuring.ToList());
     }
 
     [Test]
     public void DeleteFeaturingUser_UserIsFeaturing_UserDeleted()
     {
-        // given
         _song.AddFeaturing(_featuringUser);
-        
-        // when
         _song.DeleteFeaturingUser(_featuringUser);
         
-        // then
         Assert.False(_song.Featuring.Contains(_featuringUser));
     }
 
     [Test]
     public void DeleteFeaturingUser_UserIsNotFeaturing_ThrowError()
     {
-        Assert.Catch(() =>
+        Assert.Catch<DoSvyaziMusicException>(() =>
         {
             _song.DeleteFeaturingUser(_featuringUser);
         });
