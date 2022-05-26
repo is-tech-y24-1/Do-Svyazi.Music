@@ -1,7 +1,7 @@
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.Common.Extensions;
-using DS.Domain.DTO;
+using DS.Domain.Types;
 
 namespace DS.Domain;
 
@@ -55,10 +55,10 @@ public class MediaLibrary
     
     // TODO: AddPlaylist, RemovePlaylist
 
-    public Song CreateAuthoredSong(AuthoredSongDto dto)
+    public Song CreateAuthoredSong(AuthoredSongType type)
     {
-        dto.ThrowIfNull();
-        var song = new Song(dto);
+        type.ThrowIfNull();
+        var song = new Song(type);
         if (_authoredSongs.Any(s => s.Id == song.Id))
             throw new DoSvyaziMusicException(ExceptionMessages.SongAlreadyExists);
         
