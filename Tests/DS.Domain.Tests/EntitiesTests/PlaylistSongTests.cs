@@ -22,7 +22,7 @@ public class PlaylistSongTests
     }
 
     [Test]
-    public void AddSongsLastToPlaylistSongLinkedList_SongsAdded()
+    public void AddSongsLastToPlaylistSong_SongsAdded()
     {
         var start = new PlaylistSong(_songsToTest[0]);
         start.AddLast(_songsToTest[1]);
@@ -38,7 +38,7 @@ public class PlaylistSongTests
     }
     
     [Test]
-    public void AddSongsFirstToPlaylistSongLinkedList_SongsAdded()
+    public void AddSongsFirstToPlaylistSong_SongsAdded()
     {
         var start = new PlaylistSong(_songsToTest[2]);
         start.AddFirst(_songsToTest[1]);
@@ -54,7 +54,7 @@ public class PlaylistSongTests
     }
 
     [Test]
-    public void InsertSongAfterExisting3_SongInserted()
+    public void InsertSongAfterExisting_SongInserted()
     {
         var start = new PlaylistSong(_songsToTest[0]);
         start.InsertAfter(_songsToTest[2], _songsToTest[0]);
@@ -64,7 +64,7 @@ public class PlaylistSongTests
     }
 
     [Test]
-    public void InsertSongAtUnknownSong_ThrowsException()
+    public void InsertSongAfterUnknownSong_ThrowsException()
     {
         var start = new PlaylistSong(_songsToTest[0]);
         start.AddLast(_songsToTest[1]);
@@ -79,7 +79,7 @@ public class PlaylistSongTests
     [TestCase(0)]
     [TestCase(1)]
     [TestCase(2)]
-    public void RemoveSong_SongRemoves(int positionToRemove)
+    public void RemoveSong_SongRemoved(int positionToRemove)
     {
         var start = new PlaylistSong(_songsToTest[0]);
         start.AddLast(_songsToTest[1]);
