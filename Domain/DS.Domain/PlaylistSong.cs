@@ -61,9 +61,9 @@ public class PlaylistSong : IEnumerable<Song>
     {
         song.ThrowIfNull();
         
-        foreach (var songIn in this)
+        foreach (var songInPlaylist in this)
         {
-            if (songIn.Id == song.Id)
+            if (songInPlaylist.Id == song.Id)
                 return true;
         }
 
@@ -124,10 +124,10 @@ public class PlaylistSong : IEnumerable<Song>
     {
         song.ThrowIfNull();
         
-        foreach (var songIn in this)
+        foreach (var songInPlaylist in this)
         {
-            if (song.Id == songIn.Id)
-                return songIn;
+            if (song.Id == songInPlaylist.Id)
+                return songInPlaylist;
         }
 
         return null;
