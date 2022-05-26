@@ -83,11 +83,11 @@ public class PlaylistSong : IEnumerable<Song>
         InsertAfter(newSong, found);
     }
 
-    public void Remove(Song song)
+    public bool Remove(Song song)
     {
         song.ThrowIfNull();
         var found = FindPlaylistSong(song);
-        if (found is null) return;
+        if (found is null) return false;
         
         if (found.PreviousSong is null) // removing first song
         {
@@ -95,18 +95,57 @@ public class PlaylistSong : IEnumerable<Song>
                 throw new DoSvyaziMusicException("Impossible to have playlist without songs");
 
             found.Song = found.NextSong.Song;
-            if (found.NextSong.NextSong is null) return;
-            TieUpEnds(found, found.NextSong.NextSong);
-            return;
+            var thirdSong = found.NextSong.NextSong;
+            found.NextSong.Isolate();
+            
+            if (thirdSong is null)
+            {
+                found.NextSong = null;
+                return true;
+            }
+            
+            TieUpEnds(found, thirdSong);
+            return true;
         }
 
         if (found.NextSong is null) // removing last song
         {
-            found.PreviousSong = null;
-            return;
+            found.PreviousSong.NextSong = null;
+            found.Isolate();
+            return true;
         }
         
         TieUpEnds(found.PreviousSong, found.NextSong);
+        found.Isolate();
+        return true;
+    }
+
+    public Song? FindSong(Song song)
+    {
+        song.ThrowIfNull();
+        
+        foreach (var songIn in this)
+        {
+            if (song.Id == songIn.Id)
+                return songIn;
+        }
+
+        return null;
+    }
+    
+    private PlaylistSong? FindPlaylistSong(Song song)
+    {
+        var current = this;
+        
+        while (current is not null)
+        {
+            if (current.Song.Id == song.Id)
+                return current;
+
+            current = current.NextSong;
+        }
+
+        return null;
     }
 
     private void TieUpEnds(PlaylistSong head, PlaylistSong tail)
@@ -124,18 +163,9 @@ public class PlaylistSong : IEnumerable<Song>
         TieUpEnds(songToInsert, thirdSong);
     }
 
-    private PlaylistSong? FindPlaylistSong(Song song)
+    private void Isolate()
     {
-        var current = this;
-        
-        while (current is not null)
-        {
-            if (current.Song.Id == song.Id)
-                return current;
-
-            current = current.NextSong;
-        }
-
-        return null;
+        NextSong = null;
+        PreviousSong = null;
     }
 }
