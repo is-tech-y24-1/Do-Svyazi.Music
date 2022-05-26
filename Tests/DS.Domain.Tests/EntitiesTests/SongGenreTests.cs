@@ -1,10 +1,10 @@
-using System;
 using DS.Common.Exceptions;
 using DS.Domain;
 using NUnit.Framework;
 
 namespace DS.Tests.EntitiesTests;
 
+[TestFixture]
 public class SongGenreTests
 {
     [SetUp]

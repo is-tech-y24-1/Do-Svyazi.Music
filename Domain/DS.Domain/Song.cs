@@ -1,5 +1,6 @@
 using DS.Common.Exceptions;
 using DS.Common.Extensions;
+using DS.Domain.DTO;
 
 namespace DS.Domain;
 
@@ -11,16 +12,18 @@ public class Song
     protected Song() { }
     #pragma warning restore CS8618
 
-    public Song(string name, SongGenre genre, MusicUser author, string songContentUri)
+    public Song(AuthoredSongDto dto)
     {
-        Name = name.ThrowIfNull();
-        Genre = genre.ThrowIfNull();
-        Author = author.ThrowIfNull();
-        SongContentUri = songContentUri.ThrowIfNull();
+        dto.ThrowIfNull();
+        
+        Name = dto.Name.ThrowIfNull();
+        Genre = dto.Genre.ThrowIfNull();
+        Author = dto.Author.ThrowIfNull();
+        SongContentUri = dto.SongContentUri.ThrowIfNull();
 
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(dto.Name))
             throw new DoSvyaziMusicException("Name cannot be empty");
-        if (string.IsNullOrWhiteSpace(songContentUri))
+        if (string.IsNullOrWhiteSpace(dto.SongContentUri))
             throw new DoSvyaziMusicException("Content uri cannot be null");
         
         Id = Guid.NewGuid();
@@ -45,9 +48,8 @@ public class Song
     {
         _featuring.ThrowIfNull();
         
-        var userToDelete = _featuring.Find(user => user.Id == featuringUser.Id);
-        if (userToDelete is null)
-            throw new DoSvyaziMusicException("There is no such user to delete");
+        var userToDelete = _featuring.SingleOrDefault(user => user.Id == featuringUser.Id)
+            .ThrowIfNull(new EntityNotFoundException(nameof(MusicUser)));
 
         _featuring.Remove(userToDelete);
     }
