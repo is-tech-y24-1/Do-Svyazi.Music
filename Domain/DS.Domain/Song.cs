@@ -1,6 +1,6 @@
 using DS.Common.Exceptions;
 using DS.Common.Extensions;
-using DS.Domain.DTO;
+using DS.Domain.Types;
 
 namespace DS.Domain;
 
@@ -12,18 +12,18 @@ public class Song
     protected Song() { }
     #pragma warning restore CS8618
 
-    public Song(AuthoredSongDto dto)
+    public Song(AuthoredSongType type)
     {
-        dto.ThrowIfNull();
+        type.ThrowIfNull();
         
-        Name = dto.Name.ThrowIfNull();
-        Genre = dto.Genre.ThrowIfNull();
-        Author = dto.Author.ThrowIfNull();
-        SongContentUri = dto.SongContentUri.ThrowIfNull();
+        Name = type.Name.ThrowIfNull();
+        Genre = type.Genre.ThrowIfNull();
+        Author = type.Author.ThrowIfNull();
+        SongContentUri = type.SongContentUri.ThrowIfNull();
 
-        if (string.IsNullOrWhiteSpace(dto.Name))
+        if (string.IsNullOrWhiteSpace(type.Name))
             throw new DoSvyaziMusicException("Name cannot be empty");
-        if (string.IsNullOrWhiteSpace(dto.SongContentUri))
+        if (string.IsNullOrWhiteSpace(type.SongContentUri))
             throw new DoSvyaziMusicException("Content uri cannot be null");
         
         Id = Guid.NewGuid();
