@@ -1,11 +1,12 @@
-using System;
 using System.Linq;
 using DS.Common.Exceptions;
 using DS.Domain;
+using DS.Domain.DTO;
 using NUnit.Framework;
 
 namespace DS.Tests.EntitiesTests;
 
+[TestFixture]
 public class SongTests
 {
     private MusicUser _featuringUser;
@@ -17,7 +18,7 @@ public class SongTests
     {
         _featuringUser = new MusicUser();
         _author = new MusicUser();
-        _song = new Song("Test", new SongGenre("Test"), _author, "Content");
+        _song = new Song(new AuthoredSongDto("Test", new SongGenre("Test"), _author, "Content"));
     }
 
     [Test]
