@@ -22,57 +22,40 @@ public class PlaylistSongTests
     }
 
     [Test]
-    public void AddSongsLastToPlaylistSong_SongsAdded()
+    public void AddSongsToPlaylistSong_SongsAdded()
     {
-        var start = new PlaylistSong(_songsToTest[0]);
-        start.AddLast(_songsToTest[1]);
-        start.AddLast(_songsToTest[2]);
+        var playlistSongs = new PlaylistSongs(_songsToTest[0]);
+        playlistSongs.Add(_songsToTest[1]);
+        playlistSongs.Add(_songsToTest[2]);
 
-        CollectionAssert.AreEqual(_songsToTest, start.ToList());
+        CollectionAssert.AreEqual(_songsToTest, playlistSongs);
         
         foreach (var t in _songsToTest)
         {
-            Assert.AreEqual(t, start.FindSong(t));
-            Assert.IsTrue(start.Contains(t));
-        }
-    }
-    
-    [Test]
-    public void AddSongsFirstToPlaylistSong_SongsAdded()
-    {
-        var start = new PlaylistSong(_songsToTest[2]);
-        start.AddFirst(_songsToTest[1]);
-        start.AddFirst(_songsToTest[0]);
-
-        CollectionAssert.AreEqual(_songsToTest, start.ToList());
-        
-        foreach (var t in _songsToTest)
-        {
-            Assert.AreEqual(t, start.FindSong(t));
-            Assert.IsTrue(start.Contains(t));
+            Assert.IsTrue(playlistSongs.Contains(t));
+            Assert.IsTrue(playlistSongs.Contains(t));
         }
     }
 
     [Test]
     public void InsertSongAfterExisting_SongInserted()
     {
-        var start = new PlaylistSong(_songsToTest[0]);
-        start.InsertAfter(_songsToTest[2], _songsToTest[0]);
-        start.InsertAfter(_songsToTest[1], _songsToTest[0]);
+        var playlistSongs = new PlaylistSongs(_songsToTest[0]);
+        playlistSongs.Insert(0, _songsToTest[2]);
+        playlistSongs.Insert(0, _songsToTest[1]);
         
-        CollectionAssert.AreEqual(_songsToTest, start.ToList());
+        CollectionAssert.AreEqual(_songsToTest, playlistSongs);
     }
 
     [Test]
     public void InsertSongAfterUnknownSong_ThrowsException()
     {
-        var start = new PlaylistSong(_songsToTest[0]);
-        start.AddLast(_songsToTest[1]);
+        var playlistSongs = new PlaylistSongs(_songsToTest.SkipLast(1).ToList());
         var unknownSong = new Song("_", new SongGenre("TestGenre"), new MusicUser(), "_");
 
-        Assert.Throws<EntityNotFoundException>(() =>
+        Assert.Throws<DoSvyaziMusicException>(() =>
         {
-            start.InsertAfter(_songsToTest[2], unknownSong);
+            playlistSongs.Insert(2, unknownSong);
         });
     }
 
@@ -81,27 +64,11 @@ public class PlaylistSongTests
     [TestCase(2)]
     public void RemoveSong_SongRemoved(int positionToRemove)
     {
-        var start = new PlaylistSong(_songsToTest[0]);
-        start.AddLast(_songsToTest[1]);
-        start.AddLast(_songsToTest[2]);
+        var playlistSongs = new PlaylistSongs(_songsToTest);
 
-        start.Remove(_songsToTest[positionToRemove]);
+        playlistSongs.Remove(_songsToTest[positionToRemove]);
         _songsToTest.RemoveAt(positionToRemove);
-        
-        CollectionAssert.AreEqual(_songsToTest, start.ToList());
-    }
 
-    [Test]
-    public void RemoveOnlySong_ThrowsException()
-    {
-        var start = new PlaylistSong(_songsToTest[0]);
-        start.AddLast(_songsToTest[1]);
-        
-        start.Remove(_songsToTest[0]);
-
-        Assert.Throws<DoSvyaziMusicException>(() =>
-        {
-            start.Remove(_songsToTest[1]);
-        });
+        CollectionAssert.AreEqual(_songsToTest, playlistSongs);
     }
 }
