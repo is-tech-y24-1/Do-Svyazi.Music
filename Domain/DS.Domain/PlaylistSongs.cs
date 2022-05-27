@@ -6,12 +6,15 @@ namespace DS.Domain;
 
 public class PlaylistSongs : IList<Song>
 {
+    private PlaylistSongNode? _head;
+    private PlaylistSongNode? _tail;
+    
     public PlaylistSongs(Song song)
     {
         song.ThrowIfNull();
         Count = 1;
-        Head = new PlaylistSongNode(song);
-        Tail = Head;
+        _head = new PlaylistSongNode(song);
+        _tail = _head;
     }
 
     public PlaylistSongs(ICollection<Song> songs)
@@ -26,18 +29,16 @@ public class PlaylistSongs : IList<Song>
     {
         Count = 0;
     }
-
-    private PlaylistSongNode? Head { get; set; }
-    private PlaylistSongNode? Tail { get; set; }
+    
     public int Count { get; private set; }
     public bool IsReadOnly => false;
 
     public IEnumerator<Song> GetEnumerator()
     {
-        if (Head is null) yield break;
+        if (_head is null) yield break;
 
-        yield return Head.Song;
-        var current = Head;
+        yield return _head.Song;
+        var current = _head;
         while (current.NextSongNode is not null)
         {
             current = current.NextSongNode;
@@ -56,22 +57,22 @@ public class PlaylistSongs : IList<Song>
         
         if (Count == 0)
         {
-            Head = new PlaylistSongNode(item);
-            Tail = Head;
+            _head = new PlaylistSongNode(item);
+            _tail = _head;
             Count = 1;
             return;
         }
 
         Count++;
-        Tail!.NextSongNode = new PlaylistSongNode(item);
-        Tail = Tail.NextSongNode;
+        _tail!.NextSongNode = new PlaylistSongNode(item);
+        _tail = _tail.NextSongNode;
     }
 
     public void Clear()
     {
         Count = 0;
-        Head = null;
-        Tail = null;
+        _head = null;
+        _tail = null;
     }
 
     public bool Contains(Song item)
@@ -98,19 +99,19 @@ public class PlaylistSongs : IList<Song>
         item.ThrowIfNull();
         if (Count == 0) return false;
         PlaylistSongNode? previous = null;
-        var current = Head!;
+        var current = _head!;
 
         while (current is not null)
         {
             if (current.Song.Id == item.Id)
             {
-                if (current.Id == Head!.Id)
-                    Head = Head.NextSongNode;
+                if (current.Id == _head!.Id)
+                    _head = _head.NextSongNode;
 
-                else if (current.Id == Tail!.Id)
+                else if (current.Id == _tail!.Id)
                 {
-                    Tail = previous;
-                    Tail!.NextSongNode = null;
+                    _tail = previous;
+                    _tail!.NextSongNode = null;
                 }
 
                 else
@@ -151,18 +152,25 @@ public class PlaylistSongs : IList<Song>
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
         
         PlaylistSongNode? previous = null;
-        var current = Head!;
+        var current = _head!;
         
-        for (var i = 0; i <= index; i++)
+        for (var i = 0; i < index; i++)
         {
             previous = current;
             current = current!.NextSongNode;
         }
 
         var newNode = new PlaylistSongNode(item);
-        previous!.NextSongNode = newNode;
         newNode.NextSongNode = current;
         Count++;
+        
+        if (previous is not null)
+        {
+            previous.NextSongNode = newNode;
+            return;
+        }
+
+        _head = newNode;
     }
 
     public void RemoveAt(int index)
@@ -171,21 +179,21 @@ public class PlaylistSongs : IList<Song>
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
         
         PlaylistSongNode? previous = null;
-        var current = Head!;
+        var current = _head!;
 
-        for (var i = 0; i <= index; i++)
+        for (var i = 0; i < index; i++)
         {
             previous = current;
             current = current!.NextSongNode;
         }
         
-        if (current!.Id == Head!.Id)
-            Head = Head.NextSongNode;
+        if (current!.Id == _head!.Id)
+            _head = _head.NextSongNode;
 
-        else if (current.Id == Tail!.Id)
+        else if (current.Id == _tail!.Id)
         {
-            Tail = previous;
-            Tail!.NextSongNode = null;
+            _tail = previous;
+            _tail!.NextSongNode = null;
         }
 
         else
@@ -205,9 +213,9 @@ public class PlaylistSongs : IList<Song>
         if (index < 0 || index >= Count)
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
 
-        var current = Head;
+        var current = _head;
 
-        for (var i = 0; i <= index; i++)
+        for (var i = 0; i < index; i++)
         {
             current = current!.NextSongNode;
         }
@@ -222,9 +230,9 @@ public class PlaylistSongs : IList<Song>
         if (index < 0 || index >= Count)
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
         
-        var current = Head;
+        var current = _head;
 
-        for (var i = 0; i <= index; i++)
+        for (var i = 0; i < index; i++)
         {
             current = current!.NextSongNode;
         }
