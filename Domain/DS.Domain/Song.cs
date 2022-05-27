@@ -54,30 +54,7 @@ public class Song : IEquatable<Song>
         _featuring.Remove(userToDelete);
     }
 
-    public bool Equals(Song? other)
-    {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
-        return _featuring.Equals(other._featuring) &&
-               Id.Equals(other.Id) && 
-               Name == other.Name &&
-               Genre.Equals(other.Genre) && 
-               Author.Equals(other.Author) &&
-               CoverUri == other.CoverUri &&
-               SharedForCommunity == other.SharedForCommunity &&
-               SongContentUri == other.SongContentUri;
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj)) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != this.GetType()) return false;
-        return Equals((Song)obj);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_featuring, Id, Name, Genre, Author, CoverUri, SharedForCommunity, SongContentUri);
-    }
+    public bool Equals(Song? other) => other?.Id.Equals(Id) ?? false;
+    public override bool Equals(object? obj) => Equals(obj as Song);
+    public override int GetHashCode() => Id.GetHashCode();
 }

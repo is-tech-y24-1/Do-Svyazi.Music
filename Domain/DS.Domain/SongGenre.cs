@@ -22,24 +22,7 @@ public class SongGenre : IEquatable<SongGenre>
     public Guid Id { get; init; }
     public string GenreName { get; set; }
 
-    public bool Equals(SongGenre? other)
-    {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
-        return Id.Equals(other.Id) && 
-               GenreName == other.GenreName;
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj)) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != this.GetType()) return false;
-        return Equals((SongGenre)obj);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Id, GenreName);
-    }
+    public bool Equals(SongGenre? other) => other?.Id.Equals(Id) ?? false;
+    public override bool Equals(object? obj) => Equals(obj as SongGenre);
+    public override int GetHashCode() => Id.GetHashCode();
 }

@@ -46,7 +46,7 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     public void DeleteSong(Song song)
     {
         song.ThrowIfNull();
-        if (!_songs.Remove(song))
+        if (!_songs.Contains(song))
             throw new EntityNotFoundException(nameof(Song));
 
         _songs.Remove(song);
@@ -54,10 +54,10 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     
     // TODO: AddPlaylist, RemovePlaylist
 
-    public Song CreateAuthoredSong(string name, SongGenre genre, MusicUser author, string songContentUri)
+    public Song CreateAuthoredSong(Song song)
     {
-        var song = new Song(name, genre, author, songContentUri);
-        if (!_authoredSongs.Remove(song))
+        song.ThrowIfNull();
+        if (_authoredSongs.Contains(song))
             throw new DoSvyaziMusicException(ExceptionMessages.SongAlreadyExists);
         
         _authoredSongs.Add(song);
@@ -68,36 +68,17 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     public void DeleteAuthoredSong(Song song)
     {
         song.ThrowIfNull();
-        if (song.Author != Owner)
+        if (!song.Author.Equals(Owner))
             throw new DoSvyaziMusicException(ExceptionMessages.SongAccessForbidden);
 
-        if (_authoredSongs.Any(s => s.Id != song.Id))
+        if (!_authoredSongs.Contains(song))
             throw new EntityNotFoundException(nameof(Song));
         
         _authoredSongs.Remove(song);
     }
     
     // TODO: Create / Delete AuthoredPlaylist
-    public bool Equals(MediaLibrary? other)
-    {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
-        return _songs.Equals(other._songs) && 
-               _authoredSongs.Equals(other._authoredSongs) && 
-               Id.Equals(other.Id) && 
-               Owner.Equals(other.Owner);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj)) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != this.GetType()) return false;
-        return Equals((MediaLibrary)obj);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_songs, _authoredSongs, Id, Owner);
-    }
+    public bool Equals(MediaLibrary? other) => other?.Id.Equals(Id) ?? false;
+    public override bool Equals(object? obj) => Equals(obj as MediaLibrary);
+    public override int GetHashCode() => Id.GetHashCode();
 }
