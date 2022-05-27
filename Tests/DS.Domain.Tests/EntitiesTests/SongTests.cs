@@ -1,7 +1,6 @@
 using System.Linq;
 using DS.Common.Exceptions;
 using DS.Domain;
-using DS.Domain.Types;
 using NUnit.Framework;
 
 namespace DS.Tests.EntitiesTests;
@@ -18,7 +17,7 @@ public class SongTests
     {
         _featuringUser = new MusicUser();
         _author = new MusicUser();
-        _song = new Song(new AuthoredSongType("Test", new SongGenre("Test"), _author, "Content"));
+        _song = new Song("Test", new SongGenre("Test"), _author, "Content");
     }
 
     [Test]

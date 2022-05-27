@@ -1,10 +1,9 @@
 using DS.Common.Exceptions;
 using DS.Common.Extensions;
-using DS.Domain.Types;
 
 namespace DS.Domain;
 
-public class Song
+public class Song : IEquatable<Song>
 {
     private List<MusicUser> _featuring = new ();
     
@@ -12,18 +11,16 @@ public class Song
     protected Song() { }
     #pragma warning restore CS8618
 
-    public Song(AuthoredSongType type)
+    public Song(string name, SongGenre genre, MusicUser author, string songContentUri)
     {
-        type.ThrowIfNull();
-        
-        Name = type.Name.ThrowIfNull();
-        Genre = type.Genre.ThrowIfNull();
-        Author = type.Author.ThrowIfNull();
-        SongContentUri = type.SongContentUri.ThrowIfNull();
+        Name = name.ThrowIfNull();
+        Genre = genre.ThrowIfNull();
+        Author = author.ThrowIfNull();
+        SongContentUri = songContentUri.ThrowIfNull();
 
-        if (string.IsNullOrWhiteSpace(type.Name))
+        if (string.IsNullOrWhiteSpace(name))
             throw new DoSvyaziMusicException("Name cannot be empty");
-        if (string.IsNullOrWhiteSpace(type.SongContentUri))
+        if (string.IsNullOrWhiteSpace(songContentUri))
             throw new DoSvyaziMusicException("Content uri cannot be null");
         
         Id = Guid.NewGuid();
@@ -41,6 +38,9 @@ public class Song
     public void AddFeaturingUser(MusicUser featuringUser)
     {
         featuringUser.ThrowIfNull();
+        if (_featuring.Contains(featuringUser))
+            throw new DoSvyaziMusicException("This featuring user already exists.");
+        
         _featuring.Add(featuringUser);
     }
 
@@ -48,9 +48,36 @@ public class Song
     {
         _featuring.ThrowIfNull();
         
-        var userToDelete = _featuring.SingleOrDefault(user => user.Id == featuringUser.Id)
+        var userToDelete = _featuring.FirstOrDefault(user => user.Id == featuringUser.Id)
             .ThrowIfNull(new EntityNotFoundException(nameof(MusicUser)));
 
         _featuring.Remove(userToDelete);
+    }
+
+    public bool Equals(Song? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return _featuring.Equals(other._featuring) &&
+               Id.Equals(other.Id) && 
+               Name == other.Name &&
+               Genre.Equals(other.Genre) && 
+               Author.Equals(other.Author) &&
+               CoverUri == other.CoverUri &&
+               SharedForCommunity == other.SharedForCommunity &&
+               SongContentUri == other.SongContentUri;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((Song)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_featuring, Id, Name, Genre, Author, CoverUri, SharedForCommunity, SongContentUri);
     }
 }
