@@ -4,7 +4,7 @@ using DS.Common.Extensions;
 
 namespace DS.Domain;
 
-public class PlaylistSongs : IList<Song>
+public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
 {
     private PlaylistSongNode? _head;
     private PlaylistSongNode? _tail;

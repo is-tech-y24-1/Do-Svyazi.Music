@@ -11,20 +11,17 @@ public class ListeningQueue
         Owner = owner.ThrowIfNull();
     }
     public MusicUser Owner { get; init; }
-    public IReadOnlyCollection<Song> Songs => _songs.ToList().AsReadOnly();
+    public IReadOnlyCollection<Song> Songs => _songs;
 
     public void AddNextSongToPlay(Song song)
     {
         song.ThrowIfNull();
-        ThrowIfAlreadyExists(song);
-
         _songs.Insert(1, song);
     }
 
     public void AddLastToPlay(Song song)
     {
         song.ThrowIfNull();
-        ThrowIfAlreadyExists(song);
         _songs.Add(song);
     }
 
@@ -56,10 +53,4 @@ public class ListeningQueue
     }
 
     public Song? GetCurrentPlaying() => _songs.ToList().FirstOrDefault();
-
-    private void ThrowIfAlreadyExists(Song song)
-    {
-        if (_songs.Contains(song))
-            throw new DoSvyaziMusicException($"Song {song.Id} is already in the queue.");
-    }
 }
