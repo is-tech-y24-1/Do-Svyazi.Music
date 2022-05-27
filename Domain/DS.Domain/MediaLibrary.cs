@@ -1,11 +1,10 @@
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.Common.Extensions;
-using DS.Domain.Types;
 
 namespace DS.Domain;
 
-public class MediaLibrary
+public class MediaLibrary : IEquatable<MediaLibrary>
 {
     private List<Song> _songs;
     private List<Song> _authoredSongs;
@@ -37,7 +36,7 @@ public class MediaLibrary
     public Song AddSong(Song song)
     {
         song.ThrowIfNull();
-        if (_songs.Any(s => s.Id == song.Id))
+        if (_songs.Contains(song))
             throw new DoSvyaziMusicException(ExceptionMessages.SongAlreadyExists);
 
         _songs.Add(song);
@@ -47,7 +46,7 @@ public class MediaLibrary
     public void DeleteSong(Song song)
     {
         song.ThrowIfNull();
-        if (_songs.All(s => s.Id != song.Id))
+        if (!_songs.Remove(song))
             throw new EntityNotFoundException(nameof(Song));
 
         _songs.Remove(song);
@@ -55,11 +54,10 @@ public class MediaLibrary
     
     // TODO: AddPlaylist, RemovePlaylist
 
-    public Song CreateAuthoredSong(AuthoredSongType type)
+    public Song CreateAuthoredSong(string name, SongGenre genre, MusicUser author, string songContentUri)
     {
-        type.ThrowIfNull();
-        var song = new Song(type);
-        if (_authoredSongs.Any(s => s.Id == song.Id))
+        var song = new Song(name, genre, author, songContentUri);
+        if (!_authoredSongs.Remove(song))
             throw new DoSvyaziMusicException(ExceptionMessages.SongAlreadyExists);
         
         _authoredSongs.Add(song);
@@ -80,4 +78,26 @@ public class MediaLibrary
     }
     
     // TODO: Create / Delete AuthoredPlaylist
+    public bool Equals(MediaLibrary? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return _songs.Equals(other._songs) && 
+               _authoredSongs.Equals(other._authoredSongs) && 
+               Id.Equals(other.Id) && 
+               Owner.Equals(other.Owner);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((MediaLibrary)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_songs, _authoredSongs, Id, Owner);
+    }
 }

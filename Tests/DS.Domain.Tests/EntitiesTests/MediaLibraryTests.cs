@@ -1,7 +1,6 @@
 using System.Linq;
 using DS.Common.Exceptions;
 using DS.Domain;
-using DS.Domain.Types;
 using NUnit.Framework;
 
 namespace DS.Tests.EntitiesTests;
@@ -20,7 +19,7 @@ public class MediaLibraryTests
         _owner = new MusicUser();
         _mediaLibrary = new MediaLibrary(_owner);
 
-        _song = new Song(new AuthoredSongType("Layla", new SongGenre("Blues"), _owner, "Test"));
+        _song = new Song("Layla", new SongGenre("Blues"), _owner, "Test");
     }
 
     [Test]
