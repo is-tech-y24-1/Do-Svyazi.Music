@@ -59,7 +59,7 @@ public class ListeningQueue
 
     private void ThrowIfAlreadyExists(Song song)
     {
-        if (Songs.Any(s => s.Id == song.Id))
+        if (_songs.Contains(song))
             throw new DoSvyaziMusicException($"Song {song.Id} is already in the queue.");
     }
 }
