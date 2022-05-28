@@ -33,14 +33,13 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     // public IReadOnlyCollection<Song> GetPlaylist => _playlists; TODO: uncomment when ready
     // public IReadOnlyCollection<Song> GetAuthoredPlaylists => _authoredPlaylists; TODO: uncomment when ready
 
-    public Song AddSong(Song song)
+    public void AddSong(Song song)
     {
         song.ThrowIfNull();
         if (_songs.Contains(song))
             throw new DoSvyaziMusicException(ExceptionMessages.SongAlreadyExists);
 
         _songs.Add(song);
-        return song;
     }
 
     public void DeleteSong(Song song)
@@ -52,15 +51,13 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     
     // TODO: AddPlaylist, RemovePlaylist
 
-    public Song CreateAuthoredSong(Song song)
+    public void CreateAuthoredSong(Song song)
     {
         song.ThrowIfNull();
         if (_authoredSongs.Contains(song))
             throw new DoSvyaziMusicException(ExceptionMessages.SongAlreadyExists);
         
         _authoredSongs.Add(song);
-        
-        return song;
     }
 
     public void DeleteAuthoredSong(Song song)
