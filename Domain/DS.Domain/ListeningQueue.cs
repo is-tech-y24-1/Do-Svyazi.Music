@@ -8,7 +8,7 @@ public class ListeningQueue
     private readonly PlaylistSongs _songs = new();
     public ListeningQueue(Guid ownerId)
     {
-        OwnerId = ownerId.ThrowIfNull();
+        OwnerId = ownerId;
     }
     public Guid OwnerId { get; init; }
     public IReadOnlyCollection<Song> Songs => _songs;

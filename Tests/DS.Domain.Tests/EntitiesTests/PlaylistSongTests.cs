@@ -15,9 +15,9 @@ public class PlaylistSongTests
     [SetUp]
     public void Setup()
     {
-        var author1 = new MusicUser(Guid.NewGuid(), "test", "test");
-        var author2 = new MusicUser(Guid.NewGuid(), "test", "test");
-        var author3 = new MusicUser(Guid.NewGuid(), "test", "test");
+        var author1 = new MusicUser(Guid.NewGuid(), "test");
+        var author2 = new MusicUser(Guid.NewGuid(), "test");
+        var author3 = new MusicUser(Guid.NewGuid(), "test");
         _songsToTest = new List<Song>
         {
             new Song("test1", new SongGenre("TestGenre") , author1, "_"),
@@ -58,7 +58,7 @@ public class PlaylistSongTests
     public void InsertNewSongOnIndexOutOfRange_ThrowsException(int index)
     {
         var playlistSongs = new PlaylistSongs(_songsToTest.SkipLast(1).ToList());
-        var newSong = new Song("_", new SongGenre("TestGenre"), new MusicUser(Guid.NewGuid(), "f", "a"), "_");
+        var newSong = new Song("_", new SongGenre("TestGenre"), new MusicUser(Guid.NewGuid(), "f"), "_");
 
         Assert.Throws<DoSvyaziMusicException>(() =>
         {
@@ -141,7 +141,7 @@ public class PlaylistSongTests
         Assert.AreEqual(_songsToTest[index], element);
         Assert.AreEqual(index, playlistSongs.IndexOf(element));
         
-        var newSong = new Song("aaa", new SongGenre("TestGenre"), new MusicUser(Guid.NewGuid(), "_", "_"), "_");
+        var newSong = new Song("aaa", new SongGenre("TestGenre"), new MusicUser(Guid.NewGuid(), "_"), "_");
         playlistSongs[index] = newSong;
         Assert.AreEqual(newSong, playlistSongs[index]);
         Assert.AreEqual(index, playlistSongs.IndexOf(newSong));

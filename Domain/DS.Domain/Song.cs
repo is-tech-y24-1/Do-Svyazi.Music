@@ -11,12 +11,20 @@ public class Song : IEquatable<Song>
     protected Song() { }
     #pragma warning restore CS8618
 
-    public Song(string name, SongGenre genre, MusicUser author, string songContentUri)
+    public Song
+    (
+        string name,
+        SongGenre genre,
+        MusicUser author,
+        string songContentUri,
+        string coverUri = ""
+    )
     {
         Name = name.ThrowIfNull();
         Genre = genre.ThrowIfNull();
         Author = author.ThrowIfNull();
         SongContentUri = songContentUri.ThrowIfNull();
+        CoverUri = coverUri;
         Id = Guid.NewGuid();
     }
     

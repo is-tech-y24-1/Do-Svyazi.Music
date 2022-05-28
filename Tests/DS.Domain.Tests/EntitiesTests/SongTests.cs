@@ -16,8 +16,8 @@ public class SongTests
     [SetUp]
     public void Setup()
     {
-        _featuringUser = new MusicUser(Guid.NewGuid(), "_", "_");
-        _author = new MusicUser(Guid.NewGuid(), "_", "_");
+        _featuringUser = new MusicUser(Guid.NewGuid(), "_");
+        _author = new MusicUser(Guid.NewGuid(), "_");
         _song = new Song("Test", new SongGenre("Test"), _author, "Content");
     }
 
