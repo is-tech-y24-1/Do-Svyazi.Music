@@ -6,6 +6,9 @@ public static class GenericExtensions
     public static TValue ThrowIfNull<TValue, TException>(this TValue? value, TException exception)
         where TException : Exception
     {
+        if (value is string str && string.IsNullOrWhiteSpace(str))
+            throw exception;
+        
         if (value is null)
             throw exception;
 

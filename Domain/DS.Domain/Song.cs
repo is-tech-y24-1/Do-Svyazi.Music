@@ -17,12 +17,6 @@ public class Song : IEquatable<Song>
         Genre = genre.ThrowIfNull();
         Author = author.ThrowIfNull();
         SongContentUri = songContentUri.ThrowIfNull();
-
-        if (string.IsNullOrWhiteSpace(name))
-            throw new DoSvyaziMusicException("Name cannot be empty");
-        if (string.IsNullOrWhiteSpace(songContentUri))
-            throw new DoSvyaziMusicException("Content uri cannot be null");
-        
         Id = Guid.NewGuid();
     }
     
