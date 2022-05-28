@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using DS.Domain;
 using NUnit.Framework;
@@ -53,7 +54,7 @@ public class PlaylistTests
         _playlist.AddSong(_song1);
         _playlist.AddSong(_song2);
         _playlist.ChangeSongPosition(_song2, 0);
-        
+
         Assert.True(_playlist.Songs.ToList()[0].Equals(_song2));
         Assert.True(_playlist.Songs.ToList()[1].Equals(_song1));
     }
