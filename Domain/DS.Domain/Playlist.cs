@@ -36,8 +36,7 @@ public class Playlist
     public string Description { get; set; }
     public string CoverUri { get; set; }
     public bool SharedForCommunity { get; set; }
-    public IReadOnlyCollection<Song> GetAll() => _songs;
-    
+    public IReadOnlyCollection<Song> Songs => _songs;
     public void AddSong(Song song)
     {
         song.ThrowIfNull();
