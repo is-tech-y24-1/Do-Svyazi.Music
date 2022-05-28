@@ -46,12 +46,10 @@ public class Song : IEquatable<Song>
 
     public void DeleteFeaturingUser(MusicUser featuringUser)
     {
-        _featuring.ThrowIfNull();
+        featuringUser.ThrowIfNull();
         
-        var userToDelete = _featuring.FirstOrDefault(user => user.Id == featuringUser.Id)
-            .ThrowIfNull(new EntityNotFoundException(nameof(MusicUser)));
-
-        _featuring.Remove(userToDelete);
+        if (!_featuring.Remove(featuringUser))
+            throw new EntityNotFoundException(nameof(MusicUser));
     }
 
     public bool Equals(Song? other) => other?.Id.Equals(Id) ?? false;
