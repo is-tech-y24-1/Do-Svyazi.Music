@@ -86,7 +86,7 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     {
         playlist.ThrowIfNull();
         if (_authoredPlaylists.Contains(playlist))
-            throw new DoSvyaziMusicException(ExceptionMessages.SongAlreadyExists);
+            throw new DoSvyaziMusicException(ExceptionMessages.PlaylistAlreadyExists);
         
         _authoredPlaylists.Add(playlist);
     }
