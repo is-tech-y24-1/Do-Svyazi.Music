@@ -46,10 +46,8 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     public void DeleteSong(Song song)
     {
         song.ThrowIfNull();
-        if (!_songs.Contains(song))
+        if (!_songs.Remove(song))
             throw new EntityNotFoundException(nameof(Song));
-
-        _songs.Remove(song);
     }
     
     // TODO: AddPlaylist, RemovePlaylist
@@ -71,10 +69,8 @@ public class MediaLibrary : IEquatable<MediaLibrary>
         if (!song.Author.Equals(Owner))
             throw new DoSvyaziMusicException(ExceptionMessages.SongAccessForbidden);
 
-        if (!_authoredSongs.Contains(song))
+        if (!_authoredSongs.Remove(song))
             throw new EntityNotFoundException(nameof(Song));
-        
-        _authoredSongs.Remove(song);
     }
     
     // TODO: Create / Delete AuthoredPlaylist
