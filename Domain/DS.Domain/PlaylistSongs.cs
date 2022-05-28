@@ -81,7 +81,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
 
         foreach (var playlistSong in this)
         {
-            if (playlistSong.Id == item.Id)
+            if (playlistSong.Equals(item))
                 return true;
         }
 
@@ -103,12 +103,12 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
 
         while (current is not null)
         {
-            if (current.Song.Id == item.Id)
+            if (current.Song.Equals(item))
             {
-                if (current.Id == _head!.Id)
-                    _head = _head.NextSongNode;
+                if (current.Equals(_head!))
+                    _head = _head!.NextSongNode;
 
-                else if (current.Id == _tail!.Id)
+                else if (current.Equals(_tail!))
                 {
                     _tail = previous;
                     _tail!.NextSongNode = null;
@@ -135,7 +135,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         
         foreach (var playlistSong in this)
         {
-            if (item.Id == playlistSong.Id)
+            if (item.Equals(playlistSong))
                 return index;
 
             index++;
@@ -148,8 +148,14 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
     {
         item.ThrowIfNull();
         
-        if (index < 0 || index >= Count)
+        if (index < 0 || index > Count)
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
+
+        if (index == Count)
+        {
+            Add(item);
+            return;
+        }
         
         PlaylistSongNode? previous = null;
         var current = _head!;
@@ -187,10 +193,10 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
             current = current!.NextSongNode;
         }
         
-        if (current!.Id == _head!.Id)
-            _head = _head.NextSongNode;
+        if (current!.Equals(_head!))
+            _head = _head!.NextSongNode;
 
-        else if (current.Id == _tail!.Id)
+        else if (current.Equals(_tail!))
         {
             _tail = previous;
             _tail!.NextSongNode = null;
