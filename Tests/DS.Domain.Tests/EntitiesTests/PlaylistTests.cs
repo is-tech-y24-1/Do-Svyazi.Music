@@ -27,7 +27,7 @@ public class PlaylistTests
     public void AddSongToPlaylist_SongAdded()
     {
         _playlist.AddSong(_song1);
-        Assert.Contains(_song1, _playlist.GetAll().ToList());
+        Assert.Contains(_song1, _playlist.Songs.ToList());
     }
 
 
@@ -44,7 +44,7 @@ public class PlaylistTests
     {
         _playlist.AddSong(_song1);
         _playlist.DeleteSong(_song1);
-        Assert.False(_playlist.GetAll().ToList().Contains(_song1));
+        Assert.False(_playlist.Songs.ToList().Contains(_song1));
     }
 
     [Test]
@@ -54,7 +54,7 @@ public class PlaylistTests
         _playlist.AddSong(_song2);
         _playlist.ChangeSongPosition(_song2, 0);
         
-        Assert.True(_playlist.GetAll().ToList()[0].Equals(_song2));
-        Assert.True(_playlist.GetAll().ToList()[1].Equals(_song1));
+        Assert.True(_playlist.Songs.ToList()[0].Equals(_song2));
+        Assert.True(_playlist.Songs.ToList()[1].Equals(_song1));
     }
 }
