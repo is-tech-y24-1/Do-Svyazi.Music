@@ -9,9 +9,13 @@ public class Playlist
     { }
 #pragma warning restore CS8618
 
-    public Playlist(string name, MusicUser author,
-        PlaylistSongs songs, bool sharedForCommunity,
-        string description = "", string coverUri = "")
+    public Playlist(
+        string name, 
+        MusicUser author,
+        PlaylistSongs songs, 
+        bool sharedForCommunity,
+        string description = "", 
+        string coverUri = "")
     {
         Name = name.ThrowIfNull();
         Author = author.ThrowIfNull();
@@ -30,7 +34,7 @@ public class Playlist
     public string Description { get; set; }
     public string CoverUri { get; set; }
     public bool SharedForCommunity { get; set; }
-    public IReadOnlyCollection<Song> GetAll() => Songs.ToList().AsReadOnly();
+    public IReadOnlyCollection<Song> GetAll() => Songs;
     
     public void AddSong(Song song)
     {
