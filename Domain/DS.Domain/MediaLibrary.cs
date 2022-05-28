@@ -15,19 +15,17 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     protected MediaLibrary() { }
 #pragma warning restore CS8618
     
-    public MediaLibrary(MusicUser owner)
+    public MediaLibrary(Guid ownerId)
     {
-        owner.ThrowIfNull();
-        
         Id = Guid.NewGuid();
-        Owner = owner;
+        OwnerId = ownerId.ThrowIfNull();
         _songs = new List<Song>();
         _authoredSongs = new List<Song>();
         _playlists = new List<Playlist>();
         _authoredPlaylists = new List<Playlist>();
     }
     public Guid Id { get; private init; }
-    public MusicUser Owner { get; private init; }
+    public Guid OwnerId { get; private init; }
     public IReadOnlyCollection<Song> GetSongs() => _songs;
     public IReadOnlyCollection<Song> GetAuthoredSongs() => _authoredSongs;
     public IReadOnlyCollection<Playlist> GetPlaylist => _playlists;
@@ -77,7 +75,7 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     public void DeleteAuthoredSong(Song song)
     {
         song.ThrowIfNull();
-        if (!song.Author.Equals(Owner))
+        if (song.Author.Id != OwnerId)
             throw new DoSvyaziMusicException(ExceptionMessages.SongAccessForbidden);
         
         if (!_authoredSongs.Remove(song))
@@ -96,7 +94,7 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     public void DeleteAuthoredPlaylist(Playlist playlist)
     {
         playlist.ThrowIfNull();
-        if (!playlist.Author.Equals(Owner))
+        if (playlist.Author.Id != OwnerId)
             throw new DoSvyaziMusicException(ExceptionMessages.PlaylistAccessForbidden);
 
         if (!_authoredPlaylists.Remove(playlist))

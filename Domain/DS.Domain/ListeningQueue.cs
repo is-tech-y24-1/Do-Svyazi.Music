@@ -6,11 +6,11 @@ namespace DS.Domain;
 public class ListeningQueue
 {
     private readonly PlaylistSongs _songs = new();
-    public ListeningQueue(MusicUser owner)
+    public ListeningQueue(Guid ownerId)
     {
-        Owner = owner.ThrowIfNull();
+        OwnerId = ownerId.ThrowIfNull();
     }
-    public MusicUser Owner { get; init; }
+    public Guid OwnerId { get; init; }
     public IReadOnlyCollection<Song> Songs => _songs;
 
     public void AddNextSongToPlay(Song song)
