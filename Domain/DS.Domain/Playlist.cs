@@ -59,7 +59,7 @@ public class Playlist
         if (!_songs.Contains(song))
             throw new EntityNotFoundException(nameof(Song));
 
-        _songs.RemoveAt(_songs.IndexOf(song));
         _songs.Insert(newPosition, song);
+        _songs.RemoveAt(_songs.IndexOf(song));
     }
 }
