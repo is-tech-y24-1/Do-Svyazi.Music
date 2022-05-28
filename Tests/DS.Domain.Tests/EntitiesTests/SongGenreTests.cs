@@ -1,3 +1,4 @@
+using System;
 using DS.Common.Exceptions;
 using DS.Domain;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ public class SongGenreTests
     [TestCase(" ")]
     public void CreateSongGenreEntityWithInvalidName_ThrowException(string invalidName)
     {
-        Assert.Catch<DoSvyaziMusicException>(() =>
+        Assert.Catch<ArgumentNullException>(() =>
         {
             var songGenre = new SongGenre(invalidName);
         });

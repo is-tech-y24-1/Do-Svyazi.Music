@@ -1,4 +1,4 @@
-﻿using DS.Common.Exceptions;
+﻿using DS.Common.Extensions;
 
 namespace DS.Domain;
 
@@ -12,10 +12,7 @@ public class SongGenre : IEquatable<SongGenre>
     
     public SongGenre(string genreName)
     {
-        if (string.IsNullOrWhiteSpace(genreName))
-            throw new DoSvyaziMusicException("Music genre name can't be empty.");
-        
-        GenreName = genreName;
+        GenreName = genreName.ThrowIfNull();
         Id = Guid.NewGuid();
     }
     
