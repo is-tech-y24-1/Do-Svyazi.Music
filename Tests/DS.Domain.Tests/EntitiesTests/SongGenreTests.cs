@@ -1,5 +1,4 @@
 using System;
-using DS.Common.Exceptions;
 using DS.Domain;
 using NUnit.Framework;
 
