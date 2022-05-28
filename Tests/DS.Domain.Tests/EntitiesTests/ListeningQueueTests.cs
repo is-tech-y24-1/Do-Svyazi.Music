@@ -16,9 +16,9 @@ public class ListeningQueueTests
     [SetUp]
     public void SetUp()
     {
-        _owner = new MusicUser(Guid.NewGuid(), "Test", "Test");
+        _owner = new MusicUser(Guid.NewGuid(), "Test");
         _queue = new ListeningQueue(_owner.Id);
-        var author = new MusicUser(Guid.NewGuid(), "Test", "Test");
+        var author = new MusicUser(Guid.NewGuid(), "Test");
 
         _testSongs = new List<Song>()
         {

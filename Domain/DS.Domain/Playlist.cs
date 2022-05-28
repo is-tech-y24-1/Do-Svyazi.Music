@@ -35,8 +35,8 @@ public class Playlist
     public Guid id { get; private init; }
     public MusicUser Author { get; private init; }
     public string Name { get; set; }
-    public string Description { get; set; }
-    public string CoverUri { get; set; }
+    public string? Description { get; set; }
+    public string? CoverUri { get; set; }
     public bool SharedForCommunity { get; set; }
     public IReadOnlyCollection<Song> Songs => _songs;
     public void AddSong(Song song)

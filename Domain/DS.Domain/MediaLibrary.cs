@@ -18,7 +18,10 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     public MediaLibrary(Guid ownerId)
     {
         Id = Guid.NewGuid();
-        OwnerId = ownerId.ThrowIfNull();
+        if (ownerId == Guid.Empty)
+            throw new GuidIsEmptyException(nameof(Guid));
+
+        OwnerId = ownerId;
         _songs = new List<Song>();
         _authoredSongs = new List<Song>();
         _playlists = new List<Playlist>();
@@ -75,9 +78,6 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     public void DeleteAuthoredSong(Song song)
     {
         song.ThrowIfNull();
-        if (song.Author.Id != OwnerId)
-            throw new DoSvyaziMusicException(ExceptionMessages.SongAccessForbidden);
-        
         if (!_authoredSongs.Remove(song))
             throw new EntityNotFoundException(nameof(Song));
     }
@@ -94,9 +94,6 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     public void DeleteAuthoredPlaylist(Playlist playlist)
     {
         playlist.ThrowIfNull();
-        if (playlist.Author.Id != OwnerId)
-            throw new DoSvyaziMusicException(ExceptionMessages.PlaylistAccessForbidden);
-
         if (!_authoredPlaylists.Remove(playlist))
             throw new EntityNotFoundException(nameof(Playlist));
     }
