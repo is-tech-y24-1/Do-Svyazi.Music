@@ -12,13 +12,15 @@ public class Playlist
     protected Playlist() {}
 #pragma warning restore CS8618
 
-    public Playlist(
-        string name, 
+    public Playlist
+    (
+        string name,
         MusicUser author,
-        PlaylistSongs songs, 
+        PlaylistSongs songs,
         bool sharedForCommunity,
-        string description = "", 
-        string coverUri = "")
+        string description = "",
+        string coverUri = ""
+    )
     {
         Name = name.ThrowIfNull();
         Author = author.ThrowIfNull();

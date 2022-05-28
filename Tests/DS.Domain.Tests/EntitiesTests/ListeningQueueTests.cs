@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DS.Domain;
@@ -15,9 +16,9 @@ public class ListeningQueueTests
     [SetUp]
     public void SetUp()
     {
-        _owner = new MusicUser();
-        _queue = new ListeningQueue(_owner);
-        var author = new MusicUser();
+        _owner = new MusicUser(Guid.NewGuid(), "Test", "Test");
+        _queue = new ListeningQueue(_owner.Id);
+        var author = new MusicUser(Guid.NewGuid(), "Test", "Test");
 
         _testSongs = new List<Song>()
         {

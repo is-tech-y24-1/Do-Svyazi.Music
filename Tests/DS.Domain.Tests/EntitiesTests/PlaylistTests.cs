@@ -17,7 +17,7 @@ public class PlaylistTests
     [SetUp]
     public void Setup()
     {
-        _author = new MusicUser();
+        _author = new MusicUser(Guid.NewGuid(), "_", "_");
         _songs = new PlaylistSongs();
         _playlist = new Playlist("Саундтреки из аниме", _author, _songs, true);
         _song1 = new Song("Deep Purple - Highway star", new SongGenre("Rock"), _author, "Test");

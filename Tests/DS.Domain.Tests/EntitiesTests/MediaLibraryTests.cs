@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using DS.Common.Exceptions;
 using DS.Domain;
@@ -16,8 +17,8 @@ public class MediaLibraryTests
     [SetUp]
     public void Setup()
     {
-        _owner = new MusicUser();
-        _mediaLibrary = new MediaLibrary(_owner);
+        _owner = new MusicUser(Guid.NewGuid(), "test", "test");
+        _mediaLibrary = new MediaLibrary(_owner.Id);
 
         _song = new Song("Layla", new SongGenre("Blues"), _owner, "Test");
     }

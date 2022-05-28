@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using DS.Common.Exceptions;
 using DS.Domain;
@@ -15,8 +16,8 @@ public class SongTests
     [SetUp]
     public void Setup()
     {
-        _featuringUser = new MusicUser();
-        _author = new MusicUser();
+        _featuringUser = new MusicUser(Guid.NewGuid(), "_", "_");
+        _author = new MusicUser(Guid.NewGuid(), "_", "_");
         _song = new Song("Test", new SongGenre("Test"), _author, "Content");
     }
 
