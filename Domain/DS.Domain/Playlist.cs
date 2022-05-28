@@ -58,8 +58,14 @@ public class Playlist
         song.ThrowIfNull();
         if (!_songs.Contains(song))
             throw new EntityNotFoundException(nameof(Song));
-
-        _songs.Insert(newPosition, song);
-        _songs.RemoveAt(_songs.IndexOf(song));
+        
+        _songs.Remove(song);
+        var indexOfSongToInsertAfter = newPosition - 1;
+        if (indexOfSongToInsertAfter + 1 == _songs.Count)
+        {
+            _songs.Add(song);
+            return;
+        }
+        _songs.Insert(indexOfSongToInsertAfter + 1, song);
     }
 }
