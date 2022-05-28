@@ -48,15 +48,17 @@ public class PlaylistSongTests
         CollectionAssert.AreEqual(_songsToTest, playlistSongs);
     }
 
-    [Test]
-    public void InsertSongAfterUnknownSong_ThrowsException()
+    [TestCase(3)]
+    [TestCase(5)]
+    [TestCase(-1)]
+    public void InsertNewSongOnIndexOutOfRange_ThrowsException(int index)
     {
         var playlistSongs = new PlaylistSongs(_songsToTest.SkipLast(1).ToList());
-        var unknownSong = new Song("_", new SongGenre("TestGenre"), new MusicUser(), "_");
+        var newSong = new Song("_", new SongGenre("TestGenre"), new MusicUser(), "_");
 
         Assert.Throws<DoSvyaziMusicException>(() =>
         {
-            playlistSongs.Insert(2, unknownSong);
+            playlistSongs.Insert(index, newSong);
         });
     }
 
