@@ -27,12 +27,12 @@ public class Playlist
         _songs = songs.ThrowIfNull();
 
         Description = description;
-        id = Guid.NewGuid();
+        Id = Guid.NewGuid();
         SharedForCommunity = sharedForCommunity;
         CoverUri = coverUri;
     }
     
-    public Guid id { get; private init; }
+    public Guid Id { get; private init; }
     public MusicUser Author { get; private init; }
     public string Name { get; set; }
     public string? Description { get; set; }

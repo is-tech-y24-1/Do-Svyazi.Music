@@ -11,6 +11,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
     
     public PlaylistSongs(Song song)
     {
+        Id = Guid.NewGuid();
         song.ThrowIfNull();
         Count = 1;
         _head = new PlaylistSongNode(song);
@@ -19,6 +20,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
 
     public PlaylistSongs(ICollection<Song> songs)
     {
+        Id = Guid.NewGuid();
         songs.ThrowIfNull();
         Count = 0;
         foreach (var song in songs)
@@ -27,9 +29,11 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
 
     public PlaylistSongs()
     {
+        Id = Guid.NewGuid();
         Count = 0;
     }
     
+    public Guid Id { get; private init; }
     public int Count { get; private set; }
     public bool IsReadOnly => false;
 

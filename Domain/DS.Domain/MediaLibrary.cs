@@ -17,7 +17,6 @@ public class MediaLibrary : IEquatable<MediaLibrary>
     
     public MediaLibrary(Guid ownerId)
     {
-        Id = Guid.NewGuid();
         if (ownerId == Guid.Empty)
             throw new GuidIsEmptyException(nameof(Guid));
 
@@ -27,12 +26,12 @@ public class MediaLibrary : IEquatable<MediaLibrary>
         _playlists = new List<Playlist>();
         _authoredPlaylists = new List<Playlist>();
     }
-    public Guid Id { get; private init; }
+    
     public Guid OwnerId { get; private init; }
-    public IReadOnlyCollection<Song> GetSongs() => _songs;
-    public IReadOnlyCollection<Song> GetAuthoredSongs() => _authoredSongs;
-    public IReadOnlyCollection<Playlist> GetPlaylist => _playlists;
-    public IReadOnlyCollection<Playlist> GetAuthoredPlaylists => _authoredPlaylists;
+    public IReadOnlyCollection<Song> Songs => _songs;
+    public IReadOnlyCollection<Song> AuthoredSongs => _authoredSongs;
+    public IReadOnlyCollection<Playlist> Playlists => _playlists;
+    public IReadOnlyCollection<Playlist> AuthoredPlaylists => _authoredPlaylists;
 
     public void AddSong(Song song)
     {
@@ -98,7 +97,7 @@ public class MediaLibrary : IEquatable<MediaLibrary>
             throw new EntityNotFoundException(nameof(Playlist));
     }
     
-    public bool Equals(MediaLibrary? other) => other?.Id.Equals(Id) ?? false;
+    public bool Equals(MediaLibrary? other) => other?.OwnerId.Equals(OwnerId) ?? false;
     public override bool Equals(object? obj) => Equals(obj as MediaLibrary);
-    public override int GetHashCode() => Id.GetHashCode();
+    public override int GetHashCode() => OwnerId.GetHashCode();
 }

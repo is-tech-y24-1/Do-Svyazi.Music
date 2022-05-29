@@ -16,7 +16,7 @@ public class SongGenre : IEquatable<SongGenre>
         Id = Guid.NewGuid();
     }
     
-    public Guid Id { get; init; }
+    public Guid Id { get; private init; }
     public string GenreName { get; set; }
 
     public bool Equals(SongGenre? other) => other?.Id.Equals(Id) ?? false;
