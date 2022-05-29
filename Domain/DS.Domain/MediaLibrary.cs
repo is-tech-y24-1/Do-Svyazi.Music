@@ -7,10 +7,8 @@ namespace DS.Domain;
 public class MediaLibrary : IEquatable<MediaLibrary>
 {
     private List<Song> _songs;
-    private List<Song> _authoredSongs;
     private List<Playlist> _playlists;
-    private List<Playlist> _authoredPlaylists;
-    
+
 #pragma warning disable CS8618
     protected MediaLibrary() { }
 #pragma warning restore CS8618
@@ -20,18 +18,16 @@ public class MediaLibrary : IEquatable<MediaLibrary>
         if (ownerId == Guid.Empty)
             throw new GuidIsEmptyException(nameof(Guid));
 
-        OwnerId = ownerId;
+        Id = ownerId;
         _songs = new List<Song>();
-        _authoredSongs = new List<Song>();
         _playlists = new List<Playlist>();
-        _authoredPlaylists = new List<Playlist>();
     }
     
-    public Guid OwnerId { get; private init; }
+    public Guid Id { get; private init; }
     public IReadOnlyCollection<Song> Songs => _songs;
-    public IReadOnlyCollection<Song> AuthoredSongs => _authoredSongs;
+    public IReadOnlyCollection<Song> AuthoredSongs => _songs.Where(s => s.Author.Id == Id).ToList();
     public IReadOnlyCollection<Playlist> Playlists => _playlists;
-    public IReadOnlyCollection<Playlist> AuthoredPlaylists => _authoredPlaylists;
+    public IReadOnlyCollection<Playlist> AuthoredPlaylists => _playlists.Where(p => p.Author.Id == Id).ToList();
 
     public void AddSong(Song song)
     {
@@ -58,46 +54,14 @@ public class MediaLibrary : IEquatable<MediaLibrary>
         _playlists.Add(playlist);
     }
 
-    public void RemovePlaylist(Playlist playlist)
+    public void DeletePlaylist(Playlist playlist)
     {
         playlist.ThrowIfNull();
         if (!_playlists.Remove(playlist))
             throw new EntityNotFoundException(nameof(Playlist));
     }
 
-    public void CreateAuthoredSong(Song song)
-    {
-        song.ThrowIfNull();
-        if (_authoredSongs.Contains(song))
-            throw new DoSvyaziMusicException(ExceptionMessages.SongAlreadyExists);
-        
-        _authoredSongs.Add(song);
-    }
-
-    public void DeleteAuthoredSong(Song song)
-    {
-        song.ThrowIfNull();
-        if (!_authoredSongs.Remove(song))
-            throw new EntityNotFoundException(nameof(Song));
-    }
-    
-    public void CreateAuthoredPlaylist(Playlist playlist)
-    {
-        playlist.ThrowIfNull();
-        if (_authoredPlaylists.Contains(playlist))
-            throw new DoSvyaziMusicException(ExceptionMessages.PlaylistAlreadyExists);
-        
-        _authoredPlaylists.Add(playlist);
-    }
-
-    public void DeleteAuthoredPlaylist(Playlist playlist)
-    {
-        playlist.ThrowIfNull();
-        if (!_authoredPlaylists.Remove(playlist))
-            throw new EntityNotFoundException(nameof(Playlist));
-    }
-    
-    public bool Equals(MediaLibrary? other) => other?.OwnerId.Equals(OwnerId) ?? false;
+    public bool Equals(MediaLibrary? other) => other?.Id.Equals(Id) ?? false;
     public override bool Equals(object? obj) => Equals(obj as MediaLibrary);
-    public override int GetHashCode() => OwnerId.GetHashCode();
+    public override int GetHashCode() => Id.GetHashCode();
 }
