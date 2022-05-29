@@ -6,8 +6,8 @@ namespace DS.Domain;
 
 public class MediaLibrary : IEquatable<MediaLibrary>
 {
-    private List<Song> _songs;
-    private List<Playlist> _playlists;
+    private List<MediaLibrarySong> _songs;
+    private List<MediaLibraryPlaylist> _playlists;
 
 #pragma warning disable CS8618
     protected MediaLibrary() { }
@@ -19,45 +19,45 @@ public class MediaLibrary : IEquatable<MediaLibrary>
             throw new GuidIsEmptyException(nameof(Guid));
 
         Id = ownerId;
-        _songs = new List<Song>();
-        _playlists = new List<Playlist>();
+        _songs = new List<MediaLibrarySong>();
+        _playlists = new List<MediaLibraryPlaylist>();
     }
     
     public Guid Id { get; private init; }
-    public IReadOnlyCollection<Song> Songs => _songs;
-    public IReadOnlyCollection<Song> AuthoredSongs => _songs.Where(s => s.Author.Id == Id).ToList();
-    public IReadOnlyCollection<Playlist> Playlists => _playlists;
-    public IReadOnlyCollection<Playlist> AuthoredPlaylists => _playlists.Where(p => p.Author.Id == Id).ToList();
+    public IReadOnlyCollection<Song> Songs => _songs.Select(s => s.Song).ToList();
+    public IReadOnlyCollection<Song> AuthoredSongs => Songs.Where(s => s.Author.Id == Id).ToList();
+    public IReadOnlyCollection<Playlist> Playlists => _playlists.Select(p => p.Playlist).ToList();
+    public IReadOnlyCollection<Playlist> AuthoredPlaylists => Playlists.Where(p => p.Author.Id == Id).ToList();
 
     public void AddSong(Song song)
     {
         song.ThrowIfNull();
-        if (_songs.Contains(song))
+        if (Songs.Contains(song))
             throw new DoSvyaziMusicException(ExceptionMessages.SongAlreadyExists);
 
-        _songs.Add(song);
+        _songs.Add(new MediaLibrarySong(this, song));
     }
 
     public void DeleteSong(Song song)
     {
         song.ThrowIfNull();
-        if (!_songs.Remove(song))
+        if (!_songs.Remove(new MediaLibrarySong(this, song)))
             throw new EntityNotFoundException(nameof(Song));
     }
 
     public void AddPlaylist(Playlist playlist)
     {
         playlist.ThrowIfNull();
-        if (_playlists.Contains(playlist))
+        if (Playlists.Contains(playlist))
             throw new DoSvyaziMusicException(ExceptionMessages.PlaylistAlreadyExists);
 
-        _playlists.Add(playlist);
+        _playlists.Add(new MediaLibraryPlaylist(this, playlist));
     }
 
     public void DeletePlaylist(Playlist playlist)
     {
         playlist.ThrowIfNull();
-        if (!_playlists.Remove(playlist))
+        if (!_playlists.Remove(new MediaLibraryPlaylist(this, playlist)))
             throw new EntityNotFoundException(nameof(Playlist));
     }
 

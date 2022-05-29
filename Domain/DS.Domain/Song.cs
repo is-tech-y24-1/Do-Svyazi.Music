@@ -5,7 +5,7 @@ namespace DS.Domain;
 
 public class Song : IEquatable<Song>
 {
-    private List<MusicUser> _featuring = new ();
+    private List<FeaturingUser> _featuring = new ();
     
     #pragma warning disable CS8618
     protected Song() { }
@@ -32,7 +32,7 @@ public class Song : IEquatable<Song>
     public string Name { get; set; }
     public SongGenre Genre { get; set; }
     public MusicUser Author { get; private init; }
-    public IReadOnlyCollection<MusicUser> Featuring => _featuring;
+    public IReadOnlyCollection<MusicUser> Featuring => _featuring.Select(fu => fu.MusicUser).ToList();
     public string? CoverUri { get; set; }
     public bool SharedForCommunity { get; set; }
     public string SongContentUri { get; private init; }
@@ -40,17 +40,17 @@ public class Song : IEquatable<Song>
     public void AddFeaturingUser(MusicUser featuringUser)
     {
         featuringUser.ThrowIfNull();
-        if (_featuring.Contains(featuringUser))
+        if (Featuring.Contains(featuringUser))
             throw new DoSvyaziMusicException("This featuring user already exists.");
         
-        _featuring.Add(featuringUser);
+        _featuring.Add(new FeaturingUser(featuringUser, this));
     }
 
     public void DeleteFeaturingUser(MusicUser featuringUser)
     {
         featuringUser.ThrowIfNull();
         
-        if (!_featuring.Remove(featuringUser))
+        if (!_featuring.Remove(new FeaturingUser(featuringUser, this)))
             throw new EntityNotFoundException(nameof(MusicUser));
     }
 
