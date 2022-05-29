@@ -1,3 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using DS.DataAccess;
+using DS.DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 
-Console.WriteLine("Hello, World!");
+var options = new DbContextOptionsBuilder<MusicDbContext>().UseSqlite(@"Data Source=D:\Do-Svyazi.Music\test.sqlite").Options;
+IMusicContext test = new MusicDbContext(options);
