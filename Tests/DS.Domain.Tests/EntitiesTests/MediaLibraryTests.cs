@@ -27,7 +27,7 @@ public class MediaLibraryTests
     public void AddSongToLibrary_SongAdded()
     {
         _mediaLibrary.AddSong(_song);
-        Assert.Contains(_song, _mediaLibrary.GetSongs().ToList());
+        Assert.Contains(_song, _mediaLibrary.Songs.ToList());
     }
 
     [Test]
@@ -35,7 +35,7 @@ public class MediaLibraryTests
     {
         _mediaLibrary.AddSong(_song);
         _mediaLibrary.DeleteSong(_song);
-        Assert.False(_mediaLibrary.GetSongs().Contains(_song));
+        Assert.False(_mediaLibrary.Songs.Contains(_song));
     }
 
     [Test]
