@@ -5,12 +5,12 @@ namespace DS.DataAccess;
 
 public interface IMusicContext
 {
-    public DbSet<ListeningQueue> ListeningQueues { get; }
-    public DbSet<MediaLibrary> MediaLibraries { get; }
-    public DbSet<MusicUser> MusicUsers { get; }
-    public DbSet<Playlist> Playlists { get; }
-    public DbSet<PlaylistSongNode> PlaylistSongNodes { get; }
-    public DbSet<PlaylistSongs> PlaylistSongs { get; }
-    public DbSet<Song> Songs { get; }
-    public DbSet<SongGenre> SongGenres { get; }
+    DbSet<ListeningQueue> ListeningQueues { get; }
+    DbSet<MediaLibrary> MediaLibraries { get; }
+    DbSet<MusicUser> MusicUsers { get; }
+    DbSet<Playlist> Playlists { get; }
+    DbSet<PlaylistSongNode> PlaylistSongNodes { get; }
+    DbSet<PlaylistSongs> PlaylistSongs { get; }
+    DbSet<Song> Songs { get; }
+    DbSet<SongGenre> SongGenres { get; }
 }
