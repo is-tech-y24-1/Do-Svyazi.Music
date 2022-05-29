@@ -8,7 +8,7 @@ public sealed class MusicDbContext : DbContext, IMusicContext
     public MusicDbContext(DbContextOptions<MusicDbContext> options)
         : base(options)
     {
-        Database.EnsureDeleted();
+        // Database.EnsureDeleted();
         Database.EnsureCreated();
     }
     
@@ -20,7 +20,10 @@ public sealed class MusicDbContext : DbContext, IMusicContext
     public DbSet<PlaylistSongs> PlaylistSongs { get; private set; } = null!;
     public DbSet<Song> Songs { get; private set; } = null!;
     public DbSet<SongGenre> SongGenres { get; private set; } = null!;
-    
+    public DbSet<FeaturingUser> FeaturingUsers { get; private set; } = null!;
+    public DbSet<MediaLibrarySong> MediaLibrarySongs { get; private set; } = null!;
+    public DbSet<MediaLibraryPlaylist> MediaLibraryPlaylists { get; private set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ConfigureMusicUser(modelBuilder);
@@ -36,12 +39,18 @@ public sealed class MusicDbContext : DbContext, IMusicContext
     private static void ConfigureMusicUser(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<MusicUser>().Property(mu => mu.Id).ValueGeneratedNever();
+
+        modelBuilder.Entity<FeaturingUser>()
+            .HasKey(fu => new {fu.SongId, fu.MusicUserId});
     }
 
     private static void ConfigureSong(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Song>().Property(s => s.Id).ValueGeneratedNever();
         modelBuilder.Entity<Song>().Ignore(s => s.Featuring);
+
+        modelBuilder.Entity<MediaLibrarySong>()
+            .HasKey(mls => new {mls.SongId, mls.MediaLibraryId});
     }
 
     private static void ConfigureSongGenre(ModelBuilder modelBuilder)
@@ -65,12 +74,17 @@ public sealed class MusicDbContext : DbContext, IMusicContext
     {
         modelBuilder.Entity<Playlist>().Property(p => p.Id).ValueGeneratedNever();
         modelBuilder.Entity<Playlist>().HasOne("_songs");
+        modelBuilder.Entity<Playlist>().Ignore(p => p.Songs);
+        
+        modelBuilder.Entity<MediaLibraryPlaylist>()
+            .HasKey(mlp => new {mlp.PlaylistId, mlp.MediaLibraryId});
     }
 
     private static void ConfigureListeningQueue(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ListeningQueue>().Property(lq => lq.Id).ValueGeneratedNever();
         modelBuilder.Entity<ListeningQueue>().HasOne("_songs");
+        modelBuilder.Entity<ListeningQueue>().Ignore(lq => lq.Songs);
     }
 
     private static void ConfigureMediaLibrary(ModelBuilder modelBuilder)
