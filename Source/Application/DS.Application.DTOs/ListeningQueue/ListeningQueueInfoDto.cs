@@ -1,6 +1,3 @@
 ﻿namespace DS.Application.DTO.ListeningQueue;
 
-public class ListeningQueueInfoDto
-{
-    // TODO
-}
+public record ListeningQueueInfoDto(Guid OwnerId, IEnumerable<Guid> SongsIds);

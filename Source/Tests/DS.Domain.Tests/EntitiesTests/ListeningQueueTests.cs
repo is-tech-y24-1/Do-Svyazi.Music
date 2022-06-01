@@ -9,9 +9,9 @@ namespace DS.Tests.EntitiesTests;
 [TestFixture]
 public class ListeningQueueTests
 {
-    private ListeningQueue? _queue;
-    private MusicUser? _owner;
-    private List<Song>? _testSongs;
+    private ListeningQueue _queue;
+    private MusicUser _owner;
+    private List<Song> _testSongs;
 
     [SetUp]
     public void SetUp()
@@ -37,7 +37,7 @@ public class ListeningQueueTests
     [Test]
     public void SwitchSongWithLastSong_PositionChanged()
     {
-        _queue!.ChangeSongPosition(_testSongs![0], _testSongs[6]);
+        _queue.ChangeSongPosition(_testSongs[0], 6);
         Assert.AreEqual(_testSongs[0].Id, _queue.Songs.ToList()[6].Id);
         Assert.AreNotEqual(_testSongs[0].Id, _queue.Songs.ToList()[0].Id);
     }
@@ -45,7 +45,7 @@ public class ListeningQueueTests
     [Test]
     public void SwitchSongWithSongInTheMiddle_PositionChanged()
     {
-        _queue!.ChangeSongPosition(_testSongs![0], _testSongs[3]);
+        _queue.ChangeSongPosition(_testSongs[0], 3);
         Assert.AreEqual(_testSongs[0].Id, _queue.Songs.ToList()[3].Id);
         Assert.AreNotEqual(_testSongs[0].Id, _queue.Songs.ToList()[0].Id);
     }
