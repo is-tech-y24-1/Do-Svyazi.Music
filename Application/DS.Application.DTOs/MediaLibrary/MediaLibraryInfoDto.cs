@@ -1,6 +1,6 @@
 ﻿namespace DS.Application.DTO.MediaLibrary;
 
-public class MediaLibraryInfo
+public class MediaLibraryInfoDto
 {
     
 }

@@ -1,6 +1,6 @@
 ﻿namespace DS.Application.DTO.ListeningQueue;
 
-public class ListeningQueueInfo
+public class ListeningQueueInfoDto
 {
     
 }

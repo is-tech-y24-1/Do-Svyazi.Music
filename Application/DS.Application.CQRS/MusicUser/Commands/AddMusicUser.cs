@@ -1,6 +1,14 @@
-﻿namespace DS.Application.CQRS.MusicUser.Commands;
+﻿using DS.Application.DTO.MusicUser;
+using MediatR;
 
-public class AddMusicUser
+namespace DS.Application.CQRS.MusicUser.Commands;
+
+public static class AddMusicUser
 {
-    
+    public record Command(MusicUserCreationInfoDto MusicUserCreationInfo) : IRequest;
+
+    // public class Handler : IRequestHandler<Command>
+    // {
+    //     public async Task<Unit> Handle(Command request, CancellationToken cancellationToken) { }
+    // }
 }

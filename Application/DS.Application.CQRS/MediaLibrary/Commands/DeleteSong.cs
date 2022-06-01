@@ -1,6 +1,13 @@
-﻿namespace DS.Application.CQRS.MediaLibrary.Commands;
+﻿using MediatR;
 
-public class DeleteSong
+namespace DS.Application.CQRS.MediaLibrary.Commands;
+
+public static class DeleteSong
 {
-    
+    public record Command(Guid UserId, Guid SongId) : IRequest;
+
+    // public class Handler : IRequestHandler<Command>
+    // {
+    //     public async Task<Unit> Handle(Command request, CancellationToken cancellationToken) { }
+    // }
 }
