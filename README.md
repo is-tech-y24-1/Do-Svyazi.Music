@@ -11,8 +11,20 @@
 git clone https://github.com/is-tech-y24-1/Do-Svyazi.Music.git
 ```
 
+## Restore dependencies
+```
+dotnet restore
+```
+
 ## Start project
-> To be continued
+```
+dotnet run --project Application/DS.Application
+```
+
+## Run unit tests
+```
+dotnet test --no-build
+```
 
 ## License
 MIT
