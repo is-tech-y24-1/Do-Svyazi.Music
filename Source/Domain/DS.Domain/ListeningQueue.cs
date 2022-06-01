@@ -28,24 +28,22 @@ public class ListeningQueue
         _songs.Add(song);
     }
 
-    public void ChangeSongPosition(Song song, Song songToInsertAfter)
+    public void ChangeSongPosition(Song song, int newPosition)
     {
         song.ThrowIfNull();
-        songToInsertAfter.ThrowIfNull();
 
         if (!_songs.Contains(song))
             throw new DoSvyaziMusicException("Song to insert is not in the queue");
-        if(!_songs.Contains(songToInsertAfter))
-            throw new DoSvyaziMusicException("Song to insert after is not in the queue");
+        if(newPosition < 0 || newPosition > _songs.Count)
+            throw new DoSvyaziMusicException("There is no such position in the queue");
 
         _songs.Remove(song);
-        var indexOfSongToInsertAfter = _songs.IndexOf(songToInsertAfter);
-        if (indexOfSongToInsertAfter + 1 == _songs.Count)
+        if (newPosition == _songs.Count)
         {
             _songs.Add(song);
             return;
         }
-        _songs.Insert(indexOfSongToInsertAfter + 1, song);
+        _songs.Insert(newPosition, song);
     }
 
     public void RemoveSong(Song song)
@@ -54,6 +52,8 @@ public class ListeningQueue
         if (!_songs.Remove(song))
             throw new DoSvyaziMusicException("Song to delete is not in the queue");
     }
+
+    public void Clear() => _songs.Clear();
 
     public Song? GetCurrentPlaying() => _songs.ToList().FirstOrDefault();
 }
