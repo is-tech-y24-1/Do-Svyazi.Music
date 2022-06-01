@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DS.Application;
+namespace DS.Application.CQRS;
 
 public class Startup
 {
