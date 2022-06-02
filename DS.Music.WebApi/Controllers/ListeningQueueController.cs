@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DS.Music.WebApi.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("queue")]
+[Route("queue")]
 [ApiController]
 public class ListeningQueueController : ControllerBase
 {
@@ -19,8 +19,8 @@ public class ListeningQueueController : ControllerBase
     [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetQueueInfo(Guid userId)
     {
-        var songInfo = await _mediator.Send(new GetQueueInfo.GetInfoQuery(userId));
-        return Ok(songInfo);
+        var queueInfo = await _mediator.Send(new GetQueueInfo.GetInfoQuery(userId));
+        return Ok(queueInfo);
     }
     
     [HttpPut(nameof(AddLastToQueue))]
