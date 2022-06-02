@@ -1,6 +1,3 @@
 ﻿namespace DS.Application.DTO.MusicUser;
 
-public class MusicUserInfoDto
-{
-    // TODO
-}
+public record MusicUserInfoDto(Guid Id, string Name);

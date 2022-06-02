@@ -1,6 +1,11 @@
-﻿namespace DS.Application.DTO.Song;
+﻿using DS.Application.DTO.MusicUser;
 
-public class SongInfoDto
-{
-    // TODO
-}
+namespace DS.Application.DTO.Song;
+
+public record SongInfoDto
+(
+    string Name, 
+    string GenreName,
+    string AuthorName,
+    string ContentUri
+);

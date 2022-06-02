@@ -15,13 +15,13 @@ public class Song : IEquatable<Song>
         SongGenre genre,
         MusicUser author,
         string songContentUri,
-        string coverUri = ""
+        string? coverUri = null
     )
     {
         Name = name.ThrowIfNull();
         Genre = genre.ThrowIfNull();
         Author = author.ThrowIfNull();
-        SongContentUri = songContentUri.ThrowIfNull();
+        ContentUri = songContentUri.ThrowIfNull();
         CoverUri = coverUri;
         Id = Guid.NewGuid();
     }
@@ -33,7 +33,7 @@ public class Song : IEquatable<Song>
     public IReadOnlyCollection<MusicUser> Featuring => _featuring.Select(fu => fu.MusicUser).ToList();
     public string? CoverUri { get; set; }
     public bool SharedForCommunity { get; set; }
-    public string SongContentUri { get; private init; }
+    public string ContentUri { get; private init; }
 
     public void AddFeaturingUser(MusicUser featuringUser)
     {

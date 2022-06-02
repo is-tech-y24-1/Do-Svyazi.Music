@@ -7,7 +7,7 @@ public class MusicUser : IEquatable<MusicUser>
 {
     protected MusicUser() {}
 
-    public MusicUser(Guid id, string name, string profilePictureUri = "")
+    public MusicUser(Guid id, string name, string? profilePictureUri = null)
     {
         if (id == Guid.Empty)
             throw new GuidIsEmptyException(nameof(Guid));

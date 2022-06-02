@@ -16,8 +16,8 @@ public class Playlist
         MusicUser author,
         PlaylistSongs songs,
         bool sharedForCommunity,
-        string description = "",
-        string coverUri = ""
+        string? description = null,
+        string? coverUri = null
     )
     {
         Name = name.ThrowIfNull();
