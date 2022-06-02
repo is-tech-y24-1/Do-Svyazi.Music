@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using DS.Common.Exceptions;
+using DS.DataAccess.Context;
+using MediatR;
 
 namespace DS.Application.CQRS.MediaLibrary.Commands;
 
@@ -6,8 +8,28 @@ public static class AddSong
 {
     public record AddSongCommand(Guid UserId, Guid SongId) : IRequest;
 
-    // public class Handler : IRequestHandler<AddSongCommand>
-    // {
-    //     public async Task<Unit> Handle(AddSongCommand request, CancellationToken cancellationToken) { }
-    // }
+    public class Handler : IRequestHandler<AddSongCommand>
+    {
+        private MusicDbContext _context;
+        public Handler(MusicDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<Unit> Handle(AddSongCommand request, CancellationToken cancellationToken)
+        {
+            var song = await _context.Songs.FindAsync(request.SongId);
+            if (song is null)
+                throw new EntityNotFoundException($"Song {request.SongId} does not exist");
+
+            var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
+            if (musicUser is null)
+                throw new EntityNotFoundException($"User {request.UserId} does not exist");
+
+            musicUser.MediaLibrary.AddSong(song);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
+        }
+    }
 }

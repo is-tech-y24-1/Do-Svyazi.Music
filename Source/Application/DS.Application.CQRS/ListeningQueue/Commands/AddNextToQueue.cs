@@ -1,13 +1,14 @@
-﻿using DS.DataAccess.Context;
+﻿using DS.Common.Exceptions;
+using DS.DataAccess.Context;
 using MediatR;
 
 namespace DS.Application.CQRS.ListeningQueue.Commands;
 
 public static class AddNextToQueue
 {
-    public record Command(Guid UserId, Guid SongId) : IRequest;
+    public record AddNextToQueueCommand(Guid UserId, Guid SongId) : IRequest;
 
-    public class Handler : IRequestHandler<Command>
+    public class Handler : IRequestHandler<AddNextToQueueCommand>
     {
         private MusicDbContext _context;
 
@@ -15,12 +16,21 @@ public static class AddNextToQueue
         {
             _context = context;
         }
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddNextToQueueCommand request, CancellationToken cancellationToken)
         {
             var song = await _context.Songs.FindAsync(request.SongId);
+            if (song is null)
+                throw new EntityNotFoundException("Song cannot be found in the database");
+            
             var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
-            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser?.ListeningQueue.Id);
-            listeningQueue?.AddNextSongToPlay(song!);
+            if (musicUser is null)
+                throw new EntityNotFoundException("Music user cannot be found in the database");
+
+            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.Id);
+            if (listeningQueue is null)
+                throw new EntityNotFoundException($"Music user's {musicUser.ListeningQueue.Id} queue does not exist");
+
+            listeningQueue.AddNextSongToPlay(song);
             await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

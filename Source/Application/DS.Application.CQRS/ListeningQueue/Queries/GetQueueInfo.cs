@@ -1,4 +1,5 @@
 ﻿using DS.Application.DTO.ListeningQueue;
+using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
 
@@ -21,9 +22,15 @@ public static class GetQueueInfo
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
             var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
-            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser?.ListeningQueue.Id);
-            var songsIds = listeningQueue?.Songs.Select(song => song.Id);
-            var queueDto = new ListeningQueueInfoDto(request.UserId, songsIds!);
+            if (musicUser is null)
+                throw new EntityNotFoundException("Music user cannot be found in the database");
+
+            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.Id);
+            if (listeningQueue is null)
+                throw new EntityNotFoundException($"Music user's {musicUser.ListeningQueue.Id} queue does not exist");
+
+            var songsIds = listeningQueue.Songs.Select(song => song.Id);
+            var queueDto = new ListeningQueueInfoDto(request.UserId, songsIds);
 
             return new Response(queueDto);
         }

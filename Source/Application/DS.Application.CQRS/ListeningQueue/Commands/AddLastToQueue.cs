@@ -1,4 +1,6 @@
-﻿using DS.DataAccess.Context;
+﻿using DS.Common.Exceptions;
+using DS.Common.Extensions;
+using DS.DataAccess.Context;
 using MediatR;
 
 namespace DS.Application.CQRS.ListeningQueue.Commands;
@@ -17,9 +19,18 @@ public static class AddLastToQueue
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
             var song = await _context.Songs.FindAsync(request.SongId);
+            if (song is null)
+                throw new EntityNotFoundException("Song cannot be found in the database");
+            
             var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
-            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser?.ListeningQueue.Id);
-            listeningQueue?.AddLastToPlay(song!);
+            if (musicUser is null)
+                throw new EntityNotFoundException("Music user cannot be found in the database");
+
+            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.Id);
+            if (listeningQueue is null)
+                throw new EntityNotFoundException($"Music user's {musicUser.ListeningQueue.Id} queue does not exist");
+
+            listeningQueue.AddLastToPlay(song);
             await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

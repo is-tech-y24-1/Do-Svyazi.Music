@@ -1,6 +1,10 @@
 ﻿namespace DS.Application.DTO.Song;
 
-public class SongCreationInfoDto
-{
-    // TODO
-}
+public record SongCreationInfoDto
+(
+    string Name,
+    Guid GenreId,
+    Guid AuthorId,
+    string SongContentUri,
+    string? CoverUri = ""
+);

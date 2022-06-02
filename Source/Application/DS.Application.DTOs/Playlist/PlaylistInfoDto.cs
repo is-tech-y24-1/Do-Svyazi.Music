@@ -1,6 +1,11 @@
-﻿namespace DS.Application.DTO.Playlist;
+﻿using DS.Application.DTO.MusicUser;
+using DS.Application.DTO.Song;
 
-public class PlaylistInfoDto
-{
-    // TODO
-}
+namespace DS.Application.DTO.Playlist;
+
+public record PlaylistInfoDto
+(
+    string Name,
+    IList<SongInfoDto> Songs,
+    MusicUserInfoDto Author
+);

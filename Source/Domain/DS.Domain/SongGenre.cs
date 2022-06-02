@@ -8,12 +8,12 @@ public class SongGenre : IEquatable<SongGenre>
     
     public SongGenre(string genreName)
     {
-        GenreName = genreName.ThrowIfNull();
+        Name = genreName.ThrowIfNull();
         Id = Guid.NewGuid();
     }
     
     public Guid Id { get; private init; }
-    public string GenreName { get; set; }
+    public string Name { get; set; }
 
     public bool Equals(SongGenre? other) => other?.Id.Equals(Id) ?? false;
     public override bool Equals(object? obj) => Equals(obj as SongGenre);
