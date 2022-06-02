@@ -26,7 +26,6 @@ public class MusicUserController : ControllerBase
     }
 
     [HttpGet("{userId:guid}")]
-
     public async Task<IActionResult> GetMusicUserInfo(Guid userId)
     {
         var userInfo = await _mediator.Send(new GetUserInfo.GetInfoQuery(userId));
