@@ -26,7 +26,7 @@ public class MediaLibraryTests
     [Test]
     public void AddSongToLibrary_SongAdded()
     {
-        _mediaLibrary!.AddSong(_song);
+        _mediaLibrary!.AddSong(_song!);
         Assert.Contains(_song, _mediaLibrary.Songs.ToList());
     }
 
