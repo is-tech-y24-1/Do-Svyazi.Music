@@ -1,4 +1,5 @@
-﻿using DS.Common.Exceptions;
+﻿using DS.Common.Enums;
+using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
 
@@ -20,11 +21,11 @@ public static class AddSong
         {
             var song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
-                throw new EntityNotFoundException($"Song {request.SongId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
 
             var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
             if (musicUser is null)
-                throw new EntityNotFoundException($"User {request.UserId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
             musicUser.MediaLibrary.AddSong(song);
             await _context.SaveChangesAsync(cancellationToken);

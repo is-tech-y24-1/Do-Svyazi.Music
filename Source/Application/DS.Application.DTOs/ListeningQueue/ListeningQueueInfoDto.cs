@@ -1,3 +1,9 @@
-﻿namespace DS.Application.DTO.ListeningQueue;
+﻿using DS.Application.DTO.Song;
 
-public record ListeningQueueInfoDto(Guid OwnerId, IEnumerable<Guid> SongsIds);
+namespace DS.Application.DTO.ListeningQueue;
+
+public record ListeningQueueInfoDto
+(
+    Guid OwnerId, 
+    IList<SongInfoDto> Songs
+);

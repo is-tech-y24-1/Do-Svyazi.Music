@@ -1,4 +1,5 @@
-﻿using DS.Common.Exceptions;
+﻿using DS.Common.Enums;
+using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
 
@@ -20,11 +21,11 @@ public static class DeletePlaylist
         {
             var playlist = await _context.Playlists.FindAsync(request.PlaylistId);
             if (playlist is null)
-                throw new EntityNotFoundException($"Playlist {request.PlaylistId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.PlaylistCannotBeFound);
 
             var user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
-                throw new EntityNotFoundException($"User {request.UserId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
             
             user.MediaLibrary.DeletePlaylist(playlist);
             await _context.SaveChangesAsync(cancellationToken);

@@ -7,5 +7,6 @@ public record SongInfoDto
     string Name, 
     string GenreName,
     string AuthorName,
-    string ContentUri
+    string ContentUri,
+    string? CoverUri
 );

@@ -1,4 +1,5 @@
 ﻿using DS.Application.DTO.Song;
+using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
@@ -21,13 +22,13 @@ public static class CreateNewSong
         {
             var user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
-                throw new EntityNotFoundException($"User {request.UserId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
             var dto = request.SongCreationInfo;
             
             var genre = await _context.SongGenres.FindAsync(dto.GenreId);
             if (genre is null)
-                throw new EntityNotFoundException($"Genre {dto.GenreId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.GenreCannotBeFound);
 
             var song = new Domain.Song
             (

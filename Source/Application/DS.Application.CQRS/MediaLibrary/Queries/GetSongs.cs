@@ -1,4 +1,5 @@
 ﻿using DS.Application.DTO.Song;
+using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
@@ -23,7 +24,7 @@ public static class GetSongs
         {
             var user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
-                throw new EntityNotFoundException($"User {request.UserId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
             var songsDtos = new List<SongInfoDto>(user.MediaLibrary.Songs.Count);
             foreach (var song in user.MediaLibrary.Songs)
@@ -33,13 +34,11 @@ public static class GetSongs
                     song.Name,
                     song.Genre.Name,
                     song.Author.Name,
-                    song.ContentUri
+                    song.ContentUri,
+                    song.CoverUri
                 );
                 songsDtos.Add(songDto);
             }
-            
-            if (!songsDtos.Any())
-                throw new DoSvyaziMusicException($"User {request.UserId} does not have any songs");
 
             return new Response(songsDtos.AsReadOnly());
         }

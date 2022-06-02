@@ -1,4 +1,5 @@
 ﻿using DS.Application.DTO.MusicUser;
+using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
@@ -23,7 +24,7 @@ public static class GetUserInfo
         {
             var user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
-                throw new EntityNotFoundException($"User {request.UserId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
             var musicUserDto = new MusicUserInfoDto(user.Id, user.Name);
 

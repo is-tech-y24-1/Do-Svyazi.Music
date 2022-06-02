@@ -2,7 +2,6 @@
 
 public record PlaylistCreationInfoDto
 (
-    Guid Id,
     Guid AuthorId,
     string Name,
     string? Description,
