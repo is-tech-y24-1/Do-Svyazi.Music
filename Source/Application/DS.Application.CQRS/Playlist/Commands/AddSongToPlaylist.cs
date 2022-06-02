@@ -4,10 +4,10 @@ namespace DS.Application.CQRS.Playlist.Commands;
 
 public static class AddSongToPlaylist
 {
-    public record AddSongCommand(Guid UserId, Guid PlaylistId, Guid SongId) : IRequest;
+    public record AddPlaylistSongCommand(Guid UserId, Guid PlaylistId, Guid SongId) : IRequest;
 
-    // public class Handler : IRequestHandler<AddSongCommand>
+    // public class Handler : IRequestHandler<AddPlaylistSongCommand>
     // {
-    //     public async Task<Unit> Handle(AddSongCommand request, CancellationToken cancellationToken) { }
+    //     public async Task<Unit> Handle(AddPlaylistSongCommand request, CancellationToken cancellationToken) { }
     // }
 }
