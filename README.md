@@ -19,7 +19,7 @@ dotnet restore
 
 ## Start project
 ```
-dotnet run --project Application/DS.Application.CQRS
+dotnet run --project Server/DS.Music.WebApi
 ```
 
 ## Run unit tests

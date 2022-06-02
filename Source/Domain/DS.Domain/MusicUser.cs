@@ -5,9 +5,7 @@ namespace DS.Domain;
 
 public class MusicUser : IEquatable<MusicUser>
 {
-#pragma warning disable CS8618
-    protected MusicUser() { }
-#pragma warning restore CS8618
+    protected MusicUser() {}
 
     public MusicUser(Guid id, string name, string profilePictureUri = "")
     {

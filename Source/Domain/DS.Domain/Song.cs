@@ -7,9 +7,7 @@ public class Song : IEquatable<Song>
 {
     private List<FeaturingUser> _featuring = new ();
     
-    #pragma warning disable CS8618
-    protected Song() { }
-    #pragma warning restore CS8618
+    protected Song() {}
 
     public Song
     (

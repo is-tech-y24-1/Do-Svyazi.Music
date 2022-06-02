@@ -10,9 +10,7 @@ public class PlaylistSongNode : IEquatable<PlaylistSongNode>
         Id = Guid.NewGuid();
     }
     
-    #pragma warning disable CS8618
-    protected PlaylistSongNode() { }
-    #pragma warning restore CS8618
+    protected PlaylistSongNode() {}
     
     public Guid Id { get; private init; }
     public Song Song { get; set; }

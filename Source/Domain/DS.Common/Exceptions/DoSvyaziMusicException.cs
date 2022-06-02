@@ -2,7 +2,7 @@
 
 public class DoSvyaziMusicException : Exception
 {
-    public DoSvyaziMusicException()
+    protected DoSvyaziMusicException()
     {
     }
 

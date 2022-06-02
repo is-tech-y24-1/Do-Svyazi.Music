@@ -4,11 +4,7 @@ namespace DS.Domain;
 
 public class SongGenre : IEquatable<SongGenre>
 {
-#pragma warning disable CS8618
-    protected SongGenre()
-#pragma warning restore CS8618
-    {
-    }
+    protected SongGenre() {}
     
     public SongGenre(string genreName)
     {

@@ -9,9 +9,9 @@ namespace DS.Tests.EntitiesTests;
 [TestFixture]
 public class SongTests
 {
-    private MusicUser _featuringUser;
-    private MusicUser _author;
-    private Song _song;
+    private MusicUser? _featuringUser;
+    private MusicUser? _author;
+    private Song? _song;
     
     [SetUp]
     public void Setup()
@@ -24,17 +24,17 @@ public class SongTests
     [Test]
     public void AddFeaturingUser_UserIsNotNull_Success()
     {
-        _song.AddFeaturingUser(_featuringUser);
-        Assert.Contains(_featuringUser, _song.Featuring.ToList());
+        _song?.AddFeaturingUser(_featuringUser!);
+        Assert.Contains(_featuringUser, _song?.Featuring.ToList());
     }
 
     [Test]
     public void DeleteFeaturingUser_UserIsFeaturing_UserDeleted()
     {
-        _song.AddFeaturingUser(_featuringUser);
-        _song.DeleteFeaturingUser(_featuringUser);
+        _song?.AddFeaturingUser(_featuringUser!);
+        _song?.DeleteFeaturingUser(_featuringUser!);
         
-        Assert.False(_song.Featuring.Contains(_featuringUser));
+        Assert.False(_song?.Featuring.Contains(_featuringUser));
     }
 
     [Test]
@@ -42,7 +42,7 @@ public class SongTests
     {
         Assert.Catch<DoSvyaziMusicException>(() =>
         {
-            _song.DeleteFeaturingUser(_featuringUser);
+            _song?.DeleteFeaturingUser(_featuringUser!);
         });
     }
 }

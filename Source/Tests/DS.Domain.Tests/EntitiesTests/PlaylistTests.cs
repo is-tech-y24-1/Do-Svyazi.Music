@@ -8,11 +8,11 @@ namespace DS.Tests.EntitiesTests;
 [TestFixture]
 public class PlaylistTests
 {
-    private Playlist _playlist;
-    private MusicUser _author;
-    private PlaylistSongs _songs;
-    private Song _song1;
-    private Song _song2;
+    private Playlist? _playlist;
+    private MusicUser? _author;
+    private PlaylistSongs? _songs;
+    private Song? _song1;
+    private Song? _song2;
     
     [SetUp]
     public void Setup()
@@ -27,7 +27,7 @@ public class PlaylistTests
     [Test]
     public void AddSongToPlaylist_SongAdded()
     {
-        _playlist.AddSong(_song1);
+        _playlist!.AddSong(_song1!);
         Assert.Contains(_song1, _playlist.Songs.ToList());
     }
 
@@ -36,26 +36,26 @@ public class PlaylistTests
     public void ChangePlaylistName_NameChanged()
     {
         const string newName = "Плейлист для написания кода в ванной";
-        _playlist.Name = newName;
+        _playlist!.Name = newName;
         Assert.AreEqual(newName, _playlist.Name);
     }
 
     [Test]
     public void DeleteSongFromPlaylist_SongDeleted()
     {
-        _playlist.AddSong(_song1);
-        _playlist.DeleteSong(_song1);
-        Assert.False(_playlist.Songs.ToList().Contains(_song1));
+        _playlist?.AddSong(_song1!);
+        _playlist?.DeleteSong(_song1!);
+        Assert.False(_playlist?.Songs.ToList().Contains(_song1!));
     }
 
     [Test]
     public void ChangeSongPositionInPlaylist_PositionsChanges()
     {
-        _playlist.AddSong(_song1);
-        _playlist.AddSong(_song2);
-        _playlist.ChangeSongPosition(_song2, 0);
+        _playlist?.AddSong(_song1!);
+        _playlist?.AddSong(_song2!);
+        _playlist?.ChangeSongPosition(_song2!, 0);
 
-        Assert.True(_playlist.Songs.ToList()[0].Equals(_song2));
-        Assert.True(_playlist.Songs.ToList()[1].Equals(_song1));
+        Assert.True(_playlist?.Songs.ToList()[0].Equals(_song2));
+        Assert.True(_playlist?.Songs.ToList()[1].Equals(_song1));
     }
 }

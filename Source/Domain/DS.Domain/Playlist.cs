@@ -8,9 +8,7 @@ public class Playlist
 {
     private readonly PlaylistSongs _songs;
     
-#pragma warning disable CS8618
     protected Playlist() {}
-#pragma warning restore CS8618
 
     public Playlist
     (
