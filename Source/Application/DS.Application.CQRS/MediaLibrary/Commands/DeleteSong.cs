@@ -4,10 +4,10 @@ namespace DS.Application.CQRS.MediaLibrary.Commands;
 
 public static class DeleteSong
 {
-    public record Command(Guid UserId, Guid SongId) : IRequest;
+    public record DeleteSongCommand(Guid UserId, Guid SongId) : IRequest;
 
-    // public class Handler : IRequestHandler<Command>
+    // public class Handler : IRequestHandler<DeleteSongCommand>
     // {
-    //     public async Task<Unit> Handle(Command request, CancellationToken cancellationToken) { }
+    //     public async Task<Unit> Handle(DeleteSongCommand request, CancellationToken cancellationToken) { }
     // }
 }

@@ -5,12 +5,12 @@ namespace DS.Application.CQRS.MediaLibrary.Queries;
 
 public static class GetPlaylists
 {
-    public record Query(Guid UserId) : IRequest<Response>;
+    public record GetPlaylistsQuery(Guid UserId) : IRequest<Response>;
 
     public record Response(IReadOnlyCollection<PlaylistInfoDto> PlaylistsInfo);
 
-    // public class Handler : IRequestHandler<Query, Response>
+    // public class Handler : IRequestHandler<GetPlaylistsQuery, Response>
     // {
-    //     public async Task<Response> Handle(Query request, CancellationToken cancellationToken) { }
+    //     public async Task<Response> Handle(GetPlaylistsQuery request, CancellationToken cancellationToken) { }
     // }
 }

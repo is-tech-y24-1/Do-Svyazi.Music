@@ -5,12 +5,12 @@ namespace DS.Application.CQRS.ListeningQueue.Queries;
 
 public static class GetQueueInfo
 {
-    public record Query(Guid UserId) : IRequest<Response>;
+    public record GetInfoQuery(Guid UserId) : IRequest<Response>;
 
     public record Response(ListeningQueueInfoDto QueueInfo);
 
-    // public class Handler : IRequestHandler<Query, Response>
+    // public class Handler : IRequestHandler<GetInfoQuery, Response>
     // {
-    //     public async Task<Response> Handle(Query request, CancellationToken cancellationToken) { }
+    //     public async Task<Response> Handle(GetInfoQuery request, CancellationToken cancellationToken) { }
     // }
 }

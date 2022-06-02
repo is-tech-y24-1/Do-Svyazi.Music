@@ -5,10 +5,10 @@ namespace DS.Application.CQRS.MusicUser.Commands;
 
 public static class AddMusicUser
 {
-    public record Command(MusicUserCreationInfoDto MusicUserCreationInfo) : IRequest;
+    public record AddUserCommand(MusicUserCreationInfoDto MusicUserCreationInfo) : IRequest;
 
-    // public class Handler : IRequestHandler<Command>
+    // public class Handler : IRequestHandler<AddUserCommand>
     // {
-    //     public async Task<Unit> Handle(Command request, CancellationToken cancellationToken) { }
+    //     public async Task<Unit> Handle(AddUserCommand request, CancellationToken cancellationToken) { }
     // }
 }

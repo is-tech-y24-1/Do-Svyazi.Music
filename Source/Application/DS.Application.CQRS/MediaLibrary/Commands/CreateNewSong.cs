@@ -5,10 +5,10 @@ namespace DS.Application.CQRS.MediaLibrary.Commands;
 
 public static class CreateNewSong
 {
-    public record Command(Guid UserId, SongCreationInfoDto SongCreationInfo) : IRequest;
+    public record CreateNewSongCommand(Guid UserId, SongCreationInfoDto SongCreationInfo) : IRequest;
 
-    // public class Handler : IRequestHandler<Command>
+    // public class Handler : IRequestHandler<CreateNewSongCommand>
     // {
-    //     public async Task<Unit> Handle(Command request, CancellationToken cancellationToken) { }
+    //     public async Task<Unit> Handle(CreateNewSongCommand request, CancellationToken cancellationToken) { }
     // }
 }

@@ -5,12 +5,12 @@ namespace DS.Application.CQRS.Song.Queries;
 
 public static class GetSongInfo
 {
-    public record Query(Guid UserId, Guid SongId) : IRequest<Response>;
+    public record GetInfoQuery(Guid UserId, Guid SongId) : IRequest<Response>;
 
     public record Response(IReadOnlyCollection<PlaylistInfoDto> AuthoredPlaylistsInfo);
 
-    // public class Handler : IRequestHandler<Query, Response>
+    // public class Handler : IRequestHandler<GetInfoQuery, Response>
     // {
-    //     public async Task<Response> Handle(Query request, CancellationToken cancellationToken) { }
+    //     public async Task<Response> Handle(GetInfoQuery request, CancellationToken cancellationToken) { }
     // }
 }
