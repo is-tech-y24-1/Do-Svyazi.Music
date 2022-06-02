@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Domain.Tests", "Source\T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{39E5EFEC-2E50-46B1-A1C6-9F74800B6A82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Music.WebApi", "Source\Server\DS.Music.WebApi\DS.Music.WebApi.csproj", "{153ECA1E-0705-4AED-ABC3-3BB1BF0DA07B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Music.WebApi", "DS.Music.WebApi\DS.Music.WebApi.csproj", "{153ECA1E-0705-4AED-ABC3-3BB1BF0DA07B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
