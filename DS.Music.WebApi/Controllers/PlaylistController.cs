@@ -24,7 +24,7 @@ public class PlaylistController : ControllerBase
     }
 
     [HttpPut(nameof(AddSongToPlaylist))]
-    public async Task<IActionResult> AddSongToPlaylist([FromBody] AddSongToPlaylist.AddSongCommand command)
+    public async Task<IActionResult> AddSongToPlaylist([FromBody] AddSongToPlaylist.AddPlaylistSongCommand command)
     {
         await _mediator.Send(command);
         var playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
@@ -40,7 +40,7 @@ public class PlaylistController : ControllerBase
     }
     
     [HttpPut(nameof(DeleteSongFromPlaylist))]
-    public async Task<IActionResult> DeleteSongFromPlaylist([FromBody] DeleteSongFromPlaylist.DeleteSongCommand command)
+    public async Task<IActionResult> DeleteSongFromPlaylist([FromBody] DeleteSongFromPlaylist.DeletePlaylistSongCommand command)
     {
         await _mediator.Send(command);
         var playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
