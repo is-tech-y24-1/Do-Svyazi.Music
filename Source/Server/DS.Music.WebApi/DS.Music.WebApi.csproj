@@ -14,8 +14,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Source\Application\DS.Application.CQRS\DS.Application.CQRS.csproj" />
-      <ProjectReference Include="..\Source\Application\DS.Application.DTOs\DS.Application.DTOs.csproj" />
+      <ProjectReference Include="..\..\Application\DS.Application.CQRS\DS.Application.CQRS.csproj" />
+      <ProjectReference Include="..\..\Application\DS.Application.DTOs\DS.Application.DTOs.csproj" />
     </ItemGroup>
 
 </Project>
