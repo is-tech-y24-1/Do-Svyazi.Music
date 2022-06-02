@@ -1,6 +1,7 @@
 ﻿namespace DS.Application.DTO.MusicUser;
 
-public class MusicUserCreationInfoDto
-{
-    // TODO
-}
+public record MusicUserCreationInfoDto
+(
+    Guid Id,
+    String UserName
+);
