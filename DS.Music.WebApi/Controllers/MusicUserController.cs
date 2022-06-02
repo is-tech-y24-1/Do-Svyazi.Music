@@ -20,8 +20,8 @@ public class MusicUserController : ControllerBase
     [HttpPost(nameof(CreateMusicUser))]
     public async Task<IActionResult> CreateMusicUser([FromBody] MusicUserCreationInfoDto creationInfo)
     {
-        await _mediator.Send(new AddMusicUser.Command(creationInfo));
-        var createdUserInfo = await _mediator.Send(new GetUserInfo.Query(creationInfo.Id));
+        await _mediator.Send(new AddMusicUser.AddUserCommand(creationInfo));
+        var createdUserInfo = await _mediator.Send(new GetUserInfo.GetInfoQuery(creationInfo.Id));
         return Ok(createdUserInfo);
     }
 
@@ -29,7 +29,7 @@ public class MusicUserController : ControllerBase
 
     public async Task<IActionResult> GetMusicUserInfo(Guid userId)
     {
-        var userInfo = await _mediator.Send(new GetUserInfo.Query(userId));
+        var userInfo = await _mediator.Send(new GetUserInfo.GetInfoQuery(userId));
         return Ok(userInfo);
     }
 }

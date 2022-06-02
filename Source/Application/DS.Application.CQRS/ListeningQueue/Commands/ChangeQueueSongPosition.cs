@@ -4,10 +4,10 @@ namespace DS.Application.CQRS.ListeningQueue.Commands;
 
 public static class ChangeQueueSongPosition
 {
-    public record Command(Guid UserId, Guid SongId, int NewPosition) : IRequest;
+    public record ChangePositionCommand(Guid UserId, Guid SongId, int NewPosition) : IRequest;
 
-    // public class Handler : IRequestHandler<Command>
+    // public class Handler : IRequestHandler<ChangePositionCommand>
     // {
-    //     public async Task<Unit> Handle(Command request, CancellationToken cancellationToken) { }
+    //     public async Task<Unit> Handle(ChangePositionCommand request, CancellationToken cancellationToken) { }
     // }
 }

@@ -4,10 +4,10 @@ namespace DS.Application.CQRS.Song.Commands;
 
 public static class AddFeaturing
 {
-    public record Command(Guid UserId, Guid SongId, Guid FeaturingUserId) : IRequest;
+    public record AddFeaturingCommand(Guid UserId, Guid SongId, Guid FeaturingUserId) : IRequest;
     
-    // public class Handler : IRequestHandler<Command>
+    // public class Handler : IRequestHandler<AddFeaturingCommand>
     // {
-    //     public Task<Unit> Handle(Command request, CancellationToken cancellation) { }
+    //     public Task<Unit> Handle(AddFeaturingCommand request, CancellationToken cancellation) { }
     // }
 }

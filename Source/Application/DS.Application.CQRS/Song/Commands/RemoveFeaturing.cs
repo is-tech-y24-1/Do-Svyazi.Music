@@ -4,10 +4,10 @@ namespace DS.Application.CQRS.Song.Commands;
 
 public static class RemoveFeaturing
 {
-    public record Command(Guid UserId, Guid SongId, Guid FeaturingUserId) : IRequest;
+    public record RemoveFeaturingCommand(Guid UserId, Guid SongId, Guid FeaturingUserId) : IRequest;
     
-    // public class Handler : IRequestHandler<Command>
+    // public class Handler : IRequestHandler<RemoveFeaturingCommand>
     // {
-    //     public Task<Unit> Handle(Command request, CancellationToken cancellation) { }
+    //     public Task<Unit> Handle(RemoveFeaturingCommand request, CancellationToken cancellation) { }
     // }
 }
