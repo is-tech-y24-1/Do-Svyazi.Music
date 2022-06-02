@@ -3,7 +3,7 @@ namespace DS.Common.Extensions;
 
 public static class GenericExtensions
 {
-    public static TValue ThrowIfNull<TValue, TException>(this TValue? value, TException exception)
+    private static TValue ThrowIfNull<TValue, TException>(this TValue? value, TException exception)
         where TException : Exception
     {
         if (value is string str && string.IsNullOrWhiteSpace(str))
@@ -18,7 +18,7 @@ public static class GenericExtensions
     public static TValue ThrowIfNull<TValue>(this TValue? value, [CallerArgumentExpression("value")] string argumentName = "")
         => value.ThrowIfNull(new ArgumentNullException(argumentName));
 
-    public static TValue ThrowIfNull<TValue, TException>(this TValue? value, TException exception)
+    private static TValue ThrowIfNull<TValue, TException>(this TValue? value, TException exception)
         where TException : Exception
         where TValue : struct
     {

@@ -4,9 +4,7 @@ namespace DS.Domain;
 
 public class FeaturingUser : IEquatable<FeaturingUser>
 {
-    #pragma warning disable CS8618
-    protected FeaturingUser() { }
-    #pragma warning restore CS8618
+    protected FeaturingUser() {}
 
     public FeaturingUser(MusicUser user, Song song)
     {

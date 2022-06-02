@@ -11,7 +11,7 @@ public class ListeningQueue
         Id = ownerId;
     }
     
-    protected ListeningQueue() { }
+    protected ListeningQueue() {}
     
     public Guid Id { get; init; }
     public IReadOnlyCollection<Song> Songs => _songs;

@@ -6,12 +6,10 @@ namespace DS.Domain;
 
 public class MediaLibrary : IEquatable<MediaLibrary>
 {
-    private List<MediaLibrarySong> _songs;
-    private List<MediaLibraryPlaylist> _playlists;
+    private readonly List<MediaLibrarySong> _songs;
+    private readonly List<MediaLibraryPlaylist> _playlists;
 
-#pragma warning disable CS8618
-    protected MediaLibrary() { }
-#pragma warning restore CS8618
+    protected MediaLibrary() {}
     
     public MediaLibrary(Guid ownerId)
     {

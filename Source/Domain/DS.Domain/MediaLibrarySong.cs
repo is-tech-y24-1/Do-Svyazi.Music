@@ -4,9 +4,7 @@ namespace DS.Domain;
 
 public class MediaLibrarySong : IEquatable<MediaLibrarySong>
 {
-    #pragma warning disable CS8618
-    protected MediaLibrarySong() { }
-    #pragma warning restore CS8618
+    protected MediaLibrarySong() {}
 
     public MediaLibrarySong(MediaLibrary mediaLibrary, Song song)
     {

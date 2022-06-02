@@ -9,10 +9,10 @@ namespace DS.Tests.EntitiesTests;
 [TestFixture]
 public class MediaLibraryTests
 {
-    private MusicUser _owner;
-    private MediaLibrary _mediaLibrary;
+    private MusicUser? _owner;
+    private MediaLibrary? _mediaLibrary;
 
-    private Song _song;
+    private Song? _song;
     
     [SetUp]
     public void Setup()
@@ -26,25 +26,25 @@ public class MediaLibraryTests
     [Test]
     public void AddSongToLibrary_SongAdded()
     {
-        _mediaLibrary.AddSong(_song);
+        _mediaLibrary!.AddSong(_song);
         Assert.Contains(_song, _mediaLibrary.Songs.ToList());
     }
 
     [Test]
     public void RemoveSongFromLibrary_SongRemoved()
     {
-        _mediaLibrary.AddSong(_song);
-        _mediaLibrary.DeleteSong(_song);
+        _mediaLibrary!.AddSong(_song!);
+        _mediaLibrary.DeleteSong(_song!);
         Assert.False(_mediaLibrary.Songs.Contains(_song));
     }
 
     [Test]
     public void AddAlreadyAddedSong_ThrowException()
     {
-        _mediaLibrary.AddSong(_song);
+        _mediaLibrary!.AddSong(_song!);
         Assert.Catch<DoSvyaziMusicException>(() =>
         {
-            _mediaLibrary.AddSong(_song);
+            _mediaLibrary.AddSong(_song!);
         });
     }
 }
