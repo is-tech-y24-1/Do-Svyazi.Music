@@ -1,6 +1,7 @@
 ﻿using DS.Application.DTO.MusicUser;
 using DS.Application.DTO.Playlist;
 using DS.Application.DTO.Song;
+using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
@@ -25,7 +26,7 @@ public static class GetPlaylists
         {
             var user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
-                throw new EntityNotFoundException($"User {request.UserId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
             var playlistsDtos = new List<PlaylistInfoDto>(user.MediaLibrary.Playlists.Count);
             foreach (var playlist in user.MediaLibrary.Playlists)
@@ -37,9 +38,6 @@ public static class GetPlaylists
                 
                 playlistsDtos.Add(playlistDto);
             }
-            
-            if (!playlistsDtos.Any())
-                throw new DoSvyaziMusicException($"User {request.UserId} does not have any playlists");
 
             return new Response(playlistsDtos.AsReadOnly());
         }
@@ -54,7 +52,8 @@ public static class GetPlaylists
                     song.Name,
                     song.Genre.Name,
                     song.Author.Name,
-                    song.ContentUri
+                    song.ContentUri,
+                    song.CoverUri
                 );
                 songs.Add(songDto);
             }

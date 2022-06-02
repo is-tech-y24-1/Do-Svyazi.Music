@@ -1,4 +1,5 @@
-﻿using DS.Common.Exceptions;
+﻿using DS.Common.Enums;
+using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
 
@@ -20,11 +21,11 @@ public static class DeleteSongFromPlaylist
         {
             var song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
-                throw new EntityNotFoundException("Song cannot be found in the database");
+                throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
 
             var playlist = await _context.Playlists.FindAsync(request.PlaylistId);
             if (playlist is null)
-                throw new EntityNotFoundException($"Playlist {request.PlaylistId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.PlaylistCannotBeFound);
             
             playlist.DeleteSong(song);
             await _context.SaveChangesAsync(cancellationToken);

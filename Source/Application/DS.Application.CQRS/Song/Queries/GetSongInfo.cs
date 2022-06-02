@@ -1,5 +1,6 @@
 ﻿using DS.Application.DTO.Playlist;
 using DS.Application.DTO.Song;
+using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
@@ -24,14 +25,15 @@ public static class GetSongInfo
         {
             var song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
-                throw new EntityNotFoundException("Song cannot be found in the database");
+                throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
 
             var songDto = new SongInfoDto
             (
                 song.Name,
                 song.Genre.Name, 
                 song.Author.Name,
-                song.ContentUri
+                song.ContentUri,
+                song.CoverUri
             );
 
             return new Response(songDto);

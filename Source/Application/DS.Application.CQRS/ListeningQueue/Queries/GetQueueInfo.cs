@@ -1,4 +1,6 @@
 ﻿using DS.Application.DTO.ListeningQueue;
+using DS.Application.DTO.Song;
+using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
@@ -23,14 +25,26 @@ public static class GetQueueInfo
         {
             var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
             if (musicUser is null)
-                throw new EntityNotFoundException("Music user cannot be found in the database");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
             var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.Id);
             if (listeningQueue is null)
-                throw new EntityNotFoundException($"Music user's {musicUser.ListeningQueue.Id} queue does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.ListeningQueueCannotBeFound);
 
-            var songsIds = listeningQueue.Songs.Select(song => song.Id);
-            var queueDto = new ListeningQueueInfoDto(request.UserId, songsIds);
+            var songsDtos = new List<SongInfoDto>(listeningQueue.Songs.Count);
+            foreach (var song in listeningQueue.Songs)
+            {
+                var songDto = new SongInfoDto
+                (
+                    song.Name,
+                    song.Genre.Name,
+                    song.Author.Name,
+                    song.ContentUri,
+                    song.CoverUri
+                );
+                songsDtos.Add(songDto);
+            }
+            var queueDto = new ListeningQueueInfoDto(request.UserId, songsDtos);
 
             return new Response(queueDto);
         }

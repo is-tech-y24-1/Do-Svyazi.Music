@@ -1,6 +1,7 @@
 ﻿using DS.Application.DTO.MusicUser;
 using DS.Application.DTO.Playlist;
 using DS.Application.DTO.Song;
+using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
@@ -25,11 +26,11 @@ public static class GetPlaylistInfo
         {
             var user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
-                throw new EntityNotFoundException($"User {request.UserId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
             var playlist = await _context.Playlists.FindAsync(request.PlaylistId);
             if (playlist is null)
-                throw new EntityNotFoundException($"Playlist {request.PlaylistId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.PlaylistCannotBeFound);
 
             var songsDtos = GetSongDtos(playlist);
             var authorDto = new MusicUserInfoDto(user.Id, user.Name);
@@ -48,7 +49,8 @@ public static class GetPlaylistInfo
                     song.Name,
                     song.Genre.Name,
                     song.Author.Name,
-                    song.ContentUri
+                    song.ContentUri,
+                    song.CoverUri
                 );
                 songs.Add(songDto);
             }

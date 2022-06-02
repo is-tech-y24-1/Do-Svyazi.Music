@@ -1,4 +1,5 @@
 ﻿using DS.Application.DTO.Playlist;
+using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using DS.Domain;
@@ -22,15 +23,14 @@ public static class CreateNewPlaylist
         {
             var user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
-                throw new EntityNotFoundException($"User {request.UserId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
             
             var dto = request.PlaylistCreationInfo;
 
             var firstSong = await _context.Songs.FindAsync(dto.SongsIds.First());
             if (firstSong is null)
-                throw new DoSvyaziMusicException("There are no songs in playlist");
+                throw new DoSvyaziMusicException(ExceptionMessages.NoSongsInPlaylist);
             
-            // TODO: Mapping goes here
             var songs = new PlaylistSongs(firstSong);
             for (var i = 1; i < dto.SongsIds.Count(); i++)
             {
@@ -38,7 +38,7 @@ public static class CreateNewPlaylist
                 
                 var song = await _context.Songs.FindAsync(songId);
                 if (song is null)
-                    throw new EntityNotFoundException($"Song {songId} does not exist");
+                    throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
                 
                 songs.Add(song);
             }

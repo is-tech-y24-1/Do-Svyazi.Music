@@ -1,4 +1,5 @@
-﻿using DS.Common.Exceptions;
+﻿using DS.Common.Enums;
+using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
 
@@ -20,15 +21,15 @@ public static class AddNextToQueue
         {
             var song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
-                throw new EntityNotFoundException("Song cannot be found in the database");
+                throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
             
             var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
             if (musicUser is null)
-                throw new EntityNotFoundException("Music user cannot be found in the database");
+                throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
             var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.Id);
             if (listeningQueue is null)
-                throw new EntityNotFoundException($"Music user's {musicUser.ListeningQueue.Id} queue does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.ListeningQueueCannotBeFound);
 
             listeningQueue.AddNextSongToPlay(song);
             await _context.SaveChangesAsync(cancellationToken);

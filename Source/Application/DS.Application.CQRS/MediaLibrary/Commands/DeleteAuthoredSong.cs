@@ -1,4 +1,5 @@
-﻿using DS.Common.Exceptions;
+﻿using DS.Common.Enums;
+using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
 
@@ -20,10 +21,10 @@ public static class DeleteAuthoredSong
         {
             var song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
-                throw new EntityNotFoundException($"Song {request.SongId} does not exist");
+                throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
             
             if (song.Author.Id != request.UserId)
-                throw new UnauthorizedAccessException($"User {request.UserId} cannot delete song {song.Id}");
+                throw new UnauthorizedAccessException(ExceptionMessages.SongAccessForbidden);
             
             var users = _context.MusicUsers;
             foreach (var user in users)
