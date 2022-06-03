@@ -7,9 +7,9 @@ namespace DS.Application.CQRS.ListeningQueue.Commands;
 
 public static class ClearQueue
 {
-    public record Command(Guid UserId) : IRequest;
-
-    public class Handler : IRequestHandler<Command>
+    public record ClearQueueCommand(Guid UserId) : IRequest;
+    
+    public class Handler : IRequestHandler<ClearQueueCommand>
     {
         private MusicDbContext _context;
 
@@ -18,7 +18,7 @@ public static class ClearQueue
             _context = context;
         }
 
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ClearQueueCommand request, CancellationToken cancellationToken)
         {
             var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
             if (musicUser is null)

@@ -9,11 +9,11 @@ namespace DS.Application.CQRS.ListeningQueue.Queries;
 
 public static class GetQueueInfo
 {
-    public record Query(Guid UserId) : IRequest<Response>;
+    public record GetInfoQuery(Guid UserId) : IRequest<Response>;
 
     public record Response(ListeningQueueInfoDto QueueInfo);
-
-    public class Handler : IRequestHandler<Query, Response>
+    
+    public class Handler : IRequestHandler<GetInfoQuery, Response>
     {
         private MusicDbContext _context;
         public Handler(MusicDbContext context)
@@ -21,7 +21,7 @@ public static class GetQueueInfo
             _context = context;
         }
 
-        public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(GetInfoQuery request, CancellationToken cancellationToken)
         {
             var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
             if (musicUser is null)

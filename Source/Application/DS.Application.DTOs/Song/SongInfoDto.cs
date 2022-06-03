@@ -1,6 +1,4 @@
-﻿using DS.Application.DTO.MusicUser;
-
-namespace DS.Application.DTO.Song;
+﻿namespace DS.Application.DTO.Song;
 
 public record SongInfoDto
 (

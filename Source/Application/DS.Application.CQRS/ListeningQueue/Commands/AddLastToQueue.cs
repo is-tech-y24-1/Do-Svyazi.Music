@@ -7,16 +7,16 @@ namespace DS.Application.CQRS.ListeningQueue.Commands;
 
 public static class AddLastToQueue
 {
-    public record Command(Guid UserId, Guid SongId) : IRequest;
+    public record AddLastToQueueCommand(Guid UserId, Guid SongId) : IRequest;
 
-    public class Handler : IRequestHandler<Command>
+    public class Handler : IRequestHandler<AddLastToQueueCommand>
     {
         private MusicDbContext _context;
         public Handler(MusicDbContext context)
         {
             _context = context;
         }
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddLastToQueueCommand request, CancellationToken cancellationToken)
         {
             var song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)

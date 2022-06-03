@@ -1,5 +1,4 @@
-﻿using DS.Application.DTO.Playlist;
-using DS.Application.DTO.Song;
+﻿using DS.Application.DTO.Song;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
