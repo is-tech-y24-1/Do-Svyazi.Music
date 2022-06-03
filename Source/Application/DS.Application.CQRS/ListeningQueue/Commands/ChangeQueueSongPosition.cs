@@ -7,9 +7,9 @@ namespace DS.Application.CQRS.ListeningQueue.Commands;
 
 public static class ChangeQueueSongPosition
 {
-    public record Command(Guid UserId, Guid SongId, int NewPosition) : IRequest;
+    public record ChangeQueueSongPositionCommand(Guid UserId, Guid SongId, int NewPosition) : IRequest;
 
-    public class Handler : IRequestHandler<Command>
+    public class Handler : IRequestHandler<ChangeQueueSongPositionCommand>
     {
         private MusicDbContext _context;
 
@@ -18,7 +18,7 @@ public static class ChangeQueueSongPosition
             _context = context;
         }
 
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ChangeQueueSongPositionCommand request, CancellationToken cancellationToken)
         {
             var song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)

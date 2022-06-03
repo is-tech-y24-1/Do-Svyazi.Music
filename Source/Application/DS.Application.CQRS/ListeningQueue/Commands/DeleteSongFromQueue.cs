@@ -7,9 +7,9 @@ namespace DS.Application.CQRS.ListeningQueue.Commands;
 
 public static class DeleteFromQueue
 {
-    public record Command(Guid UserId, Guid SongId) : IRequest;
+    public record DeleteFromQueueCommand(Guid UserId, Guid SongId) : IRequest;
 
-    public class Handler : IRequestHandler<Command>
+    public class Handler : IRequestHandler<DeleteFromQueueCommand>
     {
         private MusicDbContext _context;
         public Handler(MusicDbContext context)
@@ -17,7 +17,7 @@ public static class DeleteFromQueue
             _context = context;
         }
 
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteFromQueueCommand request, CancellationToken cancellationToken)
         {
             var song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
