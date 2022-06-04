@@ -26,7 +26,7 @@ public static class AddLastToQueue
             if (musicUser is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.Id);
+            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.OwnerId);
             if (listeningQueue is null)
                 throw new EntityNotFoundException(ExceptionMessages.ListeningQueueCannotBeFound);
 

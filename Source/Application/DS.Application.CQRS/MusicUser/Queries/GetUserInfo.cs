@@ -1,4 +1,5 @@
-﻿using DS.Application.DTO.MusicUser;
+﻿using AutoMapper;
+using DS.Application.DTO.MusicUser;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
@@ -15,9 +16,11 @@ public static class GetUserInfo
     public class Handler : IRequestHandler<GetInfoQuery, Response>
     {
         private MusicDbContext _context;
-        public Handler(MusicDbContext context)
+        private IMapper _mapper;
+        public Handler(MusicDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Response> Handle(GetInfoQuery request, CancellationToken cancellationToken)
@@ -26,9 +29,7 @@ public static class GetUserInfo
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var musicUserDto = new MusicUserInfoDto(user.Id, user.Name);
-
-            return new Response(musicUserDto);
+            return new Response(_mapper.Map<MusicUserInfoDto>(user));
         }
     }
 }

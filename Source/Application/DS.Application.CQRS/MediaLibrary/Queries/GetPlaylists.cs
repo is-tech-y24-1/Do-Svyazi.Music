@@ -1,6 +1,5 @@
-﻿using DS.Application.DTO.MusicUser;
+﻿using AutoMapper;
 using DS.Application.DTO.Playlist;
-using DS.Application.DTO.Song;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
@@ -17,9 +16,11 @@ public static class GetPlaylists
     public class Handler : IRequestHandler<GetPlaylistsQuery, Response>
     {
         private MusicDbContext _context;
-        public Handler(MusicDbContext context)
+        private IMapper _mapper;
+        public Handler(MusicDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Response> Handle(GetPlaylistsQuery request, CancellationToken cancellationToken)
@@ -28,37 +29,7 @@ public static class GetPlaylists
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var playlistsDtos = new List<PlaylistInfoDto>(user.MediaLibrary.Playlists.Count);
-            foreach (var playlist in user.MediaLibrary.Playlists)
-            {
-                var songsDtos = GetSongDtos(playlist);
-                
-                var authorDto = new MusicUserInfoDto(playlist.Author.Id, playlist.Author.Name);
-                var playlistDto = new PlaylistInfoDto(playlist.Name, songsDtos, authorDto);
-                
-                playlistsDtos.Add(playlistDto);
-            }
-
-            return new Response(playlistsDtos.AsReadOnly());
-        }
-        
-        private static List<SongInfoDto> GetSongDtos(Domain.Playlist playlist)
-        {
-            var songs = new List<SongInfoDto>(playlist.Songs.Count);
-            foreach (var song in playlist.Songs)
-            {
-                var songDto = new SongInfoDto
-                (
-                    song.Name,
-                    song.Genre.Name,
-                    song.Author.Name,
-                    song.ContentUri,
-                    song.CoverUri
-                );
-                songs.Add(songDto);
-            }
-
-            return songs;
+            return new Response(_mapper.Map<IReadOnlyCollection<PlaylistInfoDto>>(user.MediaLibrary.Playlists));
         }
     }
 }

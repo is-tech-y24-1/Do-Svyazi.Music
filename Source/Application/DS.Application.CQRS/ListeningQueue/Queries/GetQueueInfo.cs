@@ -1,5 +1,5 @@
-﻿using DS.Application.DTO.ListeningQueue;
-using DS.Application.DTO.Song;
+﻿using AutoMapper;
+using DS.Application.DTO.ListeningQueue;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
@@ -16,9 +16,11 @@ public static class GetQueueInfo
     public class Handler : IRequestHandler<GetInfoQuery, Response>
     {
         private MusicDbContext _context;
-        public Handler(MusicDbContext context)
+        private IMapper _mapper;
+        public Handler(MusicDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Response> Handle(GetInfoQuery request, CancellationToken cancellationToken)
@@ -27,26 +29,11 @@ public static class GetQueueInfo
             if (musicUser is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.Id);
+            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.OwnerId);
             if (listeningQueue is null)
                 throw new EntityNotFoundException(ExceptionMessages.ListeningQueueCannotBeFound);
 
-            var songsDtos = new List<SongInfoDto>(listeningQueue.Songs.Count);
-            foreach (var song in listeningQueue.Songs)
-            {
-                var songDto = new SongInfoDto
-                (
-                    song.Name,
-                    song.Genre.Name,
-                    song.Author.Name,
-                    song.ContentUri,
-                    song.CoverUri
-                );
-                songsDtos.Add(songDto);
-            }
-            var queueDto = new ListeningQueueInfoDto(request.UserId, songsDtos);
-
-            return new Response(queueDto);
+            return new Response(_mapper.Map<ListeningQueueInfoDto>(listeningQueue));
         }
     }
 }
