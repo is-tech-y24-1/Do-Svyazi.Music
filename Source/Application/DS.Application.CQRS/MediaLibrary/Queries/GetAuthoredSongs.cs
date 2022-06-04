@@ -1,4 +1,5 @@
-﻿using DS.Application.DTO.Song;
+﻿using AutoMapper;
+using DS.Application.DTO.Song;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
@@ -14,9 +15,11 @@ public static class GetAuthoredSongs
     public class Handler : IRequestHandler<GetAuthoredSongsQuery, Response>
     {
         private MusicDbContext _context;
-        public Handler(MusicDbContext context)
+        private IMapper _mapper;
+        public Handler(MusicDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Response> Handle(GetAuthoredSongsQuery request, CancellationToken cancellationToken)
@@ -25,22 +28,7 @@ public static class GetAuthoredSongs
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var authoredSongs = new List<SongInfoDto>(user.MediaLibrary.AuthoredSongs.Count);
-            foreach (var song in user.MediaLibrary.AuthoredSongs)
-            {
-                var songDto = new SongInfoDto
-                (
-                    song.Name,
-                    song.Genre.Name,
-                    song.Author.Name,
-                    song.ContentUri,
-                    song.CoverUri
-                );
-                
-                authoredSongs.Add(songDto);
-            }
-
-            return new Response(authoredSongs.AsReadOnly());
+            return new Response(_mapper.Map<IReadOnlyCollection<SongInfoDto>>(user.MediaLibrary.AuthoredSongs));
         }
     }
 }

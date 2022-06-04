@@ -8,12 +8,12 @@ public class ListeningQueue
     private readonly PlaylistSongs _songs = new();
     public ListeningQueue(Guid ownerId)
     {
-        Id = ownerId;
+        OwnerId = ownerId;
     }
     
     protected ListeningQueue() {}
     
-    public Guid Id { get; init; }
+    public Guid OwnerId { get; init; }
     public IReadOnlyCollection<Song> Songs => _songs;
 
     public void AddNextSongToPlay(Song song)
