@@ -11,7 +11,7 @@ public static class ClearQueue
     
     public class Handler : IRequestHandler<ClearQueueCommand>
     {
-        private MusicDbContext _context;
+        private readonly MusicDbContext _context;
 
         public Handler(MusicDbContext context)
         {

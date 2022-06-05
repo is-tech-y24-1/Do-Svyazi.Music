@@ -11,7 +11,7 @@ public static class ChangeQueueSongPosition
 
     public class Handler : IRequestHandler<ChangeQueueSongPositionCommand>
     {
-        private MusicDbContext _context;
+        private readonly MusicDbContext _context;
 
         public Handler(MusicDbContext context)
         {

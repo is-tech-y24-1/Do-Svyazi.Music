@@ -11,7 +11,7 @@ public static class AddSong
 
     public class Handler : IRequestHandler<AddSongCommand>
     {
-        private MusicDbContext _context;
+        private readonly MusicDbContext _context;
         public Handler(MusicDbContext context)
         {
             _context = context;

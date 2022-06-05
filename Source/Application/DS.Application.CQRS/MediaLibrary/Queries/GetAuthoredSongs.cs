@@ -14,8 +14,8 @@ public static class GetAuthoredSongs
     public record Response(IReadOnlyCollection<SongInfoDto> AuthoredSongsInfo);
     public class Handler : IRequestHandler<GetAuthoredSongsQuery, Response>
     {
-        private MusicDbContext _context;
-        private IMapper _mapper;
+        private readonly MusicDbContext _context;
+        private readonly IMapper _mapper;
         public Handler(MusicDbContext context, IMapper mapper)
         {
             _context = context;

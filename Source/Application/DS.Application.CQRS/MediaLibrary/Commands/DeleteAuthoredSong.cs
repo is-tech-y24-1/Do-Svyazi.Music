@@ -11,7 +11,7 @@ public static class DeleteAuthoredSong
 
     public class Handler : IRequestHandler<DeleteAuthoredSongCommand>
     {
-        private MusicDbContext _context;
+        private readonly MusicDbContext _context;
         public Handler(MusicDbContext context)
         {
             _context = context;

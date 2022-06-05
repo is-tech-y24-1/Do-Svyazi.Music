@@ -11,7 +11,7 @@ public static class DeletePlaylist
     
     public class Handler : IRequestHandler<DeletePlaylistCommand>
     {
-        private MusicDbContext _context;
+        private readonly MusicDbContext _context;
         public Handler(MusicDbContext context)
         {
             _context = context;
