@@ -11,7 +11,7 @@ public static class AddFeaturing
     
     public class Handler : IRequestHandler<AddFeaturingCommand>
     {
-        private MusicDbContext _context;
+        private readonly MusicDbContext _context;
         public Handler(MusicDbContext context)
         {
             _context = context;

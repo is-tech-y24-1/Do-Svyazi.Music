@@ -15,8 +15,8 @@ public static class GetPlaylistInfo
 
     public class Handler : IRequestHandler<GetInfoQuery, Response>
     {
-        private MusicDbContext _context;
-        private IMapper _mapper;
+        private readonly MusicDbContext _context;
+        private readonly IMapper _mapper;
         public Handler(MusicDbContext context, IMapper mapper)
         {
             _context = context;

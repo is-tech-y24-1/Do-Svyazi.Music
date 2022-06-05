@@ -11,7 +11,7 @@ public static class DeleteFromQueue
 
     public class Handler : IRequestHandler<DeleteFromQueueCommand>
     {
-        private MusicDbContext _context;
+        private readonly MusicDbContext _context;
         public Handler(MusicDbContext context)
         {
             _context = context;

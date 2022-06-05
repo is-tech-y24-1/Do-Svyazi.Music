@@ -11,7 +11,7 @@ public static class RemoveFeaturing
     
     public class Handler : IRequestHandler<RemoveFeaturingCommand>
     {
-        private MusicDbContext _context;
+        private readonly MusicDbContext _context;
         public Handler(MusicDbContext context)
         {
             _context = context;

@@ -11,7 +11,7 @@ public static class AddNextToQueue
 
     public class Handler : IRequestHandler<AddNextToQueueCommand>
     {
-        private MusicDbContext _context;
+        private readonly MusicDbContext _context;
 
         public Handler(MusicDbContext context)
         {

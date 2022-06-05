@@ -81,6 +81,7 @@ public sealed class MusicDbContext : DbContext, IMusicContext
 
     private static void ConfigureListeningQueue(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<ListeningQueue>().HasKey(lq => lq.OwnerId);
         modelBuilder.Entity<ListeningQueue>().Property(lq => lq.OwnerId).ValueGeneratedNever();
         modelBuilder.Entity<ListeningQueue>().HasOne("_songs");
         modelBuilder.Entity<ListeningQueue>().Ignore(lq => lq.Songs);
