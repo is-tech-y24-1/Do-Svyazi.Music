@@ -25,7 +25,7 @@ public static class GetSongs
 
         public async Task<Response> Handle(GetSongsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 

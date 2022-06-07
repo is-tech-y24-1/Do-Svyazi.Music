@@ -4,7 +4,7 @@ using DS.DataAccess.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -19,7 +19,7 @@ builder.Services.AddDbContext<MusicDbContext>(opt =>
 
 builder.Services.AddScoped<IMusicContext, MusicDbContext>();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {

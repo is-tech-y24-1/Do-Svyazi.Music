@@ -18,11 +18,11 @@ public static class AddPlaylist
         }
         public async Task<Unit> Handle(AddPlaylistCommand request, CancellationToken cancellationToken)
         {
-            var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? musicUser = await _context.MusicUsers.FindAsync(request.UserId);
             if (musicUser is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var playlist = await _context.Playlists.FindAsync(request.PlaylistId);
+            Domain.Playlist? playlist = await _context.Playlists.FindAsync(request.PlaylistId);
             if (playlist is null)
                 throw new EntityNotFoundException(ExceptionMessages.PlaylistCannotBeFound);
 

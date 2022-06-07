@@ -19,7 +19,7 @@ public class SongController : ControllerBase
     [HttpGet("{userId:guid}/{songId:guid}")]
     public async Task<IActionResult> GetSongInfo(Guid userId, Guid songId)
     {
-        var songInfo = await _mediator.Send(new GetSongInfo.GetInfoQuery(userId, songId));
+        GetSongInfo.Response? songInfo = await _mediator.Send(new GetSongInfo.GetInfoQuery(userId, songId));
         return Ok(songInfo);
     }
     
@@ -27,7 +27,7 @@ public class SongController : ControllerBase
     public async Task<IActionResult> AddFeaturingUser([FromBody] AddFeaturing.AddFeaturingCommand command)
     {
         await _mediator.Send(command);
-        var songInfo = _mediator.Send(new GetSongInfo.GetInfoQuery(command.UserId, command.SongId));
+        Task<GetSongInfo.Response>? songInfo = _mediator.Send(new GetSongInfo.GetInfoQuery(command.UserId, command.SongId));
         return Ok(songInfo);
     }
     
@@ -35,7 +35,7 @@ public class SongController : ControllerBase
     public async Task<IActionResult> RemoveFeaturingUser([FromBody] RemoveFeaturing.RemoveFeaturingCommand command)
     {
         await _mediator.Send(command);
-        var songInfo = _mediator.Send(new GetSongInfo.GetInfoQuery(command.UserId, command.SongId));
+        Task<GetSongInfo.Response>? songInfo = _mediator.Send(new GetSongInfo.GetInfoQuery(command.UserId, command.SongId));
         return Ok(songInfo);
     }
 }

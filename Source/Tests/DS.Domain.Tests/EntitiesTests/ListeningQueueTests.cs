@@ -30,7 +30,7 @@ public class ListeningQueueTests
             new Song("dummy5", new SongGenre("dummy"), author, "dummy"),
             new Song("dummy6", new SongGenre("dummy"), author, "dummy"),
         };
-        foreach (var s in _testSongs)
+        foreach (Song? s in _testSongs)
             _queue.AddLastToPlay(s);
     }
 

@@ -21,14 +21,14 @@ public class MusicUserController : ControllerBase
     public async Task<IActionResult> CreateMusicUser([FromBody] MusicUserCreationInfoDto creationInfo)
     {
         await _mediator.Send(new AddMusicUser.AddUserCommand(creationInfo));
-        var createdUserInfo = await _mediator.Send(new GetUserInfo.GetInfoQuery(creationInfo.Id));
+        GetUserInfo.Response? createdUserInfo = await _mediator.Send(new GetUserInfo.GetInfoQuery(creationInfo.Id));
         return Ok(createdUserInfo);
     }
 
     [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetMusicUserInfo(Guid userId)
     {
-        var userInfo = await _mediator.Send(new GetUserInfo.GetInfoQuery(userId));
+        GetUserInfo.Response? userInfo = await _mediator.Send(new GetUserInfo.GetInfoQuery(userId));
         return Ok(userInfo);
     }
 }

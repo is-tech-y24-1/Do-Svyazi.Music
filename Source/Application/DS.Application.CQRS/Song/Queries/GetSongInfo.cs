@@ -25,7 +25,7 @@ public static class GetSongInfo
 
         public async Task<Response> Handle(GetInfoQuery request, CancellationToken cancellationToken)
         {
-            var song = await _context.Songs.FindAsync(request.SongId);
+            Domain.Song? song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
                 throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
             

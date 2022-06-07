@@ -2,6 +2,7 @@
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace DS.Application.CQRS.MediaLibrary.Commands;
 
@@ -19,15 +20,15 @@ public static class DeleteAuthoredSong
 
         public async Task<Unit> Handle(DeleteAuthoredSongCommand request, CancellationToken cancellationToken)
         {
-            var song = await _context.Songs.FindAsync(request.SongId);
+            Domain.Song? song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
                 throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
             
             if (song.Author.Id != request.UserId)
                 throw new UnauthorizedAccessException(ExceptionMessages.SongAccessForbidden);
             
-            var users = _context.MusicUsers;
-            foreach (var user in users)
+            DbSet<Domain.MusicUser>? users = _context.MusicUsers;
+            foreach (Domain.MusicUser? user in users)
             {
                 if (user.MediaLibrary.Songs.Contains(song)) 
                     user.MediaLibrary.DeleteSong(song);

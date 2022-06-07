@@ -25,11 +25,11 @@ public static class GetQueueInfo
 
         public async Task<Response> Handle(GetInfoQuery request, CancellationToken cancellationToken)
         {
-            var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? musicUser = await _context.MusicUsers.FindAsync(request.UserId);
             if (musicUser is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.OwnerId);
+            Domain.ListeningQueue? listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.OwnerId);
             if (listeningQueue is null)
                 throw new EntityNotFoundException(ExceptionMessages.ListeningQueueCannotBeFound);
 

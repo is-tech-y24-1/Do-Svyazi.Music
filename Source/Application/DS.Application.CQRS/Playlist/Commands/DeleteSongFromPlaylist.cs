@@ -19,11 +19,11 @@ public static class DeleteSongFromPlaylist
 
         public async Task<Unit> Handle(DeletePlaylistSongCommand request, CancellationToken cancellationToken)
         {
-            var song = await _context.Songs.FindAsync(request.SongId);
+            Domain.Song? song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
                 throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
 
-            var playlist = await _context.Playlists.FindAsync(request.PlaylistId);
+            Domain.Playlist? playlist = await _context.Playlists.FindAsync(request.PlaylistId);
             if (playlist is null)
                 throw new EntityNotFoundException(ExceptionMessages.PlaylistCannotBeFound);
             

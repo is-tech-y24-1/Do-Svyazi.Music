@@ -19,28 +19,28 @@ public class MediaLibraryController : ControllerBase
     [HttpGet("{userId:guid}/authored/playlists")]
     public async Task<IActionResult> GetAuthoredPlaylists(Guid userId)
     {
-        var playlistsInfo = await _mediator.Send(new GetAuthoredPlaylists.GetAuthoredPlaylistsQuery(userId));
+        GetAuthoredPlaylists.Response playlistsInfo = await _mediator.Send(new GetAuthoredPlaylists.GetAuthoredPlaylistsQuery(userId));
         return Ok(playlistsInfo);
     }
     
     [HttpGet("{userId:guid}/authored/songs")]
     public async Task<IActionResult> GetAuthoredSongs(Guid userId)
     {
-        var songsInfo = await _mediator.Send(new GetAuthoredSongs.GetAuthoredSongsQuery(userId));
+        GetAuthoredSongs.Response songsInfo = await _mediator.Send(new GetAuthoredSongs.GetAuthoredSongsQuery(userId));
         return Ok(songsInfo);
     }
     
     [HttpGet("{userId:guid}/added/playlists")]
     public async Task<IActionResult> GetAddedPlaylists(Guid userId)
     {
-        var playlistsInfo = await _mediator.Send(new GetPlaylists.GetPlaylistsQuery(userId));
+        GetPlaylists.Response playlistsInfo = await _mediator.Send(new GetPlaylists.GetPlaylistsQuery(userId));
         return Ok(playlistsInfo);
     }
     
     [HttpGet("{userId:guid}/added/songs")]
     public async Task<IActionResult> GetAddedSongs(Guid userId)
     {
-        var songsInfo = await _mediator.Send(new GetSongs.GetSongsQuery(userId));
+        GetSongs.Response songsInfo = await _mediator.Send(new GetSongs.GetSongsQuery(userId));
         return Ok(songsInfo);
     }
     
@@ -76,7 +76,7 @@ public class MediaLibraryController : ControllerBase
     public async Task<IActionResult> CreateNewSong([FromBody] CreateNewSong.CreateNewSongCommand command)
     {
         await _mediator.Send(command);
-        var songsInfo = await _mediator.Send(new GetAuthoredSongs.GetAuthoredSongsQuery(command.UserId));
+        GetAuthoredSongs.Response songsInfo = await _mediator.Send(new GetAuthoredSongs.GetAuthoredSongsQuery(command.UserId));
         return Ok(songsInfo);
     }
     
@@ -84,7 +84,7 @@ public class MediaLibraryController : ControllerBase
     public async Task<IActionResult> CreateNewPlaylist([FromBody] CreateNewPlaylist.CreateNewPlaylistCommand command)
     {
         await _mediator.Send(command);
-        var playlistsInfo = await _mediator.Send(new GetAuthoredPlaylists.GetAuthoredPlaylistsQuery(command.UserId));
+        GetAuthoredPlaylists.Response playlistsInfo = await _mediator.Send(new GetAuthoredPlaylists.GetAuthoredPlaylistsQuery(command.UserId));
         return Ok(playlistsInfo);
     }
     
@@ -92,7 +92,7 @@ public class MediaLibraryController : ControllerBase
     public async Task<IActionResult> DeleteAuthoredSong([FromBody] DeleteAuthoredSong.DeleteAuthoredSongCommand command)
     {
         await _mediator.Send(command);
-        var songsInfo = await _mediator.Send(new GetAuthoredSongs.GetAuthoredSongsQuery(command.UserId));
+        GetAuthoredSongs.Response songsInfo = await _mediator.Send(new GetAuthoredSongs.GetAuthoredSongsQuery(command.UserId));
         return Ok(songsInfo);
     }
     
@@ -100,7 +100,7 @@ public class MediaLibraryController : ControllerBase
     public async Task<IActionResult> DeleteAuthoredPlaylist([FromBody] DeleteAuthoredPlaylist.DeleteAuthoredPlaylistCommand command)
     {
         await _mediator.Send(command);
-        var playlistsInfo = await _mediator.Send(new GetAuthoredPlaylists.GetAuthoredPlaylistsQuery(command.UserId));
+        GetAuthoredPlaylists.Response playlistsInfo = await _mediator.Send(new GetAuthoredPlaylists.GetAuthoredPlaylistsQuery(command.UserId));
         return Ok(playlistsInfo);
     }
 }

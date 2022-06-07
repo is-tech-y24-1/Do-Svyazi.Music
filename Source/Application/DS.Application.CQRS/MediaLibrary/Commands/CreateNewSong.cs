@@ -2,6 +2,7 @@
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess.Context;
+using DS.Domain;
 using MediatR;
 
 namespace DS.Application.CQRS.MediaLibrary.Commands;
@@ -20,13 +21,13 @@ public static class CreateNewSong
 
         public async Task<Unit> Handle(CreateNewSongCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var dto = request.SongCreationInfo;
+            SongCreationInfoDto? dto = request.SongCreationInfo;
             
-            var genre = await _context.SongGenres.FindAsync(dto.GenreId);
+            SongGenre? genre = await _context.SongGenres.FindAsync(dto.GenreId);
             if (genre is null)
                 throw new EntityNotFoundException(ExceptionMessages.GenreCannotBeFound);
 

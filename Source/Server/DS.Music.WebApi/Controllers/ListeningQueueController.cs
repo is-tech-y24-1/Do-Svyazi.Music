@@ -19,7 +19,7 @@ public class ListeningQueueController : ControllerBase
     [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetQueueInfo(Guid userId)
     {
-        var queueInfo = await _mediator.Send(new GetQueueInfo.GetInfoQuery(userId));
+        GetQueueInfo.Response? queueInfo = await _mediator.Send(new GetQueueInfo.GetInfoQuery(userId));
         return Ok(queueInfo);
     }
     
@@ -27,7 +27,7 @@ public class ListeningQueueController : ControllerBase
     public async Task<IActionResult> AddLastToQueue([FromBody] AddLastToQueue.AddLastToQueueCommand command)
     {
         await _mediator.Send(command);
-        var queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
+        Task<GetQueueInfo.Response>? queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
         return Ok(queueInfo);
     }
     
@@ -35,7 +35,7 @@ public class ListeningQueueController : ControllerBase
     public async Task<IActionResult> AddNextToQueue([FromBody] AddNextToQueue.AddNextToQueueCommand command)
     {
         await _mediator.Send(command);
-        var queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
+        Task<GetQueueInfo.Response>? queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
         return Ok(queueInfo);
     }
     
@@ -43,7 +43,7 @@ public class ListeningQueueController : ControllerBase
     public async Task<IActionResult> ChangeQueueSongPosition([FromBody] ChangeQueueSongPosition.ChangeQueueSongPositionCommand command)
     {
         await _mediator.Send(command);
-        var queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
+        Task<GetQueueInfo.Response>? queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
         return Ok(queueInfo);
     }
     
@@ -51,7 +51,7 @@ public class ListeningQueueController : ControllerBase
     public async Task<IActionResult> ClearQueue([FromBody] ClearQueue.ClearQueueCommand command)
     {
         await _mediator.Send(command);
-        var queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
+        Task<GetQueueInfo.Response>? queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
         return Ok(queueInfo);
     }
     
@@ -59,7 +59,7 @@ public class ListeningQueueController : ControllerBase
     public async Task<IActionResult> DeleteSongFromQueue([FromBody] DeleteFromQueue.DeleteFromQueueCommand command)
     {
         await _mediator.Send(command);
-        var queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
+        Task<GetQueueInfo.Response>? queueInfo = _mediator.Send(new GetQueueInfo.GetInfoQuery(command.UserId));
         return Ok(queueInfo);
     }
 }

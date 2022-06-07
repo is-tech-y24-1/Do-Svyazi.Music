@@ -25,7 +25,7 @@ public static class GetPlaylistInfo
 
         public async Task<Response> Handle(GetInfoQuery request, CancellationToken cancellationToken)
         {
-            var playlist = await _context.Playlists.FindAsync(request.PlaylistId);
+            Domain.Playlist? playlist = await _context.Playlists.FindAsync(request.PlaylistId);
             if (playlist is null)
                 throw new EntityNotFoundException(ExceptionMessages.PlaylistCannotBeFound);
             

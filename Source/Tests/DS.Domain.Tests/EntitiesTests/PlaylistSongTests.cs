@@ -35,7 +35,7 @@ public class PlaylistSongTests
 
         CollectionAssert.AreEqual(_songsToTest, playlistSongs);
         
-        foreach (var t in _songsToTest)
+        foreach (Song? t in _songsToTest)
         {
             Assert.IsTrue(playlistSongs.Contains(t));
             Assert.IsTrue(playlistSongs.Contains(t));
@@ -137,7 +137,7 @@ public class PlaylistSongTests
     public void GetAndSetSongAtIndex_AllDone(int index)
     {
         var playlistSongs = new PlaylistSongs(_songsToTest);
-        var element = playlistSongs[index];
+        Song? element = playlistSongs[index];
         Assert.AreEqual(_songsToTest[index], element);
         Assert.AreEqual(index, playlistSongs.IndexOf(element));
         

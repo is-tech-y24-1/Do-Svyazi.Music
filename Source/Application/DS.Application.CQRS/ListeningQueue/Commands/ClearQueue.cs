@@ -20,11 +20,11 @@ public static class ClearQueue
 
         public async Task<Unit> Handle(ClearQueueCommand request, CancellationToken cancellationToken)
         {
-            var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? musicUser = await _context.MusicUsers.FindAsync(request.UserId);
             if (musicUser is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.OwnerId);
+            Domain.ListeningQueue? listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.OwnerId);
             if (listeningQueue is null)
                 throw new EntityNotFoundException(ExceptionMessages.ListeningQueueCannotBeFound);
 

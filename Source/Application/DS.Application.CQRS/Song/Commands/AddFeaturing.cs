@@ -19,11 +19,11 @@ public static class AddFeaturing
 
         public async Task<Unit> Handle(AddFeaturingCommand request, CancellationToken cancellation)
         {
-            var user = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
             
-            var song = await _context.Songs.FindAsync(request.SongId);
+            Domain.Song? song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
                 throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
             

@@ -23,7 +23,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         Id = Guid.NewGuid();
         songs.ThrowIfNull();
         Count = 0;
-        foreach (var song in songs)
+        foreach (Song? song in songs)
             Add(song);
     }
 
@@ -42,7 +42,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         if (_head is null) yield break;
 
         yield return _head.Song;
-        var current = _head;
+        PlaylistSongNode? current = _head;
         while (current.NextSongNode is not null)
         {
             current = current.NextSongNode;
@@ -83,7 +83,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
     {
         item.ThrowIfNull();
 
-        foreach (var playlistSong in this)
+        foreach (Song? playlistSong in this)
         {
             if (playlistSong.Equals(item))
                 return true;
@@ -94,7 +94,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
 
     public void CopyTo(Song[] array, int arrayIndex)
     {
-        foreach (var playlistSong in this)
+        foreach (Song? playlistSong in this)
             array[arrayIndex++] = playlistSong;
     }
 
@@ -103,7 +103,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         item.ThrowIfNull();
         if (Count == 0) return false;
         PlaylistSongNode? previous = null;
-        var current = _head!;
+        PlaylistSongNode? current = _head!;
 
         while (current is not null)
         {
@@ -135,9 +135,9 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
     public int IndexOf(Song item)
     {
         item.ThrowIfNull();
-        var index = 0;
+        int index = 0;
         
-        foreach (var playlistSong in this)
+        foreach (Song? playlistSong in this)
         {
             if (item.Equals(playlistSong))
                 return index;
@@ -162,9 +162,9 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         }
         
         PlaylistSongNode? previous = null;
-        var current = _head!;
+        PlaylistSongNode? current = _head!;
         
-        for (var i = 0; i < index; i++)
+        for (int i = 0; i < index; i++)
         {
             previous = current;
             current = current!.NextSongNode;
@@ -189,9 +189,9 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
         
         PlaylistSongNode? previous = null;
-        var current = _head!;
+        PlaylistSongNode? current = _head!;
 
-        for (var i = 0; i < index; i++)
+        for (int i = 0; i < index; i++)
         {
             previous = current;
             current = current!.NextSongNode;
@@ -223,9 +223,9 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         if (index < 0 || index >= Count)
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
 
-        var current = _head;
+        PlaylistSongNode? current = _head;
 
-        for (var i = 0; i < index; i++)
+        for (int i = 0; i < index; i++)
         {
             current = current!.NextSongNode;
         }
@@ -240,9 +240,9 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         if (index < 0 || index >= Count)
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
         
-        var current = _head;
+        PlaylistSongNode? current = _head;
 
-        for (var i = 0; i < index; i++)
+        for (int i = 0; i < index; i++)
         {
             current = current!.NextSongNode;
         }

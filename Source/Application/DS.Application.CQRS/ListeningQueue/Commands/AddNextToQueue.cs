@@ -19,15 +19,15 @@ public static class AddNextToQueue
         }
         public async Task<Unit> Handle(AddNextToQueueCommand request, CancellationToken cancellationToken)
         {
-            var song = await _context.Songs.FindAsync(request.SongId);
+            Domain.Song? song = await _context.Songs.FindAsync(request.SongId);
             if (song is null)
                 throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
             
-            var musicUser = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? musicUser = await _context.MusicUsers.FindAsync(request.UserId);
             if (musicUser is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            var listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.OwnerId);
+            Domain.ListeningQueue? listeningQueue = await _context.ListeningQueues.FindAsync(musicUser.ListeningQueue.OwnerId);
             if (listeningQueue is null)
                 throw new EntityNotFoundException(ExceptionMessages.ListeningQueueCannotBeFound);
 

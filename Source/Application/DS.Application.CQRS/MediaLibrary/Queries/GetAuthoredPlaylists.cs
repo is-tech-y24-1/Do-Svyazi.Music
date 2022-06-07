@@ -25,7 +25,7 @@ public static class GetAuthoredPlaylists
 
         public async Task<Response> Handle(GetAuthoredPlaylistsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 

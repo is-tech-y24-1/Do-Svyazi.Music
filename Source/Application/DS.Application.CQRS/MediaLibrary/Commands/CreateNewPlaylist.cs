@@ -21,22 +21,22 @@ public static class CreateNewPlaylist
 
         public async Task<Unit> Handle(CreateNewPlaylistCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
             
-            var dto = request.PlaylistCreationInfo;
+            PlaylistCreationInfoDto? dto = request.PlaylistCreationInfo;
 
-            var firstSong = await _context.Songs.FindAsync(dto.SongsIds.First());
+            Domain.Song? firstSong = await _context.Songs.FindAsync(dto.SongsIds.First());
             if (firstSong is null)
                 throw new DoSvyaziMusicException(ExceptionMessages.NoSongsInPlaylist);
             
             var songs = new PlaylistSongs(firstSong);
-            for (var i = 1; i < dto.SongsIds.Count(); i++)
+            for (int i = 1; i < dto.SongsIds.Count(); i++)
             {
-                var songId = dto.SongsIds[i];
+                Guid songId = dto.SongsIds[i];
                 
-                var song = await _context.Songs.FindAsync(songId);
+                Domain.Song? song = await _context.Songs.FindAsync(songId);
                 if (song is null)
                     throw new EntityNotFoundException(ExceptionMessages.SongCannotBeFound);
                 

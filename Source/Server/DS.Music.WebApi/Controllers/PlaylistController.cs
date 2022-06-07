@@ -19,7 +19,7 @@ public class PlaylistController : ControllerBase
     [HttpGet("{userId:guid}/{playlistId:guid}")]
     public async Task<IActionResult> GetPlaylistInfo(Guid userId, Guid playlistId)
     {
-        var playlistInfo = await _mediator.Send(new GetPlaylistInfo.GetInfoQuery(userId, playlistId));
+        GetPlaylistInfo.Response? playlistInfo = await _mediator.Send(new GetPlaylistInfo.GetInfoQuery(userId, playlistId));
         return Ok(playlistInfo);
     }
 
@@ -27,7 +27,7 @@ public class PlaylistController : ControllerBase
     public async Task<IActionResult> AddSongToPlaylist([FromBody] AddSongToPlaylist.AddPlaylistSongCommand command)
     {
         await _mediator.Send(command);
-        var playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
+        Task<GetPlaylistInfo.Response>? playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
         return Ok(playlistInfo);
     }
     
@@ -35,7 +35,7 @@ public class PlaylistController : ControllerBase
     public async Task<IActionResult> ChangePlaylistSongPosition([FromBody] ChangePlaylistSongPosition.ChangePositionCommand command)
     {
         await _mediator.Send(command);
-        var playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
+        Task<GetPlaylistInfo.Response>? playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
         return Ok(playlistInfo);
     }
     
@@ -43,7 +43,7 @@ public class PlaylistController : ControllerBase
     public async Task<IActionResult> DeleteSongFromPlaylist([FromBody] DeleteSongFromPlaylist.DeletePlaylistSongCommand command)
     {
         await _mediator.Send(command);
-        var playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
+        Task<GetPlaylistInfo.Response>? playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
         return Ok(playlistInfo);
     }
 }

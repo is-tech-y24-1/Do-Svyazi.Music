@@ -18,7 +18,7 @@ public static class AddMusicUser
 
         public async Task<Unit> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
-            var dto = request.MusicUserCreationInfo;
+            MusicUserCreationInfoDto? dto = request.MusicUserCreationInfo;
             var musicUser = new Domain.MusicUser(dto.Id, dto.Name, dto.ProfilePictureUri);
             _context.MusicUsers.Add(musicUser);
 
