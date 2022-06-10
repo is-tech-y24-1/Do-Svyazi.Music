@@ -3,7 +3,7 @@
 public interface IContentStorage
 {
     string GenerateUri();
-    void CreateStorageFile(string uri, string fileName, byte[] data);
+    Task CreateStorageFile(string uri, byte[] data);
     void DeleteStorageFile(string uri);
-    byte[] GetFileData(string uri);
+    Task<byte[]> GetFileData(string uri);
 }

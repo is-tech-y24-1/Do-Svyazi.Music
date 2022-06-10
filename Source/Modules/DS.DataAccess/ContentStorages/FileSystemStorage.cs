@@ -1,24 +1,47 @@
-﻿namespace DS.DataAccess.ContentStorages;
+﻿using DS.Common.Exceptions;
+using DS.Common.Extensions;
+
+namespace DS.DataAccess.ContentStorages;
 
 public class FileSystemStorage : IContentStorage
 {
+    private readonly string _storageDirectoryPath;
+
+    public FileSystemStorage(string storageDirectoryPath)
+    {
+        _storageDirectoryPath = storageDirectoryPath.ThrowIfNull();
+        Directory.CreateDirectory(storageDirectoryPath);
+    }
+
     public string GenerateUri()
     {
         return Guid.NewGuid().ToString();
     }
 
-    public void CreateStorageFile(string uri, string fileName, byte[] data)
+    public async Task CreateStorageFile(string uri, byte[] data)
     {
-        throw new NotImplementedException();
+        uri.ThrowIfNull(uri);
+        string pathToFile = Path.Combine(_storageDirectoryPath, uri);
+        await File.WriteAllBytesAsync(pathToFile, data);
     }
 
     public void DeleteStorageFile(string uri)
     {
-        throw new NotImplementedException();
+        CheckIfContentExists(uri);
+        var file = new FileInfo(Path.Combine(_storageDirectoryPath, uri));
+        file.Delete();
     }
 
-    public byte[] GetFileData(string uri)
+    public async Task<byte[]> GetFileData(string uri)
     {
-        throw new NotImplementedException();
+        CheckIfContentExists(uri);
+        return await File.ReadAllBytesAsync(Path.Combine(_storageDirectoryPath, uri));
+    }
+
+    private void CheckIfContentExists(string uri)
+    {
+        uri.ThrowIfNull();
+        if (!File.Exists(Path.Combine(_storageDirectoryPath, uri)))
+            throw new ContentNotFoundException($"File with URI: {uri} not found in storage");
     }
 }
