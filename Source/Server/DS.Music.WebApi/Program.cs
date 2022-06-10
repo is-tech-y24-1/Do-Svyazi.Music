@@ -23,7 +23,7 @@ builder.Services.AddScoped<IMusicContext, MusicDbContext>();
 var storage =
     new FileSystemStorage(builder.Configuration
         .GetSection("StorageDirectories")
-        .GetValue<string>("WindowsTestDirectory"));
+        .GetValue<string>("RelativeTestDirectory"));
 
 builder.Services.AddScoped<IContentStorage>(_ => storage);
 
