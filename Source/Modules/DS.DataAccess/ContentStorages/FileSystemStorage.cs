@@ -13,14 +13,12 @@ public class FileSystemStorage : IContentStorage
         Directory.CreateDirectory(storageDirectoryPath);
     }
 
-    public string GenerateUri()
-    {
-        return Guid.NewGuid().ToString();
-    }
+    public string GenerateUri() => Guid.NewGuid().ToString();
 
-    public async Task CreateStorageFile(string uri, byte[] data)
+        public async Task CreateStorageFile(string uri, byte[] data)
     {
         uri.ThrowIfNull(uri);
+        data.ThrowIfNull();
         string pathToFile = Path.Combine(_storageDirectoryPath, uri);
         await File.WriteAllBytesAsync(pathToFile, data);
     }
