@@ -3,6 +3,5 @@
 public record MusicUserCreationInfoDto
 (
     Guid Id,
-    string Name,
-    string? ProfilePictureUri
+    string Name
 );

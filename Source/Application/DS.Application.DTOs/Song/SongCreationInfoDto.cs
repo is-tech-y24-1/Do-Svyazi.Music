@@ -4,7 +4,5 @@ public record SongCreationInfoDto
 (
     string Name,
     Guid GenreId,
-    Guid AuthorId,
-    string SongContentUri,
-    string? CoverUri = ""
+    Guid AuthorId
 );
