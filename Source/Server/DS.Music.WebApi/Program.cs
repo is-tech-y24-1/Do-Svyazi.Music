@@ -1,5 +1,6 @@
 using System.Reflection;
 using DS.DataAccess;
+using DS.DataAccess.ContentStorages;
 using DS.DataAccess.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,11 @@ builder.Services.AddDbContext<MusicDbContext>(opt =>
 });
 
 builder.Services.AddScoped<IMusicContext, MusicDbContext>();
+
+var storage =
+    new FileSystemStorage(builder.Configuration
+        .GetSection("StorageDirectories")
+        .GetValue<string>("WindowsTestDirectory"));
 
 WebApplication app = builder.Build();
 
