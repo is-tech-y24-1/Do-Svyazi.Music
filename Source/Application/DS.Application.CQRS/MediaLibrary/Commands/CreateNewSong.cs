@@ -1,6 +1,7 @@
 ﻿using DS.Application.DTO.Song;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
+using DS.DataAccess;
 using DS.DataAccess.Context;
 using DS.Domain;
 using MediatR;
@@ -14,9 +15,12 @@ public static class CreateNewSong
     public class Handler : IRequestHandler<CreateNewSongCommand>
     {
         private readonly MusicDbContext _context;
-        public Handler(MusicDbContext context)
+        private readonly IContentStorage _storage;
+        
+        public Handler(MusicDbContext context, IContentStorage storage)
         {
             _context = context;
+            _storage = storage;
         }
 
         public async Task<Unit> Handle(CreateNewSongCommand request, CancellationToken cancellationToken)
@@ -35,8 +39,8 @@ public static class CreateNewSong
             (
                 dto.Name,
                 genre, user,
-                dto.SongContentUri,
-                dto.CoverUri
+                _storage.GenerateUri(),
+                _storage.GenerateUri()
             );
             
             user.MediaLibrary.AddSong(song);

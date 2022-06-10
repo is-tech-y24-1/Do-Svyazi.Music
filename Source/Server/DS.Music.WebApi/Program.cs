@@ -25,6 +25,8 @@ var storage =
         .GetSection("StorageDirectories")
         .GetValue<string>("WindowsTestDirectory"));
 
+builder.Services.AddScoped<IContentStorage>(_ => storage);
+
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
