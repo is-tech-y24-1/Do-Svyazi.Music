@@ -1,6 +1,7 @@
 ﻿using DS.Application.DTO.Playlist;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
+using DS.DataAccess;
 using DS.DataAccess.Context;
 using DS.Domain;
 using MediatR;
@@ -14,9 +15,12 @@ public static class CreateNewPlaylist
     public class Handler : IRequestHandler<CreateNewPlaylistCommand>
     {
         private readonly MusicDbContext _context;
-        public Handler(MusicDbContext context)
+        private readonly IContentStorage _storage;
+        
+        public Handler(MusicDbContext context, IContentStorage storage)
         {
             _context = context;
+            _storage = storage;
         }
 
         public async Task<Unit> Handle(CreateNewPlaylistCommand request, CancellationToken cancellationToken)
@@ -49,7 +53,7 @@ public static class CreateNewPlaylist
                 user, songs,
                 dto.SharedForCommunity,
                 dto.Description,
-                dto.CoverUri
+                _storage.GenerateUri()
             );
             
             user.MediaLibrary.AddPlaylist(playlist);
