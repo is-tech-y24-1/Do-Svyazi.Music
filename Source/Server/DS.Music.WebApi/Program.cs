@@ -1,6 +1,7 @@
 using System.Reflection;
 using DS.DataAccess;
 using DS.DataAccess.Context;
+using DS.Music.WebApi.Middlewares;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionMiddleware();
 
 app.UseHttpsRedirection();
 
