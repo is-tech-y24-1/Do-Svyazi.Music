@@ -96,7 +96,8 @@ public sealed class MusicDbContext : DbContext, IMusicContext
 
     private static void ConfigureMediaLibrary(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<MediaLibrary>().Property(ml => ml.Id).ValueGeneratedNever();
+        modelBuilder.Entity<MediaLibrary>().HasKey(ml => ml.OwnerId);
+        modelBuilder.Entity<MediaLibrary>().Property(ml => ml.OwnerId).ValueGeneratedNever();
         modelBuilder.Entity<MediaLibrary>().Ignore(ml => ml.Playlists);
         modelBuilder.Entity<MediaLibrary>().Ignore(ml => ml.AuthoredPlaylists);
         modelBuilder.Entity<MediaLibrary>().Ignore(ml => ml.Songs);
