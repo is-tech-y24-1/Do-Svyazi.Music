@@ -11,7 +11,7 @@ public class MediaLibrarySong : IEquatable<MediaLibrarySong>
         MediaLibrary = mediaLibrary.ThrowIfNull();
         Song = song.ThrowIfNull();
 
-        MediaLibraryId = mediaLibrary.Id;
+        MediaLibraryId = mediaLibrary.OwnerId;
         SongId = song.Id;
     }
     
