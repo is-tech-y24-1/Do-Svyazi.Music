@@ -2,7 +2,7 @@ using System.Reflection;
 using DS.DataAccess;
 using DS.DataAccess.ContentStorages;
 using DS.DataAccess.Context;
-using DS.Music.WebApi.Middlewares;
+using DS.DataAccess.Seeding;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +19,7 @@ builder.Services.AddDbContext<MusicDbContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteTest"));
 });
 
+builder.Services.AddScoped<IDbContextSeeder, EmptySeeder>();
 builder.Services.AddScoped<IMusicContext, MusicDbContext>();
 
 var storage =
