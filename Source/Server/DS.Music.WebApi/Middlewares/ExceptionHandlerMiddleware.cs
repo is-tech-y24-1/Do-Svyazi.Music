@@ -17,26 +17,30 @@ public class ExceptionHandlerMiddleware
         {
             await _next(context);
         }
-        catch (EntityNotFoundException e)
-        {
-            context.Response.StatusCode = StatusCodes.Status404NotFound;
-            context.Response.ContentType = "text/*";
-
-            await context.Response.WriteAsync(e.Message);
-        }
-        catch (DoSvyaziMusicException e)
-        {
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            context.Response.ContentType = "text/*";
-
-            await context.Response.WriteAsync(e.Message);
-        }
         catch (Exception e)
         {
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            context.Response.ContentType = "text/*";
+            switch (e)
+            {
+                case ContentNotFoundException:
+                case EntityNotFoundException:
+                    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                    context.Response.ContentType = "text/*";
 
-            await context.Response.WriteAsync(e.Message);
+                    await context.Response.WriteAsync(e.Message);
+                    break;
+                case DoSvyaziMusicException:
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    context.Response.ContentType = "text/*";
+
+                    await context.Response.WriteAsync(e.Message);
+                    break;
+                default:
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    context.Response.ContentType = "text/*";
+
+                    await context.Response.WriteAsync(e.Message);
+                    break;
+            }
         }
     }
 }
