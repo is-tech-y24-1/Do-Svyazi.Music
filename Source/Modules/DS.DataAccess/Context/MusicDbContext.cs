@@ -1,13 +1,17 @@
-﻿using DS.Domain;
+﻿using DS.Common.Extensions;
+using DS.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DS.DataAccess.Context;
 
 public sealed class MusicDbContext : DbContext, IMusicContext
 {
-    public MusicDbContext(DbContextOptions<MusicDbContext> options)
+    private readonly IDbContextSeeder _seeder;
+    
+    public MusicDbContext(DbContextOptions<MusicDbContext> options, IDbContextSeeder seeder)
         : base(options)
     {
+        _seeder = seeder.ThrowIfNull();
         Database.EnsureCreated();
     }
     
@@ -33,6 +37,9 @@ public sealed class MusicDbContext : DbContext, IMusicContext
         ConfigurePlaylist(modelBuilder);
         ConfigureListeningQueue(modelBuilder);
         ConfigureMediaLibrary(modelBuilder);
+        
+        _seeder.Seed(modelBuilder);
+        base.OnModelCreating(modelBuilder);
     }
 
     private static void ConfigureMusicUser(ModelBuilder modelBuilder)
