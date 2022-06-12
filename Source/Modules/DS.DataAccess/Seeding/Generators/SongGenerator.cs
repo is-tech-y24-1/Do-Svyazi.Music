@@ -10,7 +10,7 @@ public class SongGenerator
     private const int MinFeaturing = 0;
     private const int MaxFeaturing = 2;
 
-    public IReadOnlyCollection<Song> GenerateSongs(ICollection<MusicUser> authors, ICollection<SongGenre> genres, int count)
+    public ICollection<Song> GenerateSongs(ICollection<MusicUser> authors, ICollection<SongGenre> genres, int count)
     {
         authors.ThrowIfNull();
         genres.ThrowIfNull();
