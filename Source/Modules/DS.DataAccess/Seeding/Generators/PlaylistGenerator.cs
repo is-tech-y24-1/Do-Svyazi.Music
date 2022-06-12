@@ -10,7 +10,7 @@ public class PlaylistGenerator
     private const int SongsMin = 2;
     private const int SongsMax = 20;
 
-    public IReadOnlyCollection<Playlist> GeneratePlaylists(
+    public ICollection<Playlist> GeneratePlaylists(
         ICollection<Song> songs,
         ICollection<MusicUser> authors,
         int count)
