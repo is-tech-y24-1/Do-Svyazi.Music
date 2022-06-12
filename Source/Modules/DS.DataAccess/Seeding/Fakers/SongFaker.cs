@@ -11,12 +11,12 @@ public sealed class SongFaker : AutoFaker<Song>
         author.ThrowIfNull();
         genre.ThrowIfNull();
         
-        RuleFor(e => e.Id, Guid.NewGuid());
-        RuleFor(e => e.Name, f => f.Lorem.Word());
-        RuleFor(e => e.ContentUri, f => f.Internet.Url());
-        RuleFor(e => e.CoverUri, f => f.Image.PicsumUrl());
-        RuleFor(e => e.Author, author);
-        RuleFor(e => e.Genre, genre);
-        RuleFor(e => e.SharedForCommunity, true);
+        RuleFor(song => song.Id, Guid.NewGuid());
+        RuleFor(song => song.Name, faker => faker.Lorem.Word());
+        RuleFor(song => song.ContentUri, faker => faker.Internet.Url());
+        RuleFor(song => song.CoverUri, faker => faker.Image.PicsumUrl());
+        RuleFor(song => song.Author, author);
+        RuleFor(song => song.Genre, genre);
+        RuleFor(song => song.SharedForCommunity, true);
     }
 }

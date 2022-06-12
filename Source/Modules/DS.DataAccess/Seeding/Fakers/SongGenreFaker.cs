@@ -7,7 +7,7 @@ public sealed class SongGenreFaker : AutoFaker<SongGenre>
 {
     public SongGenreFaker()
     {
-        RuleFor(e => e.Id, Guid.NewGuid);
-        RuleFor(e => e.Name, f => f.Music.Genre());
+        RuleFor(songGenre => songGenre.Id, Guid.NewGuid);
+        RuleFor(songGenre => songGenre.Name, faker => faker.Music.Genre());
     }
 }

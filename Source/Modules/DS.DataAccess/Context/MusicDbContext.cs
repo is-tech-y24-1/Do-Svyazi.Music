@@ -8,7 +8,6 @@ public sealed class MusicDbContext : DbContext, IMusicContext
     public MusicDbContext(DbContextOptions<MusicDbContext> options)
         : base(options)
     {
-        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
     
