@@ -10,7 +10,7 @@ public class SongGenerator
     private const int MinFeaturing = 0;
     private const int MaxFeaturing = 2;
 
-    public ICollection<Song> GenerateSongs(ICollection<MusicUser> authors, ICollection<SongGenre> genres, int count)
+    public static ICollection<Song> GenerateSongs(ICollection<MusicUser> authors, ICollection<SongGenre> genres, int count)
     {
         authors.ThrowIfNull();
         genres.ThrowIfNull();
@@ -32,7 +32,7 @@ public class SongGenerator
         return songs;
     }
 
-    private void AddFeaturing(Song song, ICollection<MusicUser> users, Faker faker)
+    private static void AddFeaturing(Song song, ICollection<MusicUser> users, Faker faker)
     {
         int n = faker.Random.Int(MinFeaturing, MaxFeaturing);
 

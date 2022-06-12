@@ -5,7 +5,7 @@ namespace DS.DataAccess.Seeding.Generators;
 
 public class MusicUserGenerator
 {
-    public ICollection<MusicUser> GenerateMusicUsers(int count)
+    public static ICollection<MusicUser> GenerateMusicUsers(int count)
     {
         return new MusicUserFaker().Generate(count);
     }

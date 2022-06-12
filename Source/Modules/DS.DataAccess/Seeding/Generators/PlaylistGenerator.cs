@@ -10,7 +10,7 @@ public class PlaylistGenerator
     private const int SongsMin = 2;
     private const int SongsMax = 20;
 
-    public ICollection<Playlist> GeneratePlaylists(
+    public static ICollection<Playlist> GeneratePlaylists(
         ICollection<Song> songs,
         ICollection<MusicUser> authors,
         int count)
@@ -34,7 +34,7 @@ public class PlaylistGenerator
         return playlists;
     }
 
-    private PlaylistSongs GeneratePlaylistSongs(ICollection<Song> songs, Faker faker)
+    private static PlaylistSongs GeneratePlaylistSongs(ICollection<Song> songs, Faker faker)
     {
         int n = faker.Random.Int(SongsMin, SongsMax);
         var playlistSongs = new PlaylistSongs();

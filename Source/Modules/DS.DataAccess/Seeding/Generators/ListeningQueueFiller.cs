@@ -9,7 +9,7 @@ public class ListeningQueueFiller
     private const int MinContent = 0;
     private const int MaxContent = 20;
 
-    public void FillListeningQueues(ICollection<MusicUser> users, ICollection<Song> songs)
+    public static void FillListeningQueues(ICollection<MusicUser> users, ICollection<Song> songs)
     {
         users.ThrowIfNull();
         songs.ThrowIfNull();
@@ -25,7 +25,7 @@ public class ListeningQueueFiller
         }
     }
     
-    private PlaylistSongs GeneratePlaylistSongs(ICollection<Song> songs, Faker faker)
+    private static PlaylistSongs GeneratePlaylistSongs(ICollection<Song> songs, Faker faker)
     {
         int n = faker.Random.Int(MinContent, MaxContent);
         var playlistSongs = new PlaylistSongs();
