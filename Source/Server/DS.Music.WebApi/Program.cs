@@ -3,6 +3,7 @@ using DS.DataAccess;
 using DS.DataAccess.ContentStorages;
 using DS.DataAccess.Context;
 using DS.DataAccess.Seeding;
+using DS.Music.WebApi.Middlewares;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
