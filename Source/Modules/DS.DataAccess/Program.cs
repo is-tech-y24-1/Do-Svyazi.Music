@@ -6,4 +6,3 @@ DbContextOptions<MusicDbContext> options = new DbContextOptionsBuilder<MusicDbCo
 var test = new MusicDbContext(options);
 var seeder = new AutoBogusSeeder();
 seeder.Seed(test);
-
