@@ -7,6 +7,13 @@ public class MusicUserGenerator
 {
     public static ICollection<MusicUser> GenerateMusicUsers(int count)
     {
-        return new MusicUserFaker().Generate(count);
+        var users = new List<MusicUser>();
+
+        for (int i = 0; i < count; i++)
+        {
+            users.Add(new MusicUserFaker().Generate());
+        }
+
+        return users;
     }
 }

@@ -20,7 +20,6 @@ builder.Services.AddDbContext<MusicDbContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteTest"));
 });
 
-builder.Services.AddScoped<IDbContextSeeder, EmptySeeder>();
 builder.Services.AddScoped<IMusicContext, MusicDbContext>();
 
 var storage =
