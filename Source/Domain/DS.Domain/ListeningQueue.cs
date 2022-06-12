@@ -19,7 +19,7 @@ public class ListeningQueue
     public void AddNextSongToPlay(Song song)
     {
         song.ThrowIfNull();
-        _songs.Insert(1, song);
+        _songs.Insert(_songs.Count == 0 ? 0 : 1, song);
     }
 
     public void AddLastToPlay(Song song)
