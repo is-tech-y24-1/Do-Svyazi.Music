@@ -8,10 +8,10 @@ public sealed class MusicUserFaker : AutoFaker<MusicUser>
     public MusicUserFaker()
     {
         var id = Guid.NewGuid();
-        RuleFor(e => e.Id, id);
-        RuleFor(e => e.Name, f => f.Internet.UserName());
-        RuleFor(e => e.ProfilePictureUri, f => f.Internet.Avatar());
-        RuleFor(e => e.MediaLibrary, new MediaLibrary(id));
-        RuleFor(e => e.ListeningQueue, new ListeningQueue(id));
+        RuleFor(musicUser => musicUser.Id, id);
+        RuleFor(musicUser => musicUser.Name, faker => faker.Internet.UserName());
+        RuleFor(musicUser => musicUser.ProfilePictureUri, faker => faker.Internet.Avatar());
+        RuleFor(musicUser => musicUser.MediaLibrary, new MediaLibrary(id));
+        RuleFor(musicUser => musicUser.ListeningQueue, new ListeningQueue(id));
     }
 }

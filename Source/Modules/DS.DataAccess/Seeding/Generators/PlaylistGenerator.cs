@@ -10,12 +10,7 @@ public class PlaylistGenerator
     private const int SongsMin = 2;
     private const int SongsMax = 20;
 
-    public static ICollection<Playlist> GeneratePlaylists
-        (
-            ICollection<Song> songs, 
-            ICollection<MusicUser> authors, 
-            int count
-        )
+    public static ICollection<Playlist> GeneratePlaylists(ICollection<Song> songs, ICollection<MusicUser> authors, int count)
     {
         songs.ThrowIfNull();
         authors.ThrowIfNull();
