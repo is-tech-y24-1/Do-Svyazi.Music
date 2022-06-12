@@ -26,7 +26,14 @@ public class PlaylistGenerator
             MusicUser author = faker.PickRandom(authors);
             PlaylistSongs content = GeneratePlaylistSongs(songs, faker);
 
-            Playlist playlist = new PlaylistFaker(author, content).Generate();
+            Playlist playlist = new PlaylistFaker(author).Generate();
+            IReadOnlyCollection<Song> songsToDelete = playlist.Songs.ToList();
+            foreach (Song playlistSong in content)
+                playlist.AddSong(playlistSong);
+            
+            foreach (Song playlistSong in songsToDelete)
+                playlist.DeleteSong(playlistSong);
+
             author.MediaLibrary.AddPlaylist(playlist);
             playlists.Add(playlist);
         }
