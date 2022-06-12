@@ -4,12 +4,12 @@ using DS.Domain;
 
 namespace DS.DataAccess.Seeding.Generators;
 
-public class MediaLibraryGenerator
+public class MediaLibraryFiller
 {
     private const int MinContent = 0;
     private const int MaxContent = 20;
 
-    public void FillMediaLibraries(ICollection<MusicUser> users, ICollection<Playlist> playlists, ICollection<Song> songs)
+    public static void FillMediaLibraries(ICollection<MusicUser> users, ICollection<Playlist> playlists, ICollection<Song> songs)
     {
         users.ThrowIfNull();
         playlists.ThrowIfNull();
@@ -24,7 +24,7 @@ public class MediaLibraryGenerator
         }
     }
 
-    private void FillWithSongs(MusicUser musicUser, ICollection<Song> songs, Faker faker)
+    private static void FillWithSongs(MusicUser musicUser, ICollection<Song> songs, Faker faker)
     {
         int n = faker.Random.Int(MinContent, MaxContent);
 
@@ -39,7 +39,7 @@ public class MediaLibraryGenerator
         }
     }
 
-    private void FillWithPlaylists(MusicUser musicUser, ICollection<Playlist> playlists, Faker faker)
+    private static void FillWithPlaylists(MusicUser musicUser, ICollection<Playlist> playlists, Faker faker)
     {
         int n = faker.Random.Int(MinContent, MaxContent);
 

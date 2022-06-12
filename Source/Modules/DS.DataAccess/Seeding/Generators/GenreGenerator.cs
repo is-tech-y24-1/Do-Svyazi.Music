@@ -5,7 +5,7 @@ namespace DS.DataAccess.Seeding.Generators;
 
 public class GenreGenerator
 {
-    public ICollection<SongGenre> GenerateSongGenres(int count)
+    public static ICollection<SongGenre> GenerateSongGenres(int count)
     {
         return new SongGenreFaker().Generate(count);
     }
