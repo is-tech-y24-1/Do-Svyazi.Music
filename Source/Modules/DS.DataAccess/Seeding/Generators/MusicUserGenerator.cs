@@ -10,9 +10,7 @@ public class MusicUserGenerator
         var users = new List<MusicUser>();
 
         for (int i = 0; i < count; i++)
-        {
             users.Add(new MusicUserFaker().Generate());
-        }
 
         return users;
     }

@@ -11,12 +11,12 @@ public class MediaLibrary : IEquatable<MediaLibrary>
 
     protected MediaLibrary() {}
     
-    public MediaLibrary(Guid ownerOwnerId)
+    public MediaLibrary(Guid ownerId)
     {
-        if (ownerOwnerId == Guid.Empty)
+        if (ownerId == Guid.Empty)
             throw new GuidIsEmptyException(nameof(Guid));
 
-        OwnerId = ownerOwnerId;
+        OwnerId = ownerId;
         _songs = new List<Song>();
         _playlists = new List<Playlist>();
     }
