@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DS.DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DS.DataAccess;
 
 public interface IDbContextSeeder
 {
-    void Seed(ModelBuilder modelBuilder);
+    void Seed(MusicDbContext context);
 }

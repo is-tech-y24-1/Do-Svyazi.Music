@@ -6,12 +6,10 @@ namespace DS.DataAccess.Context;
 
 public sealed class MusicDbContext : DbContext, IMusicContext
 {
-    private readonly IDbContextSeeder _seeder;
-    
-    public MusicDbContext(DbContextOptions<MusicDbContext> options, IDbContextSeeder seeder)
+    public MusicDbContext(DbContextOptions<MusicDbContext> options)
         : base(options)
     {
-        _seeder = seeder.ThrowIfNull();
+        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
     
@@ -37,14 +35,13 @@ public sealed class MusicDbContext : DbContext, IMusicContext
         ConfigurePlaylist(modelBuilder);
         ConfigureListeningQueue(modelBuilder);
         ConfigureMediaLibrary(modelBuilder);
-        
-        _seeder.Seed(modelBuilder);
         base.OnModelCreating(modelBuilder);
     }
 
     private static void ConfigureMusicUser(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<MusicUser>().Property(mu => mu.Id).ValueGeneratedNever();
+        // modelBuilder.Entity<MusicUser>().HasOne(mu => mu.ListeningQueue).WithOne().HasForeignKey("OwnerId");
 
         modelBuilder.Entity<FeaturingUser>()
             .HasKey(fu => new {fu.SongId, fu.MusicUserId});
