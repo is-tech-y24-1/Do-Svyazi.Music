@@ -39,7 +39,7 @@ public class SongGenerator
         for (int i = 0; i < n; i++)
         {
             MusicUser feat = faker.PickRandom(users);
-            if (song.Featuring.Contains(feat))
+            if (song.Featuring.Contains(feat) || song.Author.Equals(feat))
                 continue;
             
             song.AddFeaturingUser(feat);
