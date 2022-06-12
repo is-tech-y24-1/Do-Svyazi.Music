@@ -8,6 +8,10 @@ public class Playlist
 {
     private readonly PlaylistSongs _songs;
     
+    #pragma warning disable CS0169
+    private readonly List<MediaLibrary> _addedToLibraries;
+    #pragma warning restore CS0169
+    
     protected Playlist() {}
 
     public Playlist
