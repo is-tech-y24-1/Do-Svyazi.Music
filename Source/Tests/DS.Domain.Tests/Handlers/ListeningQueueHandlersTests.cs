@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using DS.Application.CQRS.ListeningQueue.Commands;
 using DS.Application.CQRS.ListeningQueue.Queries;
-using DS.Application.CQRS.Mapping;
 using DS.Application.DTO.ListeningQueue;
 using DS.Application.DTO.Song;
 using DS.DataAccess.Context;
@@ -27,8 +25,8 @@ public class ListeningQueueHandlersTests
     [SetUp]
     public void SetUp()
     {
-        DbContextOptions<MusicDbContext> options = new DbContextOptionsBuilder<MusicDbContext>()
-            .UseInMemoryDatabase("MockDb")
+        var options = new DbContextOptionsBuilder<MusicDbContext>()
+            .UseInMemoryDatabase("ChurkaDb")
             .Options;
         _context = new MusicDbContext(options);
         
@@ -36,9 +34,6 @@ public class ListeningQueueHandlersTests
         _context.Add(_musicUser);
 
         var songs = GenerateSongs(2);
-        
-        foreach (var song in songs)
-            _context.Add(song);
         
         _firstSong = songs[0];
         _secondSong = songs[1];
@@ -100,8 +95,8 @@ public class ListeningQueueHandlersTests
         await handler.Handle(clearQueueCommand, CancellationToken.None);
         
         Assert.IsEmpty(await GetQueueSongs());
-        Assert.True(SongExistsInDatabase(_firstSong));
-        Assert.True(SongExistsInDatabase(_secondSong));
+        Assert.True(Helpers.EntityExistsInDatabase(_firstSong, _context));
+        Assert.True(Helpers.EntityExistsInDatabase(_secondSong, _context));
     }
 
     [Test]
@@ -114,7 +109,7 @@ public class ListeningQueueHandlersTests
         var command = new DeleteFromQueue.DeleteFromQueueCommand(_musicUser.Id, _firstSong.Id);
         await handler.Handle(command, CancellationToken.None);
         
-        Assert.True(SongExistsInDatabase(_firstSong));
+        Assert.True(Helpers.EntityExistsInDatabase(_firstSong, _context));
         Assert.False((await GetQueueSongs()).Contains(_firstSong));
         Assert.Contains(_secondSong, await GetQueueSongs());
     }
@@ -133,39 +128,28 @@ public class ListeningQueueHandlersTests
         var refSongsOrder = new List<Song> { songs[0], songs[1], songs[3], songs[4] };
         var actualSongs = await GetQueueSongs();
         
-        for (int i = 0; i < actualSongs.Count; i++)
-        {
-            if (!refSongsOrder[i].Equals(actualSongs[i]))
-                Assert.Fail();
-        }
-        
-        Assert.True(SongExistsInDatabase(songs[2]));
+        Assert.True(Helpers.EntityExistsInDatabase(songs[2], _context));
+        CollectionAssert.AreEqual(refSongsOrder, actualSongs);
         CollectionAssert.DoesNotContain(await GetQueueSongs(),songs[2]);
     }
 
     [Test]
     public async Task GetQueueInfo_InformationRetrieved()
     {
-        var mapperConfig = new MapperConfiguration(c =>
-        {
-            c.AddProfile<DomainToResponse>();
-        });
-        var mapper = mapperConfig.CreateMapper();
+        var mapper = Helpers.GenerateMapper();
         
         await PopulateQueueWithSongs();
 
         var handler = new GetQueueInfo.Handler(_context, mapper);
         
-        var command = new GetQueueInfo.GetInfoQuery(_musicUser.Id);
-        var response = await handler.Handle(command, CancellationToken.None);
+        var query = new GetQueueInfo.GetInfoQuery(_musicUser.Id);
+        var response = await handler.Handle(query, CancellationToken.None);
 
         var refDto = GenerateRefDto();
 
         Assert.AreEqual(refDto.OwnerId, response.QueueInfo.OwnerId);
         CollectionAssert.AreEqual(refDto.Songs, response.QueueInfo.Songs);
     }
-    
-    private bool SongExistsInDatabase(Song song) => _context.Set<Song>().Local.Any(e => e.Equals(song));
 
     private async Task<List<Song>> GetQueueSongs()
     {
@@ -189,10 +173,7 @@ public class ListeningQueueHandlersTests
     private async Task PopulateQueueWithSongs(List<Song> songs)
     {
         var handler = new AddLastToQueue.Handler(_context);
-
-        foreach (var song in songs)
-            _context.Add(song);
-
+        
         foreach (var song in songs)
         {
             var command = new AddLastToQueue.AddLastToQueueCommand(_musicUser.Id, song.Id);
@@ -202,21 +183,26 @@ public class ListeningQueueHandlersTests
 
     private List<Song> GenerateSongs(int count)
     {
-        return SongGenerator.GenerateSongs
+        var songs = SongGenerator.GenerateSongs
         (
             new List<MusicUser> {_musicUser},
             GenreGenerator.GenerateSongGenres(1),
             count
         ).ToList();
+
+        foreach (var song in songs)
+            _context.Add(song);
+
+        return songs;
     }
 
     private ListeningQueueInfoDto GenerateRefDto()
     {
         return new ListeningQueueInfoDto(_musicUser.Id, new List<SongInfoDto>()
         {
-            new SongInfoDto(_firstSong.Name, _firstSong.Genre.Name, _firstSong.Author.Name, _firstSong.ContentUri,
+            new (_firstSong.Name, _firstSong.Genre.Name, _firstSong.Author.Name, _firstSong.ContentUri,
                 _firstSong.CoverUri),
-            new SongInfoDto(_secondSong.Name, _secondSong.Genre.Name, _secondSong.Author.Name, _secondSong.ContentUri,
+            new (_secondSong.Name, _secondSong.Genre.Name, _secondSong.Author.Name, _secondSong.ContentUri,
                 _secondSong.CoverUri)
         });
     }

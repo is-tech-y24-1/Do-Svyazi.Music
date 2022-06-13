@@ -33,7 +33,16 @@ public static class DeleteAuthoredSong
                 if (user.MediaLibrary.Songs.Contains(song)) 
                     user.MediaLibrary.DeleteSong(song);
             }
-
+            
+            await _context.SaveChangesAsync(cancellationToken);
+            
+            var mediaLibrary = await _context.MediaLibraries.FindAsync(request.UserId);
+            if (mediaLibrary is null)
+                throw new EntityNotFoundException("Something went wrong");
+            
+            await _context.Entry(mediaLibrary).Collection("_songs").LoadAsync(cancellationToken);
+            _context.Remove(song);
+            
             await _context.SaveChangesAsync(cancellationToken);
             
             return Unit.Value;
