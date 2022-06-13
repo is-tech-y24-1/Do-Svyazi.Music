@@ -37,6 +37,15 @@ public static class DeleteAuthoredPlaylist
 
             await _context.SaveChangesAsync(cancellationToken);
             
+            var mediaLibrary = await _context.MediaLibraries.FindAsync(request.UserId);
+            if (mediaLibrary is null)
+                throw new EntityNotFoundException("Something went wrong");
+            
+            await _context.Entry(mediaLibrary).Collection("_playlists").LoadAsync(cancellationToken);
+            _context.Remove(playlist);
+            
+            await _context.SaveChangesAsync(cancellationToken);
+            
             return Unit.Value;
         }
     }
