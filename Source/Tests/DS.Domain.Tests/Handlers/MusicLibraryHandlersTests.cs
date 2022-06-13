@@ -33,11 +33,11 @@ public class MusicLibraryHandlersTests
             .Options;
         _context = new MusicDbContext(options);
 
-        _musicUser = MusicUserGenerator.GenerateMusicUsers(1).First();
+        _musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         _context.Add(_musicUser);
 
-        _song = GenerateSongs(1, _musicUser).First();
-        _playlist = GeneratePlaylists(_musicUser, 1).First();
+        _song = GenerateSongs(Helpers.Constants.SingleEntity, _musicUser).First();
+        _playlist = GeneratePlaylists(_musicUser, Helpers.Constants.SingleEntity).First();
     }
 
     [TearDown]
@@ -61,8 +61,8 @@ public class MusicLibraryHandlersTests
     {
         var handler = new AddSong.Handler(_context);
 
-        var songToAdd = GenerateSongs(1, _musicUser).First();
-        var musicUser = MusicUserGenerator.GenerateMusicUsers(1).First();
+        var songToAdd = GenerateSongs(Helpers.Constants.SingleEntity, _musicUser).First();
+        var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         _context.Add(musicUser);
         
         var command = new AddSong.AddSongCommand(musicUser.Id, songToAdd.Id);
@@ -101,7 +101,7 @@ public class MusicLibraryHandlersTests
         var storage = new SystemStorageStub();
         var handler = new CreateNewSong.Handler(_context, storage);
 
-        var genre = GenreGenerator.GenerateSongGenres(1).First();
+        var genre = GenreGenerator.GenerateSongGenres(Helpers.Constants.SingleEntity).First();
         _context.Add(genre);
         
         var songCreationDto = new SongCreationInfoDto
@@ -122,7 +122,7 @@ public class MusicLibraryHandlersTests
     [Test]
     public async Task DeleteAuthoredPlaylist_PlaylistDeleted()
     {
-        var newMusicUser = MusicUserGenerator.GenerateMusicUsers(1).First();
+        var newMusicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         _context.Add(newMusicUser);
 
         await AddPlaylistToUser(_playlist, newMusicUser);
@@ -140,7 +140,7 @@ public class MusicLibraryHandlersTests
     [Test]
     public async Task DeleteAuthoredSong_SongDeleted()
     {
-        var newMusicUser = MusicUserGenerator.GenerateMusicUsers(1).First();
+        var newMusicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         _context.Add(newMusicUser);
 
         await AddSongToUser(_song, newMusicUser);
@@ -184,8 +184,8 @@ public class MusicLibraryHandlersTests
     {
         var mapper = Helpers.GenerateMapper();
 
-        var newAuthor = MusicUserGenerator.GenerateMusicUsers(1).First();
-        var playlistToAdd = GeneratePlaylists(newAuthor, 1).First();
+        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        var playlistToAdd = GeneratePlaylists(newAuthor, Helpers.Constants.SingleEntity).First();
 
         await AddPlaylistToUser(playlistToAdd, _musicUser);
         
@@ -209,8 +209,8 @@ public class MusicLibraryHandlersTests
         var mapper = Helpers.GenerateMapper();
         var refSongDto = GenerateRefSongDto(_song);
         
-        var newAuthor = MusicUserGenerator.GenerateMusicUsers(1).First();
-        var songToAdd = GenerateSongs(1, newAuthor).First();
+        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        var songToAdd = GenerateSongs(Helpers.Constants.SingleEntity, newAuthor).First();
 
         await AddSongToUser(songToAdd, _musicUser);
         
@@ -228,7 +228,7 @@ public class MusicLibraryHandlersTests
     {
         var mapper = Helpers.GenerateMapper();
         
-        var newAuthor = MusicUserGenerator.GenerateMusicUsers(1).First();
+        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         var playlistToAdd = PlaylistGenerator.GeneratePlaylists
         (
             new List<Song> {_song},
@@ -266,8 +266,8 @@ public class MusicLibraryHandlersTests
     {
         var mapper = Helpers.GenerateMapper();
         
-        var newAuthor = MusicUserGenerator.GenerateMusicUsers(1).First();
-        var songToAdd = GenerateSongs(1, newAuthor).First();
+        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        var songToAdd = GenerateSongs(Helpers.Constants.SingleEntity, newAuthor).First();
         await AddSongToUser(songToAdd, _musicUser);
         
         var refSongDto1 = GenerateRefSongDto(_song);
@@ -333,12 +333,12 @@ public class MusicLibraryHandlersTests
     
     private Playlist GeneratePlaylist()
     {
-        var playlistAuthor = MusicUserGenerator.GenerateMusicUsers(1).First();
+        var playlistAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         var playlist = PlaylistGenerator.GeneratePlaylists
         (
             new List<Song> { _song }, 
             new List<MusicUser> { playlistAuthor }, 
-            1
+            Helpers.Constants.SingleEntity
         ).First();
         
         _context.Add(playlist);
@@ -366,7 +366,7 @@ public class MusicLibraryHandlersTests
         var songs =  SongGenerator.GenerateSongs
         (
             new List<MusicUser> { author },
-            GenreGenerator.GenerateSongGenres(1),
+            GenreGenerator.GenerateSongGenres(Helpers.Constants.SingleEntity),
             count
         ).ToList();
 

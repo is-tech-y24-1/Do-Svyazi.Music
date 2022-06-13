@@ -33,7 +33,7 @@ public class MusicUserHandlersTests
     [Test]
     public async Task AddMusicUser_UserAdded()
     {
-         var musicUser = MusicUserGenerator.GenerateMusicUsers(1).First();
+         var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         
          await  AddUserToDataBase(musicUser);
         
@@ -43,7 +43,7 @@ public class MusicUserHandlersTests
     [Test]
     public async Task GetMusicUserInfo_InfoRetrieved()
     {
-        var musicUser = MusicUserGenerator.GenerateMusicUsers(1).First();
+        var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         
         await AddUserToDataBase(musicUser);
         

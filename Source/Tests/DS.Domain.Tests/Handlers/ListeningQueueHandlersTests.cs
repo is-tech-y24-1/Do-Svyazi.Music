@@ -30,7 +30,7 @@ public class ListeningQueueHandlersTests
             .Options;
         _context = new MusicDbContext(options);
         
-        _musicUser = MusicUserGenerator.GenerateMusicUsers(1).First();
+        _musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         _context.Add(_musicUser);
 
         var songs = GenerateSongs(2);
@@ -76,7 +76,7 @@ public class ListeningQueueHandlersTests
             (
                 _musicUser.Id,
                 _firstSong.Id, 
-                1
+                Helpers.Constants.SingleEntity
             );
         await handler.Handle(changeSongsPositionCommand, CancellationToken.None);
 
@@ -186,7 +186,7 @@ public class ListeningQueueHandlersTests
         var songs = SongGenerator.GenerateSongs
         (
             new List<MusicUser> {_musicUser},
-            GenreGenerator.GenerateSongGenres(1),
+            GenreGenerator.GenerateSongGenres(Helpers.Constants.SingleEntity),
             count
         ).ToList();
 
