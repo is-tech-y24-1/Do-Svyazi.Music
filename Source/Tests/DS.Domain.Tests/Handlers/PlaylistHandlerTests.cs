@@ -32,10 +32,10 @@ public class PlaylistHandlerTests
             .Options;
         _context = new MusicDbContext(options);
         
-        _musicUser = MusicUserGenerator.GenerateMusicUsers(1).First();
+        _musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
         _context.Add(_musicUser);
         
-        _initialSong = GenerateSongs(1, _musicUser).First();
+        _initialSong = GenerateSongs(Helpers.Constants.SingleEntity, _musicUser).First();
         _playlist = GeneratePlaylist(_musicUser);
     }
 
@@ -45,7 +45,7 @@ public class PlaylistHandlerTests
     [Test]
     public async Task AddSongToPlaylist_SongAdded()
     {
-        var songToAdd = GenerateSongs(1, _musicUser).First();
+        var songToAdd = GenerateSongs(Helpers.Constants.SingleEntity, _musicUser).First();
 
         await AddSongToPlaylist(songToAdd, _playlist);
             
@@ -55,7 +55,7 @@ public class PlaylistHandlerTests
     [Test]
     public async Task ChangePlaylistSongPosition_PositionChanged()
     {
-        var secondSong = GenerateSongs(1, _musicUser).First();
+        var secondSong = GenerateSongs(Helpers.Constants.SingleEntity, _musicUser).First();
         
         await AddSongToPlaylist(secondSong, _playlist);
 
@@ -78,7 +78,7 @@ public class PlaylistHandlerTests
     [Test]
     public async Task DeleteSongFromPlaylist_SongDeleted()
     {
-        var song = GenerateSongs(1, _musicUser).First();
+        var song = GenerateSongs(Helpers.Constants.SingleEntity, _musicUser).First();
         
         await AddSongToPlaylist(song, _playlist);
 
@@ -132,7 +132,7 @@ public class PlaylistHandlerTests
         var songs =  SongGenerator.GenerateSongs
         (
             new List<MusicUser> { author },
-            GenreGenerator.GenerateSongGenres(1),
+            GenreGenerator.GenerateSongGenres(Helpers.Constants.SingleEntity),
             count
         ).ToList();
 

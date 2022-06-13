@@ -39,7 +39,7 @@ public static class DeleteAuthoredPlaylist
             
             var mediaLibrary = await _context.MediaLibraries.FindAsync(request.UserId);
             if (mediaLibrary is null)
-                throw new EntityNotFoundException("Something went wrong");
+                throw new EntityNotFoundException(nameof(MediaLibrary));
             
             await _context.Entry(mediaLibrary).Collection("_playlists").LoadAsync(cancellationToken);
             _context.Remove(playlist);
