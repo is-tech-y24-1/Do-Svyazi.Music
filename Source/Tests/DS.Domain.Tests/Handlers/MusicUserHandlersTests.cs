@@ -60,7 +60,7 @@ public class MusicUserHandlersTests
 
     private async Task AddUserToDataBase(MusicUser user)
     {
-        var userDto = new MusicUserCreationInfoDto(user.Id, user.Name);
+        var userDto = new MusicUserCreationInfoDto(user.Id, user.Name, FileStub.GetDummyFile());
         
         var storage = new SystemStorageStub();
         var handler = new AddMusicUser.Handler(_context, storage);

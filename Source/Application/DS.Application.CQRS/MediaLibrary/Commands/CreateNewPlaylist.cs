@@ -1,4 +1,5 @@
-﻿using DS.Application.DTO.Playlist;
+﻿using System.Text;
+using DS.Application.DTO.Playlist;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess;
@@ -50,14 +51,26 @@ public static class CreateNewPlaylist
             var playlist = new Domain.Playlist
             (
                 dto.Name,
-                user, songs,
+                user, 
+                songs,
                 dto.SharedForCommunity,
                 dto.Description,
                 _storage.GenerateUri()
             );
-            
+
             user.MediaLibrary.AddPlaylist(playlist);
             await _context.SaveChangesAsync(cancellationToken);
+            
+            if (dto.Cover is null)
+                return Unit.Value;
+            
+            await using (var stream = dto.Cover.OpenReadStream())
+            using (var reader = new StreamReader(stream))
+            {
+                byte[] data = Encoding.ASCII.GetBytes(await reader.ReadToEndAsync());
+                if (playlist.CoverUri is not null)
+                    await _storage.CreateStorageFile(playlist.CoverUri, data);
+            }
             
             return Unit.Value;
         }

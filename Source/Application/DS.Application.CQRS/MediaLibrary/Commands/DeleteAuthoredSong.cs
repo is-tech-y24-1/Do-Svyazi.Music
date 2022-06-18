@@ -1,5 +1,6 @@
 ﻿using DS.Common.Enums;
 using DS.Common.Exceptions;
+using DS.DataAccess;
 using DS.DataAccess.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,11 @@ public static class DeleteAuthoredSong
     public class Handler : IRequestHandler<DeleteAuthoredSongCommand>
     {
         private readonly MusicDbContext _context;
-        public Handler(MusicDbContext context)
+        private readonly IContentStorage _storage;
+        public Handler(MusicDbContext context, IContentStorage storage)
         {
             _context = context;
+            _storage = storage;
         }
 
         public async Task<Unit> Handle(DeleteAuthoredSongCommand request, CancellationToken cancellationToken)
@@ -42,8 +45,12 @@ public static class DeleteAuthoredSong
             
             await _context.Entry(mediaLibrary).Collection("_songs").LoadAsync(cancellationToken);
             _context.Remove(song);
-            
+
             await _context.SaveChangesAsync(cancellationToken);
+            
+            _storage.DeleteStorageFile(song.ContentUri);
+            if (song.CoverUri is not null)
+                _storage.DeleteStorageFile(song.CoverUri);
             
             return Unit.Value;
         }

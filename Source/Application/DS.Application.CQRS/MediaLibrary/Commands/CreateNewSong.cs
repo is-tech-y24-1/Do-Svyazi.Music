@@ -1,4 +1,6 @@
-﻿using DS.Application.DTO.Song;
+﻿using System.Buffers;
+using System.Text;
+using DS.Application.DTO.Song;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess;
@@ -16,7 +18,7 @@ public static class CreateNewSong
     {
         private readonly MusicDbContext _context;
         private readonly IContentStorage _storage;
-        
+
         public Handler(MusicDbContext context, IContentStorage storage)
         {
             _context = context;
@@ -42,9 +44,27 @@ public static class CreateNewSong
                 _storage.GenerateUri(),
                 _storage.GenerateUri()
             );
-            
+
             user.MediaLibrary.AddSong(song);
             await _context.SaveChangesAsync(cancellationToken);
+            
+            await using (var stream = dto.Song.OpenReadStream())
+            using (var reader = new StreamReader(stream))
+            {
+                byte[] data = Encoding.ASCII.GetBytes(await reader.ReadToEndAsync());
+                await _storage.CreateStorageFile(song.ContentUri, data);
+            }
+            
+            if (dto.Cover is null)
+                return Unit.Value;
+            
+            await using (var stream = dto.Cover.OpenReadStream())
+            using (var reader = new StreamReader(stream))
+            {
+                byte[] data = Encoding.ASCII.GetBytes(await reader.ReadToEndAsync());
+                if (song.CoverUri is not null)
+                    await _storage.CreateStorageFile(song.CoverUri, data);
+            }
             
             return Unit.Value;
         }
