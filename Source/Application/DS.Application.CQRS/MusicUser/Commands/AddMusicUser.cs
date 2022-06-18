@@ -1,4 +1,5 @@
-﻿using DS.Application.DTO.MusicUser;
+﻿using System.Text;
+using DS.Application.DTO.MusicUser;
 using DS.DataAccess;
 using DS.DataAccess.Context;
 using MediatR;
@@ -25,8 +26,19 @@ public static class AddMusicUser
             MusicUserCreationInfoDto dto = request.MusicUserCreationInfo;
             var musicUser = new Domain.MusicUser(dto.Id, dto.Name, _storage.GenerateUri());
             _context.MusicUsers.Add(musicUser);
-
+            
             await _context.SaveChangesAsync(cancellationToken);
+            
+            if (dto.ProfilePicture is null)
+                return Unit.Value;
+            
+            await using (var stream = dto.ProfilePicture.OpenReadStream())
+            using (var reader = new StreamReader(stream))
+            {
+                byte[] data = Encoding.ASCII.GetBytes(await reader.ReadToEndAsync());
+                if (musicUser.ProfilePictureUri is not null)
+                    await _storage.CreateStorageFile(musicUser.ProfilePictureUri, data);
+            }
             
             return Unit.Value;
         }

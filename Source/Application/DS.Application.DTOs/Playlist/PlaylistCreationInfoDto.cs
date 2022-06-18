@@ -1,4 +1,6 @@
-﻿namespace DS.Application.DTO.Playlist;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace DS.Application.DTO.Playlist;
 
 public record PlaylistCreationInfoDto
 (
@@ -6,5 +8,6 @@ public record PlaylistCreationInfoDto
     string Name,
     string? Description,
     bool SharedForCommunity,
-    IList<Guid> SongsIds
+    IList<Guid> SongsIds,
+    IFormFile? Cover
 );

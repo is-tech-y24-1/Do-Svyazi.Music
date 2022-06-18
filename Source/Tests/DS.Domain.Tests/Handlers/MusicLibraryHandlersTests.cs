@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DS.Application.CQRS.MediaLibrary.Commands;
@@ -12,6 +14,7 @@ using DS.DataAccess.Context;
 using DS.DataAccess.Seeding.Generators;
 using DS.Domain;
 using DS.Tests.Stubs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
@@ -24,7 +27,6 @@ public class MusicLibraryHandlersTests
     private MusicUser _musicUser;
     private Song _song;
     private Playlist _playlist;
-
     [SetUp]
     public void SetUp()
     {
@@ -85,7 +87,8 @@ public class MusicLibraryHandlersTests
             "Dummy",
             null,
             true,
-            songsIds
+            songsIds,
+            FileStub.GetDummyFile()
         );
         var command = new CreateNewPlaylist.CreateNewPlaylistCommand(_musicUser.Id, playlistCreationDto);
         await handler.Handle(command, CancellationToken.None);
@@ -108,7 +111,9 @@ public class MusicLibraryHandlersTests
         (
             "Dummy",
             genre.Id,
-            _musicUser.Id
+            _musicUser.Id,
+            FileStub.GetDummyFile(),
+            FileStub.GetDummyFile()
         );
 
         var command = new CreateNewSong.CreateNewSongCommand(_musicUser.Id, songCreationDto);
@@ -126,8 +131,9 @@ public class MusicLibraryHandlersTests
         _context.Add(newMusicUser);
 
         await AddPlaylistToUser(_playlist, newMusicUser);
-        
-        var handler = new DeleteAuthoredPlaylist.Handler(_context);
+
+        var storage = new SystemStorageStub();
+        var handler = new DeleteAuthoredPlaylist.Handler(_context, storage);
 
         var command = new DeleteAuthoredPlaylist.DeleteAuthoredPlaylistCommand(_musicUser.Id, _playlist.Id);
         await handler.Handle(command, CancellationToken.None);
@@ -145,7 +151,8 @@ public class MusicLibraryHandlersTests
 
         await AddSongToUser(_song, newMusicUser);
         
-        var handler = new DeleteAuthoredSong.Handler(_context);
+        var storage = new SystemStorageStub();
+        var handler = new DeleteAuthoredSong.Handler(_context, storage);
         
         var command = new DeleteAuthoredSong.DeleteAuthoredSongCommand(_musicUser.Id, _song.Id);
         await handler.Handle(command, CancellationToken.None);
