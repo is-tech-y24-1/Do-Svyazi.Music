@@ -18,7 +18,7 @@ public class MusicUserController : ControllerBase
     }
 
     [HttpPost(nameof(CreateMusicUser))]
-    public async Task<IActionResult> CreateMusicUser([FromBody] MusicUserCreationInfoDto creationInfo)
+    public async Task<IActionResult> CreateMusicUser([FromForm] MusicUserCreationInfoDto creationInfo)
     {
         await _mediator.Send(new AddMusicUser.AddUserCommand(creationInfo));
         GetUserInfo.Response? createdUserInfo = await _mediator.Send(new GetUserInfo.GetInfoQuery(creationInfo.Id));

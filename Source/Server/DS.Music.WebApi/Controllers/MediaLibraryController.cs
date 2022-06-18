@@ -73,7 +73,7 @@ public class MediaLibraryController : ControllerBase
     }
     
     [HttpPost(nameof(CreateNewSong))]
-    public async Task<IActionResult> CreateNewSong([FromBody] CreateNewSong.CreateNewSongCommand command)
+    public async Task<IActionResult> CreateNewSong([FromForm] CreateNewSong.CreateNewSongCommand command)
     {
         await _mediator.Send(command);
         GetAuthoredSongs.Response songsInfo = await _mediator.Send(new GetAuthoredSongs.GetAuthoredSongsQuery(command.UserId));
@@ -81,7 +81,7 @@ public class MediaLibraryController : ControllerBase
     }
     
     [HttpPost(nameof(CreateNewPlaylist))]
-    public async Task<IActionResult> CreateNewPlaylist([FromBody] CreateNewPlaylist.CreateNewPlaylistCommand command)
+    public async Task<IActionResult> CreateNewPlaylist([FromForm] CreateNewPlaylist.CreateNewPlaylistCommand command)
     {
         await _mediator.Send(command);
         GetAuthoredPlaylists.Response playlistsInfo = await _mediator.Send(new GetAuthoredPlaylists.GetAuthoredPlaylistsQuery(command.UserId));

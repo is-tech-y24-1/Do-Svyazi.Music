@@ -24,12 +24,17 @@ public static class AddMusicUser
         public async Task<Unit> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
             MusicUserCreationInfoDto dto = request.MusicUserCreationInfo;
-            var musicUser = new Domain.MusicUser(dto.Id, dto.Name, _storage.GenerateUri());
+            var musicUser = new Domain.MusicUser
+            (
+                dto.Id,
+                dto.Name,
+                Helpers.Helpers.ShouldGenerateUri(dto.ProfilePicture) ? _storage.GenerateUri() : null
+             );
             _context.MusicUsers.Add(musicUser);
             
             await _context.SaveChangesAsync(cancellationToken);
             
-            if (dto.ProfilePicture is null)
+            if (dto.ProfilePicture is null || dto.ProfilePicture.Length == 0)
                 return Unit.Value;
             
             await using (var stream = dto.ProfilePicture.OpenReadStream())

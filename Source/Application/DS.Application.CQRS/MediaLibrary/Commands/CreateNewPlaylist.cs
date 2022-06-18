@@ -55,13 +55,13 @@ public static class CreateNewPlaylist
                 songs,
                 dto.SharedForCommunity,
                 dto.Description,
-                _storage.GenerateUri()
+                Helpers.Helpers.ShouldGenerateUri(dto.Cover) ? _storage.GenerateUri() : null
             );
 
             user.MediaLibrary.AddPlaylist(playlist);
             await _context.SaveChangesAsync(cancellationToken);
             
-            if (dto.Cover is null)
+            if (dto.Cover is null || dto.Cover.Length == 0)
                 return Unit.Value;
             
             await using (var stream = dto.Cover.OpenReadStream())
