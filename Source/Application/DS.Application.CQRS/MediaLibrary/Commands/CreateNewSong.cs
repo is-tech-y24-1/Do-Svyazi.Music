@@ -42,12 +42,12 @@ public static class CreateNewSong
                 dto.Name,
                 genre, user,
                 _storage.GenerateUri(),
-                _storage.GenerateUri()
+                Helpers.Helpers.ShouldGenerateUri(dto.Cover) ? _storage.GenerateUri() : null
             );
 
             user.MediaLibrary.AddSong(song);
             await _context.SaveChangesAsync(cancellationToken);
-            
+
             await using (var stream = dto.Song.OpenReadStream())
             using (var reader = new StreamReader(stream))
             {
@@ -55,7 +55,7 @@ public static class CreateNewSong
                 await _storage.CreateStorageFile(song.ContentUri, data);
             }
             
-            if (dto.Cover is null)
+            if (dto.Cover is null || dto.Cover.Length == 0)
                 return Unit.Value;
             
             await using (var stream = dto.Cover.OpenReadStream())
