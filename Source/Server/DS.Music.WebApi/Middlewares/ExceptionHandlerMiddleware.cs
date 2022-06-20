@@ -23,6 +23,12 @@ public class ExceptionHandlerMiddleware
             context.Response.StatusCode = StatusCodes.Status404NotFound;
             await context.Response.WriteAsync(e.Message);
         }
+        catch (Exception e) when (e is UnauthorizedException)
+        {
+            context.Response.ContentType = "text/*";
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            await context.Response.WriteAsync(e.Message);
+        }
         catch (Exception e) when (e is DoSvyaziMusicException)
         {
             context.Response.ContentType = "text/*";
