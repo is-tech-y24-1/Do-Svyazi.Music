@@ -9,7 +9,6 @@ public static class HttpContextExtension
     {
         if (context.Items["User"] is MusicUser userModel)
             return userModel;
-        
         else
             throw new UnauthorizedException();
     }
