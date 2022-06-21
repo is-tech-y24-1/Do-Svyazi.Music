@@ -47,7 +47,13 @@ public static class CreateNewPlaylist
                 
                 songs.Add(song);
             }
-            
+
+            string? coverUri = null;
+            // Force unwrapping is ok here because if cover is null
+            // we wont get inside this condition
+            if (Helpers.Helpers.ShouldGenerateUri(dto.Cover))
+                coverUri = _storage.GenerateUri(dto.Cover!.Name);
+
             var playlist = new Domain.Playlist
             (
                 dto.Name,
@@ -55,7 +61,7 @@ public static class CreateNewPlaylist
                 songs,
                 dto.SharedForCommunity,
                 dto.Description,
-                Helpers.Helpers.ShouldGenerateUri(dto.Cover) ? _storage.GenerateUri() : null
+                coverUri
             );
 
             user.MediaLibrary.AddPlaylist(playlist);

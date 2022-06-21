@@ -37,12 +37,18 @@ public static class CreateNewSong
             if (genre is null)
                 throw new EntityNotFoundException(ExceptionMessages.GenreCannotBeFound);
 
+            string? coverUri = null;
+            // Force unwrapping is ok here because if cover is null
+            // we wont get inside this condition
+            if (Helpers.Helpers.ShouldGenerateUri(dto.Cover))
+                coverUri = _storage.GenerateUri(dto.Cover!.Name);
+
             var song = new Domain.Song
             (
                 dto.Name,
                 genre, user,
-                _storage.GenerateUri(),
-                Helpers.Helpers.ShouldGenerateUri(dto.Cover) ? _storage.GenerateUri() : null
+                _storage.GenerateUri(dto.Song.Name),
+                coverUri
             );
 
             user.MediaLibrary.AddSong(song);

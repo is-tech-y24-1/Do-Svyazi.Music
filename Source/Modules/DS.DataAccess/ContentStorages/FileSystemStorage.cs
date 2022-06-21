@@ -13,9 +13,13 @@ public class FileSystemStorage : IContentStorage
         Directory.CreateDirectory(storageDirectoryPath);
     }
 
-    public string GenerateUri() => Guid.NewGuid().ToString();
+    public string GenerateUri(string fileName)
+    {
+        fileName.ThrowIfNull();
+        return Path.Combine(Guid.NewGuid().ToString(), fileName);
+    }
 
-        public async Task CreateStorageFile(string uri, byte[] data)
+    public async Task CreateStorageFile(string uri, byte[] data)
     {
         uri.ThrowIfNull(uri);
         data.ThrowIfNull();
@@ -30,10 +34,16 @@ public class FileSystemStorage : IContentStorage
         file.Delete();
     }
 
-    public async Task<byte[]> GetFileData(string uri)
+    public async Task<FileData> GetFileData(string uri)
     {
         CheckIfContentExists(uri);
-        return await File.ReadAllBytesAsync(Path.Combine(_storageDirectoryPath, uri));
+        
+        string filePath = Path.Combine(_storageDirectoryPath, uri);
+        string fileNameWithExtension = Path.GetFileName(filePath);
+        
+        byte[] content = await File.ReadAllBytesAsync(filePath);
+
+        return new FileData(content, fileNameWithExtension);
     }
 
     private void CheckIfContentExists(string uri)

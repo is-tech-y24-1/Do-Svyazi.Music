@@ -5,6 +5,7 @@ using DS.Application.DTO.Playlist;
 using DS.Application.DTO.Song;
 using DS.DataAccess;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace DS.Application.CQRS.Mapping;
 
@@ -40,9 +41,13 @@ public class DomainToResponse : Profile
         if (uri is null)
             return null;
 
-        byte[] bytes = await _storage.GetFileData(uri);
-        using var stream = new MemoryStream(bytes);
-
-        return new FileStreamResult(stream, fileName);
+        var fileData = await _storage.GetFileData(uri);
+        using var stream = new MemoryStream(fileData.Content);
+        var fileProvider = new FileExtensionContentTypeProvider();
+        
+        if (!fileProvider.TryGetContentType(fileData.FileNameWithExtension, out string contentType))
+            throw new ArgumentOutOfRangeException($"Unable to find Content Type for file name {fileData.FileNameWithExtension}.");
+        
+        return new FileStreamResult(stream, contentType);
     }
 }

@@ -24,11 +24,18 @@ public static class AddMusicUser
         public async Task<Unit> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
             MusicUserCreationInfoDto dto = request.MusicUserCreationInfo;
+            
+            string? profilePictureUri = null;
+            // Force unwrapping is ok here because if cover is null
+            // we wont get inside this condition
+            if (Helpers.Helpers.ShouldGenerateUri(dto.ProfilePicture))
+                profilePictureUri = _storage.GenerateUri(dto.ProfilePicture!.Name);
+
             var musicUser = new Domain.MusicUser
             (
                 dto.Id,
                 dto.Name,
-                Helpers.Helpers.ShouldGenerateUri(dto.ProfilePicture) ? _storage.GenerateUri() : null
+                profilePictureUri
              );
             _context.MusicUsers.Add(musicUser);
             
