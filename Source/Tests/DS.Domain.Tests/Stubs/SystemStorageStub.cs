@@ -10,7 +10,7 @@ namespace DS.Tests.Stubs;
 public class SystemStorageStub : IContentStorage
 {
     private readonly List<FileInfo> _files = new();
-    public string GenerateUri() => Guid.NewGuid().ToString();
+    public string GenerateUri(string fileName) => Guid.NewGuid().ToString();
 
     public Task CreateStorageFile(string uri, byte[] data)
     {
@@ -24,9 +24,12 @@ public class SystemStorageStub : IContentStorage
         => _files.Remove(_files.Find(fi => fi.Name == uri)!);
     
 
-    public Task<byte[]> GetFileData(string uri)
+    public Task<FileData> GetFileData(string uri)
     {
         var fileToFind = _files.Find(fi => fi.Name == uri)!;
-        return Task.FromResult(Encoding.ASCII.GetBytes(fileToFind.Name));
+        byte[] bytes = Encoding.ASCII.GetBytes(fileToFind.Name);
+        
+        var fileData = new FileData(bytes, "dummy");
+        return Task.FromResult(fileData);
     }
 }
