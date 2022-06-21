@@ -1,4 +1,6 @@
 using System.Reflection;
+using AutoMapper;
+using DS.Application.CQRS.Mapping;
 using DS.DataAccess;
 using DS.DataAccess.ContentStorages;
 using DS.DataAccess.Context;
@@ -12,7 +14,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+// Not sure if it is needed, just in case, as we inject service into mapper we might should have this
+builder.Services.AddSingleton<IContentStorage, FileSystemStorage>();
+builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new DomainToResponse(provider.GetService<IContentStorage>()));
+}).CreateMapper());
 
 builder.Services.AddDbContext<MusicDbContext>(opt =>
 {

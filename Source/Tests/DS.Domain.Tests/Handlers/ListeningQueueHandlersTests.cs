@@ -9,6 +9,7 @@ using DS.Application.DTO.Song;
 using DS.DataAccess.Context;
 using DS.DataAccess.Seeding.Generators;
 using DS.Domain;
+using DS.Tests.Stubs;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
@@ -200,10 +201,10 @@ public class ListeningQueueHandlersTests
     {
         return new ListeningQueueInfoDto(_musicUser.Id, new List<SongInfoDto>()
         {
-            new (_firstSong.Name, _firstSong.Genre.Name, _firstSong.Author.Name, _firstSong.ContentUri,
-                _firstSong.CoverUri),
-            new (_secondSong.Name, _secondSong.Genre.Name, _secondSong.Author.Name, _secondSong.ContentUri,
-                _secondSong.CoverUri)
+            new (_firstSong.Name, _firstSong.Genre.Name, _firstSong.Author.Name, FileStub.GetResultFileDummy(),
+                FileStub.GetResultFileDummy()),
+            new (_secondSong.Name, _secondSong.Genre.Name, _secondSong.Author.Name, FileStub.GetResultFileDummy(),
+                FileStub.GetResultFileDummy())
         });
     }
 }
