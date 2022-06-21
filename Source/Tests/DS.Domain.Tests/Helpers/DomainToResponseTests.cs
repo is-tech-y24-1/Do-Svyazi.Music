@@ -1,13 +1,9 @@
-using System.IO;
 using AutoMapper;
 using DS.Application.DTO.ListeningQueue;
 using DS.Application.DTO.MusicUser;
 using DS.Application.DTO.Playlist;
 using DS.Application.DTO.Song;
 using DS.Tests.Stubs;
-using System.Linq;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DS.Tests;
 

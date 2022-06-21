@@ -1,8 +1,5 @@
 using System.Linq;
 using AutoMapper;
-using DS.Application.CQRS.Mapping;
-using DS.DataAccess.ContentStorages;
-using DS.Tests.Stubs;
 using Microsoft.EntityFrameworkCore;
 
 namespace DS.Tests;
