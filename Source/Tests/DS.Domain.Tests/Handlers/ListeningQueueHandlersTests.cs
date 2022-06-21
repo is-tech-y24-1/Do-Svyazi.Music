@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -30,7 +31,7 @@ public class ListeningQueueHandlersTests
             .Options;
         _context = new MusicDbContext(options);
         
-        _musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        _musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         _context.Add(_musicUser);
 
         var songs = GenerateSongs(2);
@@ -76,7 +77,7 @@ public class ListeningQueueHandlersTests
             (
                 _musicUser.Id,
                 _firstSong.Id, 
-                Helpers.Constants.SingleEntity
+                Helpers.Helpers.Constants.SingleEntity
             );
         await handler.Handle(changeSongsPositionCommand, CancellationToken.None);
 
@@ -95,8 +96,8 @@ public class ListeningQueueHandlersTests
         await handler.Handle(clearQueueCommand, CancellationToken.None);
         
         Assert.IsEmpty(await GetQueueSongs());
-        Assert.True(Helpers.EntityExistsInDatabase(_firstSong, _context));
-        Assert.True(Helpers.EntityExistsInDatabase(_secondSong, _context));
+        Assert.True(Helpers.Helpers.EntityExistsInDatabase(_firstSong, _context));
+        Assert.True(Helpers.Helpers.EntityExistsInDatabase(_secondSong, _context));
     }
 
     [Test]
@@ -109,7 +110,7 @@ public class ListeningQueueHandlersTests
         var command = new DeleteFromQueue.DeleteFromQueueCommand(_musicUser.Id, _firstSong.Id);
         await handler.Handle(command, CancellationToken.None);
         
-        Assert.True(Helpers.EntityExistsInDatabase(_firstSong, _context));
+        Assert.True(Helpers.Helpers.EntityExistsInDatabase(_firstSong, _context));
         Assert.False((await GetQueueSongs()).Contains(_firstSong));
         Assert.Contains(_secondSong, await GetQueueSongs());
     }
@@ -128,7 +129,7 @@ public class ListeningQueueHandlersTests
         var refSongsOrder = new List<Song> { songs[0], songs[1], songs[3], songs[4] };
         var actualSongs = await GetQueueSongs();
         
-        Assert.True(Helpers.EntityExistsInDatabase(songs[2], _context));
+        Assert.True(Helpers.Helpers.EntityExistsInDatabase(songs[2], _context));
         CollectionAssert.AreEqual(refSongsOrder, actualSongs);
         CollectionAssert.DoesNotContain(await GetQueueSongs(),songs[2]);
     }
@@ -136,7 +137,7 @@ public class ListeningQueueHandlersTests
     [Test]
     public async Task GetQueueInfo_InformationRetrieved()
     {
-        var mapper = Helpers.GenerateMapper();
+        var mapper = Helpers.Helpers.GenerateMapper();
         
         await PopulateQueueWithSongs();
 
@@ -186,7 +187,7 @@ public class ListeningQueueHandlersTests
         var songs = SongGenerator.GenerateSongs
         (
             new List<MusicUser> {_musicUser},
-            GenreGenerator.GenerateSongGenres(Helpers.Constants.SingleEntity),
+            GenreGenerator.GenerateSongGenres(Helpers.Helpers.Constants.SingleEntity),
             count
         ).ToList();
 
@@ -201,9 +202,9 @@ public class ListeningQueueHandlersTests
         return new ListeningQueueInfoDto(_musicUser.Id, new List<SongInfoDto>()
         {
             new (_firstSong.Name, _firstSong.Genre.Name, _firstSong.Author.Name, _firstSong.ContentUri,
-                _firstSong.CoverUri),
+                _firstSong.SharedForCommunity, _firstSong.CoverUri),
             new (_secondSong.Name, _secondSong.Genre.Name, _secondSong.Author.Name, _secondSong.ContentUri,
-                _secondSong.CoverUri)
+                _firstSong.SharedForCommunity, _secondSong.CoverUri)
         });
     }
 }

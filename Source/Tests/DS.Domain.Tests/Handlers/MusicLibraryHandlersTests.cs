@@ -35,11 +35,11 @@ public class MusicLibraryHandlersTests
             .Options;
         _context = new MusicDbContext(options);
 
-        _musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        _musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         _context.Add(_musicUser);
 
-        _song = GenerateSongs(Helpers.Constants.SingleEntity, _musicUser).First();
-        _playlist = GeneratePlaylists(_musicUser, Helpers.Constants.SingleEntity).First();
+        _song = GenerateSongs(Helpers.Helpers.Constants.SingleEntity, _musicUser).First();
+        _playlist = GeneratePlaylists(_musicUser, Helpers.Helpers.Constants.SingleEntity).First();
     }
 
     [TearDown]
@@ -63,8 +63,8 @@ public class MusicLibraryHandlersTests
     {
         var handler = new AddSong.Handler(_context);
 
-        var songToAdd = GenerateSongs(Helpers.Constants.SingleEntity, _musicUser).First();
-        var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        var songToAdd = GenerateSongs(Helpers.Helpers.Constants.SingleEntity, _musicUser).First();
+        var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         _context.Add(musicUser);
         
         var command = new AddSong.AddSongCommand(musicUser.Id, songToAdd.Id);
@@ -95,7 +95,7 @@ public class MusicLibraryHandlersTests
 
         var playlist = await GetPlaylistByAuthorId(_musicUser.Id);
         Assert.Contains(playlist, await GetPlaylists());
-        Assert.True(Helpers.EntityExistsInDatabase(playlist, _context));
+        Assert.True(Helpers.Helpers.EntityExistsInDatabase(playlist, _context));
     }
 
     [Test]
@@ -104,7 +104,7 @@ public class MusicLibraryHandlersTests
         var storage = new SystemStorageStub();
         var handler = new CreateNewSong.Handler(_context, storage);
 
-        var genre = GenreGenerator.GenerateSongGenres(Helpers.Constants.SingleEntity).First();
+        var genre = GenreGenerator.GenerateSongGenres(Helpers.Helpers.Constants.SingleEntity).First();
         _context.Add(genre);
         
         var songCreationDto = new SongCreationInfoDto
@@ -121,13 +121,13 @@ public class MusicLibraryHandlersTests
 
         var song = await GetSongByAuthorId(_musicUser.Id);
         Assert.Contains(song, _context.Songs.ToList());
-        Assert.True(Helpers.EntityExistsInDatabase(song, _context));
+        Assert.True(Helpers.Helpers.EntityExistsInDatabase(song, _context));
     }
 
     [Test]
     public async Task DeleteAuthoredPlaylist_PlaylistDeleted()
     {
-        var newMusicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        var newMusicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         _context.Add(newMusicUser);
 
         await AddPlaylistToUser(_playlist, newMusicUser);
@@ -138,7 +138,7 @@ public class MusicLibraryHandlersTests
         var command = new DeleteAuthoredPlaylist.DeleteAuthoredPlaylistCommand(_musicUser.Id, _playlist.Id);
         await handler.Handle(command, CancellationToken.None);
         
-        Assert.False(Helpers.EntityExistsInDatabase(_playlist, _context));
+        Assert.False(Helpers.Helpers.EntityExistsInDatabase(_playlist, _context));
         foreach (var mediaLibrary in _context.MediaLibraries)
             CollectionAssert.DoesNotContain(mediaLibrary.Playlists, _playlist);
     }
@@ -146,7 +146,7 @@ public class MusicLibraryHandlersTests
     [Test]
     public async Task DeleteAuthoredSong_SongDeleted()
     {
-        var newMusicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        var newMusicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         _context.Add(newMusicUser);
 
         await AddSongToUser(_song, newMusicUser);
@@ -157,7 +157,7 @@ public class MusicLibraryHandlersTests
         var command = new DeleteAuthoredSong.DeleteAuthoredSongCommand(_musicUser.Id, _song.Id);
         await handler.Handle(command, CancellationToken.None);
         
-        Assert.False(Helpers.EntityExistsInDatabase(_song, _context));
+        Assert.False(Helpers.Helpers.EntityExistsInDatabase(_song, _context));
         foreach (var mediaLibrary in _context.MediaLibraries)
             CollectionAssert.DoesNotContain(mediaLibrary.Songs, _song);
     }
@@ -170,7 +170,7 @@ public class MusicLibraryHandlersTests
         var command = new DeletePlaylist.DeletePlaylistCommand(_musicUser.Id, _playlist.Id);
         await handler.Handle(command, CancellationToken.None);
         
-        Assert.True(Helpers.EntityExistsInDatabase(_playlist, _context));
+        Assert.True(Helpers.Helpers.EntityExistsInDatabase(_playlist, _context));
         CollectionAssert.DoesNotContain(await GetPlaylists(), _playlist);
     }
 
@@ -182,17 +182,17 @@ public class MusicLibraryHandlersTests
         var command = new DeleteSong.DeleteSongCommand(_musicUser.Id, _song.Id);
         await handler.Handle(command, CancellationToken.None);
         
-        Assert.True(Helpers.EntityExistsInDatabase(_song, _context));
+        Assert.True(Helpers.Helpers.EntityExistsInDatabase(_song, _context));
         CollectionAssert.DoesNotContain(await GetMediaLibrarySongs(_musicUser.Id), _song);
     }
 
     [Test]
     public async Task GetAuthoredPlaylists_PlaylistsRetrieved()
     {
-        var mapper = Helpers.GenerateMapper();
+        var mapper = Helpers.Helpers.GenerateMapper();
 
-        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
-        var playlistToAdd = GeneratePlaylists(newAuthor, Helpers.Constants.SingleEntity).First();
+        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
+        var playlistToAdd = GeneratePlaylists(newAuthor, Helpers.Helpers.Constants.SingleEntity).First();
 
         await AddPlaylistToUser(playlistToAdd, _musicUser);
         
@@ -213,11 +213,11 @@ public class MusicLibraryHandlersTests
     [Test]
     public async Task GetAuthoredSongs_SongsRetrieved()
     {
-        var mapper = Helpers.GenerateMapper();
+        var mapper = Helpers.Helpers.GenerateMapper();
         var refSongDto = GenerateRefSongDto(_song);
         
-        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
-        var songToAdd = GenerateSongs(Helpers.Constants.SingleEntity, newAuthor).First();
+        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
+        var songToAdd = GenerateSongs(Helpers.Helpers.Constants.SingleEntity, newAuthor).First();
 
         await AddSongToUser(songToAdd, _musicUser);
         
@@ -233,9 +233,9 @@ public class MusicLibraryHandlersTests
     [Test]
     public async Task GetPlaylists_PlaylistsRetrieved()
     {
-        var mapper = Helpers.GenerateMapper();
+        var mapper = Helpers.Helpers.GenerateMapper();
         
-        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         var playlistToAdd = PlaylistGenerator.GeneratePlaylists
         (
             new List<Song> {_song},
@@ -271,10 +271,10 @@ public class MusicLibraryHandlersTests
     [Test]
     public async Task GetSongs_SongsRetrieved()
     {
-        var mapper = Helpers.GenerateMapper();
+        var mapper = Helpers.Helpers.GenerateMapper();
         
-        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
-        var songToAdd = GenerateSongs(Helpers.Constants.SingleEntity, newAuthor).First();
+        var newAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
+        var songToAdd = GenerateSongs(Helpers.Helpers.Constants.SingleEntity, newAuthor).First();
         await AddSongToUser(songToAdd, _musicUser);
         
         var refSongDto1 = GenerateRefSongDto(_song);
@@ -340,12 +340,12 @@ public class MusicLibraryHandlersTests
     
     private Playlist GeneratePlaylist()
     {
-        var playlistAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        var playlistAuthor = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         var playlist = PlaylistGenerator.GeneratePlaylists
         (
             new List<Song> { _song }, 
             new List<MusicUser> { playlistAuthor }, 
-            Helpers.Constants.SingleEntity
+            Helpers.Helpers.Constants.SingleEntity
         ).First();
         
         _context.Add(playlist);
@@ -373,7 +373,7 @@ public class MusicLibraryHandlersTests
         var songs =  SongGenerator.GenerateSongs
         (
             new List<MusicUser> { author },
-            GenreGenerator.GenerateSongGenres(Helpers.Constants.SingleEntity),
+            GenreGenerator.GenerateSongGenres(Helpers.Helpers.Constants.SingleEntity),
             count
         ).ToList();
 
@@ -391,6 +391,7 @@ public class MusicLibraryHandlersTests
             _song.Genre.Name,
             _song.Author.Name,
             _song.ContentUri,
+            _song.SharedForCommunity,
             _song.CoverUri
         );
 
@@ -412,6 +413,7 @@ public class MusicLibraryHandlersTests
             song.Genre.Name,
             song.Author.Name,
             song.ContentUri,
+            song.SharedForCommunity,
             song.CoverUri
         );
     }

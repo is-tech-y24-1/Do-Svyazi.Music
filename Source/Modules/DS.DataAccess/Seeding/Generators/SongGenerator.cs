@@ -5,7 +5,7 @@ using DS.Domain;
 
 namespace DS.DataAccess.Seeding.Generators;
 
-public class SongGenerator
+public static class SongGenerator
 {
     private const int MinFeaturing = 0;
     private const int MaxFeaturing = 2;

@@ -31,8 +31,17 @@ public class SongController : ControllerBase
         return Ok(songInfo);
     }
     
+    
     [HttpPut(nameof(RemoveFeaturingUser))]
     public async Task<IActionResult> RemoveFeaturingUser([FromBody] RemoveFeaturing.RemoveFeaturingCommand command)
+    {
+        await _mediator.Send(command);
+        Task<GetSongInfo.Response>? songInfo = _mediator.Send(new GetSongInfo.GetInfoQuery(command.UserId, command.SongId));
+        return Ok(songInfo);
+    }
+    
+    [HttpPut(nameof(ChangeSongVisibility))]
+    public async Task<IActionResult> ChangeSongVisibility([FromBody] ChangeSongVisibility.ChangeSongVisibilityCommand command)
     {
         await _mediator.Send(command);
         Task<GetSongInfo.Response>? songInfo = _mediator.Send(new GetSongInfo.GetInfoQuery(command.UserId, command.SongId));

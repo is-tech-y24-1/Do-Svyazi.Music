@@ -5,13 +5,16 @@ namespace DS.Domain;
 
 public class Song : IEquatable<Song>
 {
-    private List<MusicUser> _featuring = new ();
+    private readonly List<MusicUser> _featuring = new ();
     
     #pragma warning disable CS0169
     private readonly List<MediaLibrary> _addedToLibraries;
     #pragma warning restore CS0169
-    
-    protected Song() {}
+
+    protected Song()
+    {
+        
+    }
 
     public Song
     (
@@ -26,6 +29,7 @@ public class Song : IEquatable<Song>
         Genre = genre.ThrowIfNull();
         Author = author.ThrowIfNull();
         ContentUri = songContentUri.ThrowIfNull();
+        SharedForCommunity = false;
         CoverUri = coverUri;
         Id = Guid.NewGuid();
     }
