@@ -11,10 +11,7 @@ public class Song : IEquatable<Song>
     private readonly List<MediaLibrary> _addedToLibraries;
     #pragma warning restore CS0169
 
-    protected Song()
-    {
-        
-    }
+    protected Song() { }
 
     public Song
     (

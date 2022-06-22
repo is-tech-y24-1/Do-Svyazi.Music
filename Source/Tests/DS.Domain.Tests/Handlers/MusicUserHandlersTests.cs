@@ -35,7 +35,7 @@ public class MusicUserHandlersTests
     {
          var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         
-         await  AddUserToDataBase(musicUser);
+         await AddUserToDataBase(musicUser);
         
          Assert.True(Helpers.Helpers.EntityExistsInDatabase(musicUser, _context));
     }
