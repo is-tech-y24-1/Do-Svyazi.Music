@@ -1,4 +1,5 @@
 using System.Reflection;
+using DS.Application.CQRS.MusicUser.Queries;
 using DS.DataAccess;
 using DS.DataAccess.ContentStorages;
 using DS.DataAccess.Context;
@@ -11,12 +12,12 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddMediatR(typeof(GetUserInfo.GetInfoQuery).GetTypeInfo().Assembly);
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddDbContext<MusicDbContext>(opt =>
 {
-    opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteTest"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresLocalhost"));
 });
 
 builder.Services.AddScoped<IMusicContext, MusicDbContext>();
