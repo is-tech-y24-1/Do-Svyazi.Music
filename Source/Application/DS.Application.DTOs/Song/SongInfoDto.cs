@@ -6,5 +6,6 @@ public record SongInfoDto
     string GenreName,
     string AuthorName,
     string ContentUri,
+    bool SharedForCommunity,
     string? CoverUri
 );

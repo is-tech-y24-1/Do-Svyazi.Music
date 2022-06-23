@@ -3,9 +3,9 @@ using AutoMapper;
 using DS.Application.CQRS.Mapping;
 using Microsoft.EntityFrameworkCore;
 
-namespace DS.Tests;
+namespace DS.Tests.Helpers;
 
-public class Helpers
+public static class Helpers
 {
     public struct Constants
     {

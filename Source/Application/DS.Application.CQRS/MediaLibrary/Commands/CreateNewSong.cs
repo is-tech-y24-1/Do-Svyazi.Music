@@ -40,7 +40,8 @@ public static class CreateNewSong
             var song = new Domain.Song
             (
                 dto.Name,
-                genre, user,
+                genre,
+                user,
                 _storage.GenerateUri(),
                 Helpers.Helpers.ShouldGenerateUri(dto.Cover) ? _storage.GenerateUri() : null
             );

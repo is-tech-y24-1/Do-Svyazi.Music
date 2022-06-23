@@ -46,4 +46,12 @@ public class PlaylistController : ControllerBase
         Task<GetPlaylistInfo.Response>? playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
         return Ok(playlistInfo);
     }
+    
+    [HttpPut(nameof(ChangePlaylistVisibility))]
+    public async Task<IActionResult> ChangePlaylistVisibility([FromBody] ChangePlaylistVisibility.ChangePlaylistVisibilityCommand command)
+    {
+        await _mediator.Send(command);
+        Task<GetPlaylistInfo.Response>? playlistInfo = _mediator.Send(new GetPlaylistInfo.GetInfoQuery(command.UserId, command.PlaylistId));
+        return Ok(playlistInfo);
+    }
 }

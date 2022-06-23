@@ -33,21 +33,21 @@ public class MusicUserHandlersTests
     [Test]
     public async Task AddMusicUser_UserAdded()
     {
-         var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+         var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         
-         await  AddUserToDataBase(musicUser);
+         await AddUserToDataBase(musicUser);
         
-         Assert.True(Helpers.EntityExistsInDatabase(musicUser, _context));
+         Assert.True(Helpers.Helpers.EntityExistsInDatabase(musicUser, _context));
     }
 
     [Test]
     public async Task GetMusicUserInfo_InfoRetrieved()
     {
-        var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Constants.SingleEntity).First();
+        var musicUser = MusicUserGenerator.GenerateMusicUsers(Helpers.Helpers.Constants.SingleEntity).First();
         
         await AddUserToDataBase(musicUser);
         
-        var mapper = Helpers.GenerateMapper();
+        var mapper = Helpers.Helpers.GenerateMapper();
         
         var handler = new GetUserInfo.Handler(_context, mapper);
         var query = new GetUserInfo.GetInfoQuery(musicUser.Id);
