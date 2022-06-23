@@ -12,7 +12,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(typeof(GetUserInfo.GetInfoQuery).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddDbContext<MusicDbContext>(opt =>
