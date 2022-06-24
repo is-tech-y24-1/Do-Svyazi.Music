@@ -6,11 +6,11 @@ using DS.Application.CQRS.Mapping;
 using DS.Application.CQRS.MediaLibrary.Commands;
 using DS.Application.CQRS.MediaLibrary.Queries;
 using DS.Application.CQRS.MusicUser.Commands;
-using DS.Application.CQRS.MusicUser.Queries;
 using DS.Application.CQRS.Playlist.Commands;
 using DS.Application.CQRS.Playlist.Queries;
 using DS.Application.CQRS.Song.Commands;
 using DS.Application.CQRS.Song.Queries;
+using DS.Application.CQRS.MusicUser.Queries;
 using DS.DataAccess;
 using DS.DataAccess.ContentStorages;
 using DS.DataAccess.Context;
@@ -26,7 +26,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MusicDbContext>(opt =>
 {
-    opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteTest"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresLocalhost"));
     opt.UseLazyLoadingProxies();
 });
 
