@@ -13,8 +13,8 @@ public class PlaylistSongNode : IEquatable<PlaylistSongNode>
     protected PlaylistSongNode() {}
     
     public Guid Id { get; private init; }
-    public Song Song { get; set; }
-    public PlaylistSongNode? NextSongNode { get; set; }
+    public virtual Song Song { get; set; }
+    public virtual PlaylistSongNode? NextSongNode { get; set; }
 
     public bool Equals(PlaylistSongNode? other) => other?.Id.Equals(Id) ?? false;
     public override bool Equals(object? obj) => Equals(obj as PlaylistSongNode);

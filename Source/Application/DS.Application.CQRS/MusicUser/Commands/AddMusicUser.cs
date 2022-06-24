@@ -3,6 +3,8 @@ using DS.Application.DTO.MusicUser;
 using DS.DataAccess;
 using DS.DataAccess.Context;
 using MediatR;
+using Microsoft.VisualBasic;
+using Constants = DS.Common.Constants;
 
 namespace DS.Application.CQRS.MusicUser.Commands;
 
@@ -29,7 +31,7 @@ public static class AddMusicUser
             // Force unwrapping is ok here because if cover is null
             // we wont get inside this condition
             if (Helpers.Helpers.ShouldGenerateUri(dto.ProfilePicture))
-                profilePictureUri = _storage.GenerateUri(dto.ProfilePicture!.Name);
+                profilePictureUri = _storage.GenerateUri(dto.ProfilePicture!.FileName);
 
             var musicUser = new Domain.MusicUser
             (
@@ -37,20 +39,20 @@ public static class AddMusicUser
                 dto.Name,
                 profilePictureUri
              );
-            _context.MusicUsers.Add(musicUser);
             
+            _context.MusicUsers.Add(musicUser);
+
             await _context.SaveChangesAsync(cancellationToken);
             
             if (dto.ProfilePicture is null || dto.ProfilePicture.Length == 0)
                 return Unit.Value;
             
-            await using (var stream = dto.ProfilePicture.OpenReadStream())
-            using (var reader = new StreamReader(stream))
-            {
-                byte[] data = Encoding.ASCII.GetBytes(await reader.ReadToEndAsync());
-                if (musicUser.ProfilePictureUri is not null)
-                    await _storage.CreateStorageFile(musicUser.ProfilePictureUri, data);
-            }
+            await Helpers.Helpers.UploadFile
+            (
+                dto.ProfilePicture.OpenReadStream(),
+                musicUser.ProfilePictureUri,
+                _storage
+            );
             
             return Unit.Value;
         }

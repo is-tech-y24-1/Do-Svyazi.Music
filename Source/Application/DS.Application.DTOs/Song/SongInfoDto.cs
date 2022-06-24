@@ -6,11 +6,9 @@ public record SongInfoDto
 (
     string Name,
     string GenreName,
-    string AuthorName,
-    FileStreamResult Content,
-    FileStreamResult? Cover
+    string AuthorName
 )
 {
     public SongInfoDto() 
-        : this(string.Empty, string.Empty, string.Empty, null, null) { }
+        : this(string.Empty, string.Empty, string.Empty) { }
 };

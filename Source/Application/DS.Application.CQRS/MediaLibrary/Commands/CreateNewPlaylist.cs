@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using DS.Application.DTO.Playlist;
+using DS.Common;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess;
@@ -37,7 +38,7 @@ public static class CreateNewPlaylist
                 throw new DoSvyaziMusicException(ExceptionMessages.NoSongsInPlaylist);
             
             var songs = new PlaylistSongs(firstSong);
-            for (int i = 1; i < dto.SongsIds.Count(); i++)
+            for (int i = 1; i < dto.SongsIds.Count; i++)
             {
                 Guid songId = dto.SongsIds[i];
                 
@@ -69,15 +70,13 @@ public static class CreateNewPlaylist
             
             if (dto.Cover is null || dto.Cover.Length == 0)
                 return Unit.Value;
-            
-            await using (var stream = dto.Cover.OpenReadStream())
-            using (var reader = new StreamReader(stream))
-            {
-                byte[] data = Encoding.ASCII.GetBytes(await reader.ReadToEndAsync());
-                if (playlist.CoverUri is not null)
-                    await _storage.CreateStorageFile(playlist.CoverUri, data);
-            }
-            
+
+            await Helpers.Helpers.UploadFile
+            (
+                dto.Cover.OpenReadStream(),
+                playlist.CoverUri,
+                _storage
+            );
             return Unit.Value;
         }
     }

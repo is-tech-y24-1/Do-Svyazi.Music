@@ -6,8 +6,8 @@ namespace DS.Domain;
 
 public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
 {
-    private PlaylistSongNode? _head;
-    private PlaylistSongNode? _tail;
+    public virtual PlaylistSongNode? _head {get; protected set; }
+    public virtual PlaylistSongNode? _tail {get; protected set; }
     
     public PlaylistSongs(Song song)
     {

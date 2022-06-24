@@ -8,10 +8,9 @@ public record PlaylistInfoDto
 (
     string Name,
     IReadOnlyCollection<SongInfoDto> Songs,
-    FileStreamResult? Cover,
     MusicUserInfoDto Author
 )
 {
     public PlaylistInfoDto() 
-        : this(string.Empty, ArraySegment<SongInfoDto>.Empty, null, new MusicUserInfoDto()) { }
+        : this(string.Empty, ArraySegment<SongInfoDto>.Empty, new MusicUserInfoDto()) { }
 }

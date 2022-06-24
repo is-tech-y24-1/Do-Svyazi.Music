@@ -24,6 +24,14 @@ public class FileSystemStorage : IContentStorage
         uri.ThrowIfNull(uri);
         data.ThrowIfNull();
         string pathToFile = Path.Combine(_storageDirectoryPath, uri);
+                
+        string? directoryPath = Path.GetDirectoryName(pathToFile);
+        if (directoryPath is null)
+            throw new ArgumentNullException(nameof(directoryPath));
+        
+        string fullDirectoryName = Path.GetFullPath(directoryPath);
+        Directory.CreateDirectory(fullDirectoryName);
+
         await File.WriteAllBytesAsync(pathToFile, data);
     }
 

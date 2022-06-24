@@ -7,6 +7,7 @@ using DS.DataAccess;
 using DS.DataAccess.Context;
 using DS.Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace DS.Application.CQRS.MediaLibrary.Commands;
 
@@ -27,15 +28,21 @@ public static class CreateNewSong
 
         public async Task<Unit> Handle(CreateNewSongCommand request, CancellationToken cancellationToken)
         {
-            Domain.MusicUser? user = await _context.MusicUsers.FindAsync(request.UserId);
+            Domain.MusicUser? user = _context.MusicUsers
+                .Include(i => i.MediaLibrary)
+                .FirstOrDefault(user => user.Id == request.UserId);
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
             SongCreationInfoDto? dto = request.SongCreationInfo;
-            
+
             SongGenre? genre = await _context.SongGenres.FindAsync(dto.GenreId);
             if (genre is null)
-                throw new EntityNotFoundException(ExceptionMessages.GenreCannotBeFound);
+            {
+                _context.SongGenres.Add(new SongGenre("Punk rock"));
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            //throw new EntityNotFoundException(ExceptionMessages.GenreCannotBeFound);
 
             string? coverUri = null;
             // Force unwrapping is ok here because if cover is null
@@ -52,26 +59,26 @@ public static class CreateNewSong
             );
 
             user.MediaLibrary.AddSong(song);
+            _context.MediaLibraries.Update(user.MediaLibrary);
             await _context.SaveChangesAsync(cancellationToken);
 
-            await using (var stream = dto.Song.OpenReadStream())
-            using (var reader = new StreamReader(stream))
-            {
-                byte[] data = Encoding.ASCII.GetBytes(await reader.ReadToEndAsync());
-                await _storage.CreateStorageFile(song.ContentUri, data);
-            }
-            
+            await Helpers.Helpers.UploadFile
+            (
+                dto.Song.OpenReadStream(),
+                song.ContentUri,
+                _storage
+            );
+
             if (dto.Cover is null || dto.Cover.Length == 0)
                 return Unit.Value;
-            
-            await using (var stream = dto.Cover.OpenReadStream())
-            using (var reader = new StreamReader(stream))
-            {
-                byte[] data = Encoding.ASCII.GetBytes(await reader.ReadToEndAsync());
-                if (song.CoverUri is not null)
-                    await _storage.CreateStorageFile(song.CoverUri, data);
-            }
-            
+
+            await Helpers.Helpers.UploadFile
+            (
+                dto.Cover.OpenReadStream(),
+                song.CoverUri,
+                _storage
+            );
+
             return Unit.Value;
         }
     }

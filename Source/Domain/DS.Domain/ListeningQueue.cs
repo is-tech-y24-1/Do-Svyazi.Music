@@ -14,7 +14,7 @@ public class ListeningQueue
     protected ListeningQueue() {}
     
     public Guid OwnerId { get; init; }
-    public IReadOnlyCollection<Song> Songs => _songs;
+    public virtual IReadOnlyCollection<Song> Songs => _songs;
 
     public void AddNextSongToPlay(Song song)
     {

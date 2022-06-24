@@ -5,10 +5,6 @@ namespace DS.Domain;
 
 public class MusicUser : IEquatable<MusicUser>
 {
-    #pragma warning disable CS0169
-    private readonly List<Song> _featuredSongs;
-    #pragma warning restore CS0169
-    
     protected MusicUser() {}
 
     public MusicUser(Guid id, string name, string? profilePictureUri = null)
@@ -24,9 +20,9 @@ public class MusicUser : IEquatable<MusicUser>
     }
     public Guid Id { get; private init; }
     public string Name { get; set; }
-    public MediaLibrary MediaLibrary { get; private init; }
+    public virtual MediaLibrary MediaLibrary { get; private init; }
     public string? ProfilePictureUri { get; set; }
-    public ListeningQueue ListeningQueue { get; private init; }
+    public virtual ListeningQueue ListeningQueue { get; private init; }
 
     public bool Equals(MusicUser? other) => other?.Id.Equals(Id) ?? false;
     public override bool Equals(object? obj) => Equals(obj as MusicUser);

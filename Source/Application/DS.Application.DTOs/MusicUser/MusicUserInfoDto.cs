@@ -2,9 +2,9 @@
 
 namespace DS.Application.DTO.MusicUser;
 
-public record MusicUserInfoDto(Guid Id, string Name, FileStreamResult? ProfilePicture)
+public record MusicUserInfoDto(Guid Id, string Name)
 {
     // Needed for mapper to work properly
     public MusicUserInfoDto() 
-        : this(Guid.Empty, string.Empty, null) { }
+        : this(Guid.Empty, string.Empty) { }
 };
