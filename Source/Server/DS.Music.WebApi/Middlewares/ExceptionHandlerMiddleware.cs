@@ -1,3 +1,4 @@
+using Bogus;
 using DS.Common.Exceptions;
 
 namespace DS.Music.WebApi.Middlewares;
@@ -29,7 +30,7 @@ public class ExceptionHandlerMiddleware
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsync(e.Message);
         }
-        catch (Exception e) when (e is DoSvyaziMusicException)
+        catch (Exception e) when (e is DoSvyaziMusicException or ValidationException)
         {
             context.Response.ContentType = "text/*";
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
