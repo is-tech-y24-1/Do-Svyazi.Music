@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{39E5EF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Music.WebApi", "Source\Server\DS.Music.WebApi\DS.Music.WebApi.csproj", "{153ECA1E-0705-4AED-ABC3-3BB1BF0DA07B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validators", "Validators\Validators.csproj", "{5ACF5B26-FDD6-423F-9726-91310A66BE5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Application.Validators", "Source\Application\DS.Application.Validators\DS.Application.Validators.csproj", "{5ACF5B26-FDD6-423F-9726-91310A66BE5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
