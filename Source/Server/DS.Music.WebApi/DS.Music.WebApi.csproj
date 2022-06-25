@@ -10,6 +10,7 @@
         <PackageReference Include="MediatR" Version="10.0.1" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
+        <PackageReference Include="NLog" Version="5.0.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
@@ -17,6 +18,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Application\DS.Application.CQRS\DS.Application.CQRS.csproj" />
       <ProjectReference Include="..\..\Application\DS.Application.DTOs\DS.Application.DTOs.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\DS.DataAccess\DS.DataAccess.csproj" />
     </ItemGroup>
 
 </Project>
