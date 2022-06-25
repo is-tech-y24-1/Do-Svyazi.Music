@@ -10,8 +10,7 @@ public class CreateNewPlaylistCommandValidator : AbstractValidator<CreateNewPlay
     private const int MinNameLength = 5;
     private const int MaxNameLength = 20;
     private const int MaxDescriptionLength = 500;
-    
-    
+
     public CreateNewPlaylistCommandValidator()
     {
         RuleFor(e => e.PlaylistCreationInfo)
