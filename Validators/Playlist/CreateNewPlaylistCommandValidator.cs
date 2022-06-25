@@ -26,7 +26,7 @@ public class CreateNewPlaylistCommandValidator : AbstractValidator<CreateNewPlay
             if (!PictureFormats.Contains(cover.FileName[cover.FileName.LastIndexOf('.')..].ToLower()))
                 return false;
 
-        if (playlistCreationInfoDto.Name.Length <= MinNameLength && playlistCreationInfoDto.Name.Length >= MaxNameLength)
+        if (playlistCreationInfoDto.Name.Length is <= MinNameLength or >= MaxNameLength)
             return false;
 
         if (playlistCreationInfoDto.Description is not null &&

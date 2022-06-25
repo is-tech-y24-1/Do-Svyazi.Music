@@ -1,5 +1,6 @@
 using System.Reflection;
 using DS.Application.CQRS.Helpers;
+using DS.Application.CQRS.MediaLibrary.Commands;
 using DS.Application.CQRS.MusicUser.Commands;
 using DS.Application.CQRS.MusicUser.Queries;
 using DS.DataAccess;
@@ -7,10 +8,13 @@ using DS.DataAccess.ContentStorages;
 using DS.DataAccess.Context;
 using DS.Music.WebApi.Middlewares;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
+using Validators.MusicUser;
+using Validators.Playlist;
 using Validators.Song;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -39,8 +43,12 @@ var storage = new FileSystemStorage(builder.Configuration
         .GetSection("StorageDirectories")
         .GetValue<string>("RelativeTestDirectory"));
 
+builder.Services.AddFluentValidation(s => 
+{ 
+    s.RegisterValidatorsFromAssemblyContaining<AddMusicUserCommandValidator>();
+});
+
 builder.Services.AddScoped<IContentStorage>(_ => storage);
-builder.Services.AddValidatorsFromAssembly(typeof(CreateNewSongCommandValidator).Assembly);
 
 builder.Services.AddMediatR(typeof(GetUserInfo).GetTypeInfo().Assembly);
 builder.Services.AddMediatR(typeof(AddMusicUser).GetTypeInfo().Assembly);

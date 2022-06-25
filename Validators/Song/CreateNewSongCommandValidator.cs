@@ -26,7 +26,7 @@ public class CreateNewSongCommandValidator : AbstractValidator<CreateNewSong.Cre
             if (!PictureFormats.Contains(cover.FileName[cover.FileName.LastIndexOf('.')..].ToLower()))
                 return false;
 
-        if (songCreationInfoDto.Name.Length <= MinNameLength && songCreationInfoDto.Name.Length >= MaxNameLength)
+        if (songCreationInfoDto.Name.Length is <= MinNameLength or >= MaxNameLength)
             return false;
         
         if (!SongFormats.Contains(song.FileName[song.FileName.LastIndexOf('.')..].ToLower()))
