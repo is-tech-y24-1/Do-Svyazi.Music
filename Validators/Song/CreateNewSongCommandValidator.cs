@@ -11,7 +11,7 @@ public class CreateNewSongCommandValidator : AbstractValidator<CreateNewSong.Cre
     private const int MinNameLength = 5;
     private const int MaxNameLength = 20;
 
-    CreateNewSongCommandValidator()
+    public CreateNewSongCommandValidator()
     {
         RuleFor(e => e.SongCreationInfo)
             .Must(CheckDto);
