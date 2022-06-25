@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Validators\Validators.csproj" />
+      <ProjectReference Include="..\..\Application\DS.Application.Validators\DS.Application.Validators.csproj" />
       <ProjectReference Include="..\..\Application\DS.Application.CQRS\DS.Application.CQRS.csproj" />
       <ProjectReference Include="..\..\Application\DS.Application.DTOs\DS.Application.DTOs.csproj" />
       <ProjectReference Include="..\..\Infrastructure\DS.DataAccess\DS.DataAccess.csproj" />
