@@ -1,4 +1,5 @@
 using System.Reflection;
+using DS.Application.CQRS.Helpers;
 using DS.Application.CQRS.MusicUser.Queries;
 using DS.DataAccess;
 using DS.DataAccess.ContentStorages;
@@ -6,14 +7,23 @@ using DS.DataAccess.Context;
 using DS.Music.WebApi.Middlewares;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Web;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.UseNLog();
+
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Debug("debug");
 
 builder.Services.AddDbContext<MusicDbContext>(opt =>
 {
@@ -22,12 +32,15 @@ builder.Services.AddDbContext<MusicDbContext>(opt =>
 
 builder.Services.AddScoped<IMusicContext, MusicDbContext>();
 
-var storage =
-    new FileSystemStorage(builder.Configuration
+var storage = new FileSystemStorage(builder.Configuration
         .GetSection("StorageDirectories")
         .GetValue<string>("RelativeTestDirectory"));
 
 builder.Services.AddScoped<IContentStorage>(_ => storage);
+
+builder.Services.AddMediatR(typeof(GetUserInfo).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
 WebApplication app = builder.Build();
 
