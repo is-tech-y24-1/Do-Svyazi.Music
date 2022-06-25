@@ -12,9 +12,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Common", "Source\Domain\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.Domain", "Source\Domain\DS.Domain\DS.Domain.csproj", "{F86A4080-7FC1-4782-BAB8-6EE299A4EEB0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{8B007233-6B6A-4219-9275-D424CC7AD2BD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{8B007233-6B6A-4219-9275-D424CC7AD2BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.DataAccess", "Source\Modules\DS.DataAccess\DS.DataAccess.csproj", "{5FD16A1B-F5A1-45C2-9F23-F5FBF4DDED06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS.DataAccess", "Source\Infrastructure\DS.DataAccess\DS.DataAccess.csproj", "{5FD16A1B-F5A1-45C2-9F23-F5FBF4DDED06}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9F30F531-91AA-498B-B136-7B2211FB4703}"
 EndProject

@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Domain\DS.Domain\DS.Domain.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\DS.DataAccess\DS.DataAccess.csproj" />
       <ProjectReference Include="..\..\Modules\DS.DataAccess\DS.DataAccess.csproj" />
       <ProjectReference Include="..\DS.Application.DTOs\DS.Application.DTOs.csproj" />
     </ItemGroup>
