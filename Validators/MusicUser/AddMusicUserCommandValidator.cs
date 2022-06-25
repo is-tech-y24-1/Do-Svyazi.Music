@@ -24,7 +24,7 @@ public class AddMusicUserCommandValidator : AbstractValidator<AddMusicUser.AddUs
             if (!PictureFormats.Contains(file.FileName[file.FileName.LastIndexOf('.')..].ToLower()))
                 return false;
 
-        if (musicUserCreationInfoDto.Name.Length <= MinNameLength && musicUserCreationInfoDto.Name.Length >= MaxNameLength)
+        if (musicUserCreationInfoDto.Name.Length is <= MinNameLength or >= MaxNameLength)
             return false;
         
         return true;
