@@ -6,11 +6,11 @@ namespace DS.Application.CQRS.Helpers;
 
 public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>  where TRequest : IRequest<TResponse>
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<TRequest> _logger;
 
-    public LoggingBehavior(ILogger logger)
+    public LoggingBehavior(ILogger<TRequest> logger)
     {
-        _logger = logger;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
