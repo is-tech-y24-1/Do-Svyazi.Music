@@ -5,7 +5,7 @@ namespace DS.Domain;
 
 public class ListeningQueue
 {
-    private readonly PlaylistSongs _songs = new();
+    protected virtual PlaylistSongs _songs { get; init; } = new();
     public ListeningQueue(Guid ownerId)
     {
         OwnerId = ownerId;
@@ -14,7 +14,7 @@ public class ListeningQueue
     protected ListeningQueue() {}
     
     public Guid OwnerId { get; init; }
-    public virtual IReadOnlyCollection<Song> Songs => _songs;
+    public IReadOnlyCollection<Song> Songs => _songs;
 
     public void AddNextSongToPlay(Song song)
     {

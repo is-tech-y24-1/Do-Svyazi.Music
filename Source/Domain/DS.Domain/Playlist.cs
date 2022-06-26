@@ -6,10 +6,7 @@ namespace DS.Domain;
 
 public class Playlist
 {
-    private readonly PlaylistSongs _songs;
-#pragma warning disable CS0169
-    private readonly List<MediaLibrary> _addedToLibraries;
-#pragma warning restore CS0169
+    protected virtual PlaylistSongs _songs { get; init; }
     
     protected Playlist() {}
 
@@ -39,7 +36,7 @@ public class Playlist
     public string? Description { get; set; }
     public string? CoverUri { get; set; }
     public bool SharedForCommunity { get; set; }
-    public virtual PlaylistSongs Songs => _songs;
+    public IReadOnlyCollection<Song> Songs => _songs;
     public void AddSong(Song song)
     {
         song.ThrowIfNull();

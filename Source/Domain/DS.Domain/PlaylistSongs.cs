@@ -6,9 +6,9 @@ namespace DS.Domain;
 
 public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
 {
-    private PlaylistSongNode? _head;
-    private PlaylistSongNode? _tail;
-    
+    protected virtual PlaylistSongNode? _head { get; set; }
+    protected virtual PlaylistSongNode? _tail { get; set; }
+
     public PlaylistSongs(Song song)
     {
         Id = Guid.NewGuid();
@@ -32,7 +32,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         Id = Guid.NewGuid();
         Count = 0;
     }
-    
+
     public Guid Id { get; private init; }
     public int Count { get; private set; }
     public bool IsReadOnly => false;
@@ -58,7 +58,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
     public void Add(Song item)
     {
         item.ThrowIfNull();
-        
+
         if (Count == 0)
         {
             _head = new PlaylistSongNode(item);
@@ -124,19 +124,19 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
                 Count--;
                 return true;
             }
-            
+
             previous = current;
             current = current.NextSongNode;
         }
 
         return false;
     }
-    
+
     public int IndexOf(Song item)
     {
         item.ThrowIfNull();
         int index = 0;
-        
+
         foreach (Song? playlistSong in this)
         {
             if (item.Equals(playlistSong))
@@ -151,7 +151,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
     public void Insert(int index, Song item)
     {
         item.ThrowIfNull();
-        
+
         if (index < 0 || index > Count)
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
 
@@ -160,10 +160,10 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
             Add(item);
             return;
         }
-        
+
         PlaylistSongNode? previous = null;
         PlaylistSongNode? current = _head!;
-        
+
         for (int i = 0; i < index; i++)
         {
             previous = current;
@@ -173,7 +173,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         var newNode = new PlaylistSongNode(item);
         newNode.NextSongNode = current;
         Count++;
-        
+
         if (previous is not null)
         {
             previous.NextSongNode = newNode;
@@ -187,7 +187,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
     {
         if (index >= Count || index < 0)
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
-        
+
         PlaylistSongNode? previous = null;
         PlaylistSongNode? current = _head!;
 
@@ -196,7 +196,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
             previous = current;
             current = current!.NextSongNode;
         }
-        
+
         if (current!.Equals(_head!))
             _head = _head!.NextSongNode;
 
@@ -217,7 +217,7 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
         get => GetAt(index);
         set => SetAt(index, value);
     }
-    
+
     private Song GetAt(int index)
     {
         if (index < 0 || index >= Count)
@@ -232,14 +232,14 @@ public class PlaylistSongs : IList<Song>, IReadOnlyList<Song>
 
         return current!.Song;
     }
-    
+
     private void SetAt(int index, Song song)
     {
         song.ThrowIfNull();
-        
+
         if (index < 0 || index >= Count)
             throw new DoSvyaziMusicException("Index of playlist songs is out of range!");
-        
+
         PlaylistSongNode? current = _head;
 
         for (int i = 0; i < index; i++)
