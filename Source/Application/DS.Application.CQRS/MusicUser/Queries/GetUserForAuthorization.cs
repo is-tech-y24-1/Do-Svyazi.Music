@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 using DS.Application.DTO.MusicUser;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
@@ -24,9 +25,8 @@ public class GetUserForAuthorization
 
         public async Task<Response> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            // Not working
-            // TODO: extension to get user from token or something else...
-            Domain.MusicUser? user = await _context.MusicUsers.FindAsync(request.Token);
+            var token = new JwtSecurityToken(request.Token);
+            Domain.MusicUser? user = await _context.MusicUsers.FindAsync(Guid.Parse(token.Id));
 
             if (user is null)
                 throw new UnauthorizedException();
