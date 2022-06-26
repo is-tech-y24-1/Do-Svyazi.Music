@@ -5,6 +5,10 @@ namespace DS.Domain;
 
 public class MusicUser : IEquatable<MusicUser>
 {
+#pragma warning disable CS0169
+    private readonly List<Song> _featuredSongs;
+#pragma warning restore CS0169
+    
     protected MusicUser() {}
 
     public MusicUser(Guid id, string name, string? profilePictureUri = null)

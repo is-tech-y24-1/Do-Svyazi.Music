@@ -6,6 +6,9 @@ namespace DS.Domain;
 public class Song : IEquatable<Song>
 {
     private List<MusicUser> _featuring = new ();
+#pragma warning disable CS0169
+    private readonly List<MediaLibrary> _addedToLibraries;
+#pragma warning restore CS0169
 
     protected Song() {}
 

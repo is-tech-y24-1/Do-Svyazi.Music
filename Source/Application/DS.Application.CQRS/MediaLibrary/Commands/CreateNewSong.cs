@@ -1,13 +1,10 @@
-﻿using System.Buffers;
-using System.Text;
-using DS.Application.DTO.Song;
+﻿using DS.Application.DTO.Song;
 using DS.Common.Enums;
 using DS.Common.Exceptions;
 using DS.DataAccess;
 using DS.DataAccess.Context;
 using DS.Domain;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace DS.Application.CQRS.MediaLibrary.Commands;
 
@@ -28,13 +25,11 @@ public static class CreateNewSong
 
         public async Task<Unit> Handle(CreateNewSongCommand request, CancellationToken cancellationToken)
         {
-            Domain.MusicUser? user = _context.MusicUsers
-                .Include(i => i.MediaLibrary)
-                .FirstOrDefault(user => user.Id == request.UserId);
+            Domain.MusicUser? user = await _context.MusicUsers.FindAsync(request.UserId);
             if (user is null)
                 throw new EntityNotFoundException(ExceptionMessages.UserCannotBeFound);
 
-            SongCreationInfoDto? dto = request.SongCreationInfo;
+            SongCreationInfoDto dto = request.SongCreationInfo;
 
             SongGenre? genre = await _context.SongGenres.FindAsync(dto.GenreId);
             if (genre is null)
@@ -53,13 +48,13 @@ public static class CreateNewSong
             var song = new Domain.Song
             (
                 dto.Name,
-                genre, user,
+                genre,
+                user,
                 _storage.GenerateUri(dto.Song.Name),
                 coverUri
             );
 
             user.MediaLibrary.AddSong(song);
-            _context.MediaLibraries.Update(user.MediaLibrary);
             await _context.SaveChangesAsync(cancellationToken);
 
             await Helpers.Helpers.UploadFile
