@@ -28,3 +28,11 @@ public class AuthorizationMiddleware
         context.Items["User"] = user;
     }
 }
+
+public static class EAuthorizationMiddlewareExtension
+{
+    public static IApplicationBuilder UseAuthorizationMiddleware(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<ExceptionHandlerMiddleware>();
+    }
+}
