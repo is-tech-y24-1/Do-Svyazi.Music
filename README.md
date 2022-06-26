@@ -40,7 +40,7 @@ dotnet restore
 ## Setup project
 - Автарки, обложки и треки хранятся в локальной файловой системе. Путь до хранилища контента указывается в [appsettings.json](Source/Server/DS.Music.WebApi/appsettings.json) (секция: `StorageDirectories`)
 - **Connection string** для подключения к базе данных конфигурируется также в [appsettings.json](Source/Server/DS.Music.WebApi/appsettings.json) (секция: `ConnectionStrings`)
-- Логирование конфигурируется в `NLog.config`. Данный файл лежит в директории, куда устанавливаются nuget-пакеты, но ссылка на файл с конфигурациями также находится в `DS.Music.WebApi` проекте.
+- Логирование конфигурируется в `NLog.config`. Данный файл лежит в директории, куда устанавливаются nuget-пакеты, но linked-файл с конфигурациями также находится в `DS.Music.WebApi` проекте.
 
 
 ## Start project
