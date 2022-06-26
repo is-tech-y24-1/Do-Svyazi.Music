@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DS.Application.CQRS.MediaLibrary.Commands;
@@ -390,16 +388,17 @@ public class MusicLibraryHandlersTests
             _song.Name,
             _song.Genre.Name,
             _song.Author.Name,
-            _song.ContentUri,
-            _song.CoverUri
+            FileStub.GetResultFileDummy(),
+            FileStub.GetResultFileDummy()
         );
 
-        var musicUserInfoDto = new MusicUserInfoDto(author.Id, author.Name);
+        var musicUserInfoDto = new MusicUserInfoDto(author.Id, author.Name, FileStub.GetResultFileDummy());
         
         return new PlaylistInfoDto
             (
                 playlist.Name, 
                 new List<SongInfoDto> { songInfoDto },
+                FileStub.GetResultFileDummy(),
                 musicUserInfoDto
             );
     }
@@ -411,8 +410,8 @@ public class MusicLibraryHandlersTests
             song.Name,
             song.Genre.Name,
             song.Author.Name,
-            song.ContentUri,
-            song.CoverUri
+            FileStub.GetResultFileDummy(),
+            FileStub.GetResultFileDummy()
         );
     }
 }

@@ -21,10 +21,10 @@ public class MediaLibrary : IEquatable<MediaLibrary>
         _playlists = new List<Playlist>();
     }
     
-    public Guid OwnerId { get; private init; }
-    public IReadOnlyCollection<Song> Songs => _songs.ToList();
+    public Guid OwnerId { get; private init; }  
+    public virtual IReadOnlyCollection<Song> Songs => _songs.AsReadOnly();
     public IReadOnlyCollection<Song> AuthoredSongs => Songs.Where(s => s.Author.Id == OwnerId).ToList();
-    public IReadOnlyCollection<Playlist> Playlists => _playlists.ToList();
+    public virtual IReadOnlyCollection<Playlist> Playlists => _playlists.ToList();
     public IReadOnlyCollection<Playlist> AuthoredPlaylists => Playlists.Where(p => p.Author.Id == OwnerId).ToList();
 
     public void AddSong(Song song)

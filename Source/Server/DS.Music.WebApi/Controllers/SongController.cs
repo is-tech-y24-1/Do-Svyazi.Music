@@ -1,4 +1,5 @@
-﻿using DS.Application.CQRS.Song.Commands;
+﻿using DS.Application.CQRS.MediaLibrary.Queries;
+using DS.Application.CQRS.Song.Commands;
 using DS.Application.CQRS.Song.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,20 @@ public class SongController : ControllerBase
     {
         GetSongInfo.Response? songInfo = await _mediator.Send(new GetSongInfo.GetInfoQuery(userId, songId));
         return Ok(songInfo);
+    }
+    
+    [HttpGet("{userId:guid}/{songId:guid}/content")]
+    public async Task<FileStreamResult?> GetSongContent(Guid userId, Guid songId)
+    {
+        var songInfo = await _mediator.Send(new GetSongContent.GetSongContentQuery(userId, songId));
+        return songInfo.SongContent;
+    }
+    
+    [HttpGet("{userId:guid}/{songId:guid}/cover")]
+    public async Task<FileStreamResult?> GetSongCover(Guid userId, Guid songId)
+    {
+        var songInfo = await _mediator.Send(new GetSongCover.GetSongCoverQuery(userId, songId));
+        return songInfo.SongCover;
     }
     
     [HttpPut(nameof(AddFeaturingUser))]

@@ -1,5 +1,6 @@
 ﻿using DS.Application.CQRS.MediaLibrary.Commands;
 using DS.Application.CQRS.MediaLibrary.Queries;
+using DS.Application.CQRS.Song.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,8 +38,15 @@ public class MediaLibraryController : ControllerBase
         return Ok(playlistsInfo);
     }
     
+    [HttpGet("{userId:guid}/{playlistId:guid}/cover")]
+    public async Task<FileStreamResult?> GetPlaylistCover(Guid userId, Guid playlistId)
+    {
+        var cover = await _mediator.Send(new GetPlaylistCover.GetPlaylistCoverQuery(userId, playlistId));
+        return cover.PlaylistCover;
+    }
+    
     [HttpGet("{userId:guid}/added/songs")]
-    public async Task<IActionResult> GetAddedSongs(Guid userId)
+    public async Task<IActionResult> GetAddedSongsInfo(Guid userId)
     {
         GetSongs.Response songsInfo = await _mediator.Send(new GetSongs.GetSongsQuery(userId));
         return Ok(songsInfo);
@@ -76,8 +84,8 @@ public class MediaLibraryController : ControllerBase
     public async Task<IActionResult> CreateNewSong([FromForm] CreateNewSong.CreateNewSongCommand command)
     {
         await _mediator.Send(command);
-        GetAuthoredSongs.Response songsInfo = await _mediator.Send(new GetAuthoredSongs.GetAuthoredSongsQuery(command.UserId));
-        return Ok(songsInfo);
+        //GetAuthoredSongs.Response songsInfo = await _mediator.Send(new GetAuthoredSongs.GetAuthoredSongsQuery(command.UserId));
+        return Ok();
     }
     
     [HttpPost(nameof(CreateNewPlaylist))]

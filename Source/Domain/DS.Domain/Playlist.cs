@@ -8,14 +8,10 @@ public class Playlist
 {
     private readonly PlaylistSongs _songs;
     
-    #pragma warning disable CS0169
-    private readonly List<MediaLibrary> _addedToLibraries;
-    #pragma warning restore CS0169
-    
     protected Playlist() {}
 
     public Playlist
-    (
+    (   
         string name,
         MusicUser author,
         PlaylistSongs songs,
@@ -35,12 +31,12 @@ public class Playlist
     }
     
     public Guid Id { get; private init; }
-    public MusicUser Author { get; private init; }
+    public virtual MusicUser Author { get; private init; }
     public string Name { get; set; }
     public string? Description { get; set; }
     public string? CoverUri { get; set; }
     public bool SharedForCommunity { get; set; }
-    public IReadOnlyCollection<Song> Songs => _songs;
+    public virtual PlaylistSongs Songs => _songs;
     public void AddSong(Song song)
     {
         song.ThrowIfNull();
