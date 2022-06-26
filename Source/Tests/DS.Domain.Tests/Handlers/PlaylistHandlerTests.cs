@@ -150,18 +150,15 @@ public class PlaylistHandlerTests
         (
             _initialSong.Name,
             _initialSong.Genre.Name,
-            _initialSong.Author.Name,
-            FileStub.GetResultFileDummy(),
-            FileStub.GetResultFileDummy()
+            _initialSong.Author.Name
         );
 
-        var musicUserInfoDto = new MusicUserInfoDto(_musicUser.Id, _musicUser.Name, FileStub.GetResultFileDummy());
+        var musicUserInfoDto = new MusicUserInfoDto(_musicUser.Id, _musicUser.Name);
         
         return new PlaylistInfoDto
         (
             _playlist.Name, 
             new List<SongInfoDto> { songInfoDto },
-            FileStub.GetResultFileDummy(),
             musicUserInfoDto
         );
     }

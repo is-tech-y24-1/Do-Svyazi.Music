@@ -52,7 +52,7 @@ public class MusicUserHandlersTests
         var handler = new GetUserInfo.Handler(_context, mapper);
         var query = new GetUserInfo.GetInfoQuery(musicUser.Id);
 
-        var refDto = new MusicUserInfoDto(musicUser.Id, musicUser.Name, FileStub.GetResultFileDummy());
+        var refDto = new MusicUserInfoDto(musicUser.Id, musicUser.Name);
         var response = await handler.Handle(query, CancellationToken.None);
         
         Assert.AreEqual(refDto, response.UserInfo);

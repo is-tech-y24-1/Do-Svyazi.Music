@@ -387,18 +387,15 @@ public class MusicLibraryHandlersTests
         (
             _song.Name,
             _song.Genre.Name,
-            _song.Author.Name,
-            FileStub.GetResultFileDummy(),
-            FileStub.GetResultFileDummy()
+            _song.Author.Name
         );
 
-        var musicUserInfoDto = new MusicUserInfoDto(author.Id, author.Name, FileStub.GetResultFileDummy());
+        var musicUserInfoDto = new MusicUserInfoDto(author.Id, author.Name);
         
         return new PlaylistInfoDto
             (
                 playlist.Name, 
                 new List<SongInfoDto> { songInfoDto },
-                FileStub.GetResultFileDummy(),
                 musicUserInfoDto
             );
     }
@@ -409,9 +406,7 @@ public class MusicLibraryHandlersTests
         (
             song.Name,
             song.Genre.Name,
-            song.Author.Name,
-            FileStub.GetResultFileDummy(),
-            FileStub.GetResultFileDummy()
+            song.Author.Name
         );
     }
 }
