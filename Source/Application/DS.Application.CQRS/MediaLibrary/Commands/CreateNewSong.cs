@@ -55,6 +55,7 @@ public static class CreateNewSong
             );
 
             user.MediaLibrary.AddSong(song);
+            _context.Songs.Add(song);
             await _context.SaveChangesAsync(cancellationToken);
 
             await Helpers.Helpers.UploadFile
