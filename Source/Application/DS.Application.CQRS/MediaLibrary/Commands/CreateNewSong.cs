@@ -33,11 +33,7 @@ public static class CreateNewSong
 
             SongGenre? genre = await _context.SongGenres.FindAsync(dto.GenreId);
             if (genre is null)
-            {
-                _context.SongGenres.Add(new SongGenre("Punk rock"));
-                await _context.SaveChangesAsync(cancellationToken);
-            }
-            //throw new EntityNotFoundException(ExceptionMessages.GenreCannotBeFound);
+                throw new EntityNotFoundException(ExceptionMessages.GenreCannotBeFound);
 
             string? coverUri = null;
             // Force unwrapping is ok here because if cover is null

@@ -1,5 +1,4 @@
-﻿using DS.Application.CQRS.MediaLibrary.Queries;
-using DS.Application.CQRS.Song.Commands;
+﻿using DS.Application.CQRS.Song.Commands;
 using DS.Application.CQRS.Song.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -52,5 +51,19 @@ public class SongController : ControllerBase
         await _mediator.Send(command);
         Task<GetSongInfo.Response>? songInfo = _mediator.Send(new GetSongInfo.GetInfoQuery(command.UserId, command.SongId));
         return Ok(songInfo);
+    }
+    
+    [HttpPost("genres/create")]
+    public async Task<IActionResult> CreateNewGenre([FromBody] string name)
+    {
+        await _mediator.Send(new CreateNewGenre.CreateNewGenreCommand(name));
+        return Ok();
+    }
+    
+    [HttpGet("genres/all")]
+    public async Task<IActionResult> GetAllGenres()
+    {
+        var genres = await _mediator.Send(new GetAllGenres.GetAllGenresQuery());
+        return Ok(genres);
     }
 }

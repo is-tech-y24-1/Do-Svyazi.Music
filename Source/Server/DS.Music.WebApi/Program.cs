@@ -109,11 +109,13 @@ builder.Services.AddMediatR(typeof(GetPlaylistInfo.GetInfoQuery).GetTypeInfo().A
 // Song commands
 builder.Services.AddMediatR(typeof(AddFeaturing.AddFeaturingCommand).GetTypeInfo().Assembly);
 builder.Services.AddMediatR(typeof(RemoveFeaturing.RemoveFeaturingCommand).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(CreateNewGenre.CreateNewGenreCommand).GetTypeInfo().Assembly);
 
 // Song queries
 builder.Services.AddMediatR(typeof(GetSongContent.GetSongContentQuery).GetTypeInfo().Assembly);
 builder.Services.AddMediatR(typeof(GetSongCover.GetSongCoverQuery).GetTypeInfo().Assembly);
 builder.Services.AddMediatR(typeof(GetSongInfo.GetInfoQuery).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(GetAllGenres.GetAllGenresQuery).GetTypeInfo().Assembly);
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
