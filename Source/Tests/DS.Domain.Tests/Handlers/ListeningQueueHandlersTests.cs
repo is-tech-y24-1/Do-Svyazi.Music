@@ -9,7 +9,6 @@ using DS.Application.DTO.Song;
 using DS.DataAccess.Context;
 using DS.DataAccess.Seeding.Generators;
 using DS.Domain;
-using DS.Tests.Stubs;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
