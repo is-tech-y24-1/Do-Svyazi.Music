@@ -8,7 +8,8 @@ public class PlaylistConfiguration : IEntityTypeConfiguration<Playlist>
 {
     public void Configure(EntityTypeBuilder<Playlist> builder)
     {
-        builder.Navigation(p => p.Songs).HasField("_songs");
+        builder.HasOne<PlaylistSongs>("_songs");
+        builder.Ignore(x => x.Songs);
         builder.HasOne(s => s.Author);
     }
 }

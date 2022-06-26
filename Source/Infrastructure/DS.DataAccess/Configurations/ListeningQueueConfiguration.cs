@@ -9,7 +9,7 @@ public class ListeningQueueConfiguration : IEntityTypeConfiguration<ListeningQue
     public void Configure(EntityTypeBuilder<ListeningQueue> builder)
     {
         builder.HasKey(q => q.OwnerId);
-        builder.Navigation(q => q.Songs)
-            .HasField("_songs");
+        builder.HasOne<PlaylistSongs>("_songs");
+        builder.Ignore(x => x.Songs);
     }
 }
