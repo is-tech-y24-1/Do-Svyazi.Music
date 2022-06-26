@@ -61,7 +61,7 @@ builder.Services.AddSingleton(new MapperConfiguration(cfg =>
     cfg.AddProfile(new DomainToResponse(storage));
 }).CreateMapper());
 
-#region MediatR injectiong
+#region MediatR injecting
 // Queue commands
 builder.Services.AddMediatR(typeof(AddLastToQueue.AddLastToQueueCommand).Assembly);
 builder.Services.AddMediatR(typeof(AddNextToQueue.AddNextToQueueCommand).GetTypeInfo().Assembly);
