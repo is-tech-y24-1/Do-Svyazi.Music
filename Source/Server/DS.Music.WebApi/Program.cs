@@ -11,22 +11,17 @@ using DS.Application.CQRS.Playlist.Queries;
 using DS.Application.CQRS.Song.Commands;
 using DS.Application.CQRS.Song.Queries;
 using DS.Application.CQRS.Helpers;
-using DS.Application.CQRS.MediaLibrary.Commands;
-using DS.Application.CQRS.MusicUser.Commands;
 using DS.Application.CQRS.MusicUser.Queries;
 using DS.DataAccess;
 using DS.DataAccess.ContentStorages;
 using DS.DataAccess.Context;
 using DS.Music.WebApi.Middlewares;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 using Validators.MusicUser;
-using Validators.Playlist;
-using Validators.Song;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -61,15 +56,12 @@ builder.Services.AddFluentValidation(s =>
 });
 
 builder.Services.AddScoped<IContentStorage>(_ => storage);
-
-builder.Services.AddMediatR(typeof(GetUserInfo).GetTypeInfo().Assembly);
-builder.Services.AddMediatR(typeof(AddMusicUser).GetTypeInfo().Assembly);
-
 builder.Services.AddSingleton(new MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new DomainToResponse(storage));
 }).CreateMapper());
 
+#region MediatR injectiong
 // Queue commands
 builder.Services.AddMediatR(typeof(AddLastToQueue.AddLastToQueueCommand).Assembly);
 builder.Services.AddMediatR(typeof(AddNextToQueue.AddNextToQueueCommand).GetTypeInfo().Assembly);
@@ -126,6 +118,7 @@ builder.Services.AddMediatR(typeof(GetSongInfo.GetInfoQuery).GetTypeInfo().Assem
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+#endregion
 
 WebApplication app = builder.Build();
 
