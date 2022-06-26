@@ -40,8 +40,8 @@ logger.Debug("debug");
 
 builder.Services.AddDbContext<MusicDbContext>(opt =>
 {
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresLocalhost"));
-    // opt.UseLazyLoadingProxies();
+    opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteTest"));
+    opt.UseLazyLoadingProxies();
 });
 
 builder.Services.AddScoped<IMusicContext, MusicDbContext>();
