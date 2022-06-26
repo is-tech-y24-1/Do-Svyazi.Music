@@ -3,18 +3,14 @@ using DS.Application.DTO.ListeningQueue;
 using DS.Application.DTO.MusicUser;
 using DS.Application.DTO.Playlist;
 using DS.Application.DTO.Song;
-using DS.DataAccess;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
+using DS.Tests.Stubs;
 
-namespace DS.Application.CQRS.Mapping;
+namespace DS.Tests;
 
-public class DomainToResponse : Profile
+public class DomainToResponseTests : Profile
 {
-    private readonly IContentStorage _storage;
-    public DomainToResponse(IContentStorage storage)
+    public DomainToResponseTests()
     {
-        _storage = storage;
         CreateMap<Domain.ListeningQueue, ListeningQueueInfoDto>();
 
         CreateMap<Domain.Song, SongInfoDto>()

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DS.Application.CQRS.MediaLibrary.Commands;
@@ -389,9 +387,7 @@ public class MusicLibraryHandlersTests
         (
             _song.Name,
             _song.Genre.Name,
-            _song.Author.Name,
-            _song.ContentUri,
-            _song.CoverUri
+            _song.Author.Name
         );
 
         var musicUserInfoDto = new MusicUserInfoDto(author.Id, author.Name);
@@ -410,9 +406,7 @@ public class MusicLibraryHandlersTests
         (
             song.Name,
             song.Genre.Name,
-            song.Author.Name,
-            song.ContentUri,
-            song.CoverUri
+            song.Author.Name
         );
     }
 }

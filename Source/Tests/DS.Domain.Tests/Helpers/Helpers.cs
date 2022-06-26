@@ -1,6 +1,5 @@
 using System.Linq;
 using AutoMapper;
-using DS.Application.CQRS.Mapping;
 using Microsoft.EntityFrameworkCore;
 
 namespace DS.Tests;
@@ -19,7 +18,7 @@ public class Helpers
     {
         var mapperConfig = new MapperConfiguration(c =>
         {
-            c.AddProfile<DomainToResponse>();
+            c.AddProfile<DomainToResponseTests>();
         });
         
         return mapperConfig.CreateMapper();

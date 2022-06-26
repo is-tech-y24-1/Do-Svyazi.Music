@@ -20,6 +20,8 @@ riderModule.iml
 .idea/**/dictionaries
 .idea/**/shelf
 
+DSMusicStorage/
+
 # AWS User-specific
 .idea/**/aws.xml
 

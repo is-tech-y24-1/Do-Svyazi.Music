@@ -6,11 +6,10 @@ namespace DS.Domain;
 public class Song : IEquatable<Song>
 {
     private List<MusicUser> _featuring = new ();
-    
-    #pragma warning disable CS0169
+#pragma warning disable CS0169
     private readonly List<MediaLibrary> _addedToLibraries;
-    #pragma warning restore CS0169
-    
+#pragma warning restore CS0169
+
     protected Song() {}
 
     public Song
@@ -32,9 +31,9 @@ public class Song : IEquatable<Song>
     
     public Guid Id { get; private init; }
     public string Name { get; set; }
-    public SongGenre Genre { get; set; }
-    public MusicUser Author { get; private init; }
-    public IReadOnlyCollection<MusicUser> Featuring => _featuring.ToList();
+    public virtual SongGenre Genre { get; set; }
+    public virtual MusicUser Author { get; private init; }
+    public virtual IReadOnlyCollection<MusicUser> Featuring => _featuring.AsReadOnly();
     public string? CoverUri { get; set; }
     public bool SharedForCommunity { get; set; }
     public string ContentUri { get; private init; }

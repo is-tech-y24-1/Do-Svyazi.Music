@@ -1,10 +1,14 @@
-﻿namespace DS.Application.DTO.Song;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace DS.Application.DTO.Song;
 
 public record SongInfoDto
 (
-    string Name, 
+    string Name,
     string GenreName,
-    string AuthorName,
-    string ContentUri,
-    string? CoverUri
-);
+    string AuthorName
+)
+{
+    public SongInfoDto() 
+        : this(string.Empty, string.Empty, string.Empty) { }
+};

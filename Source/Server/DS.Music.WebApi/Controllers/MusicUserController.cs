@@ -1,4 +1,5 @@
-﻿using DS.Application.CQRS.MusicUser.Commands;
+﻿using System.Net.Mime;
+using DS.Application.CQRS.MusicUser.Commands;
 using DS.Application.CQRS.MusicUser.Queries;
 using DS.Application.DTO.MusicUser;
 using MediatR;
@@ -30,5 +31,12 @@ public class MusicUserController : ControllerBase
     {
         GetUserInfo.Response? userInfo = await _mediator.Send(new GetUserInfo.GetInfoQuery(userId));
         return Ok(userInfo);
+    }
+
+    [HttpGet("profilePicture/{userId:guid}")]
+    public async Task<FileResult> GetMusicUserProfilePicture(Guid userId)
+    {
+        var profilePicture = await _mediator.Send(new GetUserProfilePicture.GetPictureQuery(userId));
+        return profilePicture.ProfilePicture!;
     }
 }

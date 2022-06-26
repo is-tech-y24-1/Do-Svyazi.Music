@@ -23,6 +23,20 @@ public class SongController : ControllerBase
         return Ok(songInfo);
     }
     
+    [HttpGet("{userId:guid}/{songId:guid}/content")]
+    public async Task<FileStreamResult?> GetSongContent(Guid userId, Guid songId)
+    {
+        var songInfo = await _mediator.Send(new GetSongContent.GetSongContentQuery(userId, songId));
+        return songInfo.SongContent;
+    }
+    
+    [HttpGet("{userId:guid}/{songId:guid}/cover")]
+    public async Task<FileStreamResult?> GetSongCover(Guid userId, Guid songId)
+    {
+        var songInfo = await _mediator.Send(new GetSongCover.GetSongCoverQuery(userId, songId));
+        return songInfo.SongCover;
+    }
+    
     [HttpPut(nameof(AddFeaturingUser))]
     public async Task<IActionResult> AddFeaturingUser([FromBody] AddFeaturing.AddFeaturingCommand command)
     {
@@ -37,5 +51,19 @@ public class SongController : ControllerBase
         await _mediator.Send(command);
         Task<GetSongInfo.Response>? songInfo = _mediator.Send(new GetSongInfo.GetInfoQuery(command.UserId, command.SongId));
         return Ok(songInfo);
+    }
+    
+    [HttpPost("genres/create")]
+    public async Task<IActionResult> CreateNewGenre([FromBody] string name)
+    {
+        await _mediator.Send(new CreateNewGenre.CreateNewGenreCommand(name));
+        return Ok();
+    }
+    
+    [HttpGet("genres/all")]
+    public async Task<IActionResult> GetAllGenres()
+    {
+        var genres = await _mediator.Send(new GetAllGenres.GetAllGenresQuery());
+        return Ok(genres);
     }
 }

@@ -200,10 +200,8 @@ public class ListeningQueueHandlersTests
     {
         return new ListeningQueueInfoDto(_musicUser.Id, new List<SongInfoDto>()
         {
-            new (_firstSong.Name, _firstSong.Genre.Name, _firstSong.Author.Name, _firstSong.ContentUri,
-                _firstSong.CoverUri),
-            new (_secondSong.Name, _secondSong.Genre.Name, _secondSong.Author.Name, _secondSong.ContentUri,
-                _secondSong.CoverUri)
+            new (_firstSong.Name, _firstSong.Genre.Name, _firstSong.Author.Name),
+            new (_secondSong.Name, _secondSong.Genre.Name, _secondSong.Author.Name)
         });
     }
 }
